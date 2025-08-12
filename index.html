@@ -1,51 +1,302 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login</title>
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Fondo de video a pantalla completa con crossfade */
+      .bg-video {
+        position: fixed;
+        inset: 0;
+        width: 150%;
+        height: 150%;
+        object-fit: cover;
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 800ms ease;
+        background: #000; /* por si tarda en cargar */
+        top: -120px;
+        left: -100px;
+      }
+      .bg-video.visible {
+        opacity: 1;
+      }
+      /* Capa sutil para mejorar legibilidad sobre video */
+      .bg-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.25);
+        z-index: 1;
+      }
+      /* La app por encima del video */
+      .app-content {
+        position: relative;
+        z-index: 2;
+      }
+      .btn-outline-light {
+        color: #6a7fa5;
+        border-color: #6a7fa5;
+      }
+      .btn-outline-light:hover {
+        color: #3f5171;
+        border-color: #32415c;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <!-- Dos videos para hacer crossfade -->
+    <video
+      id="bg1"
+      class="bg-video"
+      autoplay
+      muted
+      playsinline
+      preload="auto"
+    ></video>
+    <video
+      id="bg2"
+      class="bg-video"
+      autoplay
+      muted
+      playsinline
+      preload="auto"
+    ></video>
+    <video
+      id="bg3"
+      class="bg-video"
+      autoplay
+      muted
+      playsinline
+      preload="auto"
+    ></video>
+    <video
+      id="bg4"
+      class="bg-video"
+      autoplay
+      muted
+      playsinline
+      preload="auto"
+    ></video>
+    <div class="bg-overlay"></div>
 
-  <div class="container d-flex align-items-center justify-content-center min-vh-100">
-    <div class="card shadow-sm" style="max-width: 400px; width: 100%;">
-      <div class="card-body p-4">
-        <h4 class="mb-4 text-center">Sign In</h4>
-        <form>
-          <!-- Email -->
-          <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+    <div
+      class="container d-flex align-items-center justify-content-center min-vh-100 app-content"
+    >
+      <div
+        class="card shadow-sm"
+        style="
+          max-width: 400px;
+          width: 100%;
+          background: #ffffffba;
+          backdrop-filter: blur(10px);
+        "
+      >
+        <div class="card-body p-4">
+          <h4 class="mb-4 text-center">MicroTapybl</h4>
+          <form id="loginForm" action="/home">
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                placeholder="********"
+                required
+              />
+            </div>
+
+            <!-- Remember me -->
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="remember" />
+              <label class="form-check-label" for="remember">Remember me</label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="background-color: #141e30; border: 0"
+              >
+                Log In
+              </button>
+            </div>
+          </form>
+
+          <!-- Divider -->
+          <div class="text-center my-3">
+            <small class="text-muted">or log in with</small>
           </div>
 
-          <!-- Password -->
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="********" required>
+          <!-- Social Buttons -->
+          <div class="d-flex justify-content-center gap-3">
+            <a
+              href="/home"
+              class="btn btn-outline-light"
+              title="Continue with Instagram"
+            >
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a
+              href="/home"
+              class="btn btn-outline-light"
+              title="Continue with Facebook"
+            >
+              <i class="bi bi-facebook"></i>
+            </a>
+            <a
+              href="/home"
+              class="btn btn-outline-light"
+              title="Continue with TikTok"
+            >
+              <i class="bi bi-tiktok"></i>
+            </a>
+            <a
+              href="/home"
+              class="btn btn-outline-light"
+              title="Continue with Google"
+            >
+              <i class="bi bi-google"></i>
+            </a>
           </div>
+        </div>
 
-          <!-- Remember me -->
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="remember">
-            <label class="form-check-label" for="remember">Remember me</label>
-          </div>
-
-          <!-- Submit Button -->
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Log In</button>
-          </div>
-        </form>
-      </div>
-
-      <div class="card-footer text-center">
-        <small>Don't have an account? <a href="#">Sign up here</a></small>
+        <div class="card-footer text-center">
+          <small
+            >Don't have an account?
+            <a href="#" id="signUpBtn">Sign up here</a></small
+          >
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Bootstrap 5 JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // --- Playlist de videos de fondo ---
+      const playlist = [
+        "assets/video/background-1.mp4",
+        "assets/video/background-2.mp4",
+        "assets/video/background-3.mp4",
+        "assets/video/background-4.mp4",
+      ];
+
+      const v1 = document.getElementById("bg1");
+      const v2 = document.getElementById("bg2");
+      const v3 = document.getElementById("bg3");
+      const v4 = document.getElementById("bg4");
+
+      let currentIndex = 0;
+      let active = v1; // video visible
+      let standby = v2; // próximo video
+
+      // Helper: setear src y reproducir
+      function setAndPlay(videoEl, src) {
+        videoEl.src = src;
+        // Reiniciar visibilidad, importante para Safari/iOS
+        videoEl.currentTime = 0;
+        // Cargar y reproducir (autoplay muted debería ser suficiente)
+        videoEl.load();
+        const p = videoEl.play();
+        if (p && typeof p.catch === "function") {
+          p.catch(() => {
+            /* ignorar bloqueos de autoplay */
+          });
+        }
+      }
+
+      // Crossfade entre active y standby
+      function crossfade() {
+        active.classList.remove("visible");
+        standby.classList.add("visible");
+
+        // intercambiar roles
+        [active, standby] = [standby, active];
+      }
+
+      // Preparar el siguiente video y hacer crossfade cuando el actual termina
+      function queueNext() {
+        currentIndex = (currentIndex + 1) % playlist.length;
+        setAndPlay(standby, playlist[currentIndex]);
+
+        // pequeño delay para asegurar que el standby empezó
+        // y luego hacer el crossfade
+        setTimeout(crossfade, 50);
+      }
+
+      // Inicialización
+      (function initBackground() {
+        // Primer video visible
+        setAndPlay(active, playlist[currentIndex]);
+        active.classList.add("visible");
+
+        // Siguiente precargado
+        const nextIndex = (currentIndex + 1) % playlist.length;
+        setAndPlay(standby, playlist[nextIndex]);
+        standby.classList.remove("visible");
+
+        // Cuando termine el activo, cambiamos
+        active.addEventListener("ended", queueNext);
+
+        // También escuchar 'ended' del que quede activo luego del swap
+        // reasignamos el handler después de cada crossfade
+        const observer = new MutationObserver(() => {
+          // eliminar y volver a agregar para que siempre escuchemos al "active"
+          active.onended = queueNext;
+          standby.onended = null;
+        });
+        observer.observe(document.body, {
+          attributes: false,
+          childList: false,
+          subtree: false,
+        });
+        // set initial handlers
+        active.onended = queueNext;
+      })();
+
+      // --- Redirecciones del login fake ---
+      const redirect = () => (window.location.href = "/home");
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          redirect();
+        });
+
+      document.querySelectorAll(".btn-social").forEach((btn) => {
+        btn.addEventListener("click", redirect);
+      });
+
+      document.getElementById("signUpBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        redirect();
+      });
+    </script>
+  </body>
 </html>
