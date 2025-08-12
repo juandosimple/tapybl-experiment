@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Tapybl MicroLearning</title>
+
+    <!-- Bootstrap 5 + Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Nav -->
+    <nav class="navbar navbar-dark border-bottom border-dark sticky-top">
+      <div class="container feed-wrapper">
+        <a class="navbar-brand fw-bold" href="#">MicroTapybl</a>
+        <div class="d-none d-md-block" style="max-width: 340px; width: 100%">
+          <input
+            class="form-control form-control-sm bg-dark-subtle border-0"
+            placeholder="Search topics"
+          />
+        </div>
+        <ul class="navbar-nav flex-row ms-auto gap-3">
+          <li class="nav-item">
+            <a class="nav-link" href="#"
+              ><i class="bi bi-house-door fs-5"></i
+            ></a>
+          </li>
+          <!-- <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-plus-square fs-5"></i></a></li> -->
+          <!-- <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-heart fs-5"></i></a></li> -->
+          <li class="nav-item">
+            <a class="nav-link p-0" href="#"
+              ><img
+                src="https://i.pravatar.cc/28?img=5"
+                class="rounded-circle"
+                width="28"
+                height="28"
+                alt=""
+            /></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Feed -->
+    <main class="container feed-wrapper my-4">
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <!-- Video card 1 -->
+          <article class="vcard">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_one_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  NovaMind Institute
+                </div>
+                <small class="text-body-secondary">Cambridge, England</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video1.mp4"
+              data-user="NovaMind Institute"
+              data-caption="Did you know? – Science Fact Friday"
+              data-avatar="../assets/img/course_one_logo.png"
+              data-questions='[
+              {"id":"q1a","time":4,"type":""single","text":"What is the chemical formula for water?","options":["h20","02","co2","NaCl"],"correct":0},
+              {"id":"q2a","time":9,"type":"poll","text":"Would you watch more surf clips?","options":["Yes","Maybe later"]}
+            ]'
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video1.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>Did you know? – Science Fact Friday</div>
+              <div>
+                <small class="text-body-secondary"
+                  >2 hours ago • 1,024 likes</small
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 2 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_two_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Summit Mathematics Center
+                </div>
+                <small class="text-body-secondary">Buenos Aires, AR</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video2.mp4"
+              data-user="Summit Mathematics Center"
+              data-caption="Night city ride 🚴‍♂️"
+              data-avatar="../assets/img/course_two_logo.png"
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video2.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>
+                <small class="text-body-secondary">Yesterday • 542 likes</small>
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 3 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_three_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Aurora Physics Lab
+                </div>
+                <small class="text-body-secondary">Zurich, CH</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video3.mp4"
+              data-user="Aurora Physics Lab"
+              data-caption="Wave–particle duality in 30s"
+              data-avatar="../assets/img/course_three_logo.png"
+              data-questions='[
+      {"id":"p3q1","time":5,"type":"single","text":"Photon is a…","options":["Wave","Particle","Both"],"correct":2}
+    ]'
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video3.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>Wave–particle duality in 30s</div>
+              <div>
+                <small class="text-body-secondary">Today • 312 likes</small>
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 4 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_four_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  TerraBio Research
+                </div>
+                <small class="text-body-secondary">Cali, CO</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video4.mp4"
+              data-user="TerraBio Research"
+              data-caption="Photosynthesis — the 10‑second version 🌿"
+              data-avatar="../assets/img/course_four_logo.png"
+              data-questions='[
+      {"id":"b4q1","time":6,"type":"single","text":"Main pigment is…","options":["Chlorophyll","Carotene","Myoglobin"],"correct":0}
+    ]'
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video4.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>Photosynthesis — the 10‑second version</div>
+              <div>
+                <small class="text-body-secondary">Today • 221 likes</small>
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 5 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_five_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Quantum Learning Hub
+                </div>
+                <small class="text-body-secondary">Tokyo, JP</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video5.mp4"
+              data-user="Quantum Learning Hub"
+              data-caption="Qubits vs bits — quick compare"
+              data-avatar="../assets/img/course_five_logo.png"
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video5.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>Qubits vs bits — quick compare</div>
+              <div>
+                <small class="text-body-secondary"
+                  >2 days ago • 889 likes</small
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 6 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_six_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Atlas History Guild
+                </div>
+                <small class="text-body-secondary">Athens, GR</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video6.mp4"
+              data-user="Atlas History Guild"
+              data-caption="What started the Peloponnesian War?"
+              data-avatar="../assets/img/course_six_logo.png"
+              data-questions='[
+      {"id":"h6q1","time":7,"type":"poll","text":"Want more ancient history shorts?","options":["Yes","No"]}
+    ]'
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video6.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>What started the Peloponnesian War?</div>
+              <div>
+                <small class="text-body-secondary"
+                  >3 days ago • 403 likes</small
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 7 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_seven_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Pixel Arts Academy
+                </div>
+                <small class="text-body-secondary">Los Angeles, US</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video7.mp4"
+              data-user="Pixel Arts Academy"
+              data-caption="Color theory in a minute 🎨"
+              data-avatar="../assets/img/course_seven_logo.png"
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video7.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>Color theory in a minute</div>
+              <div>
+                <small class="text-body-secondary"
+                  >1 week ago • 1,540 likes</small
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 8 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_eight_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Veritas Language School
+                </div>
+                <small class="text-body-secondary">Madrid, ES</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video8.mp4"
+              data-user="Veritas Language School"
+              data-caption="False friends: actually vs actualmente 😅"
+              data-avatar="../assets/img/course_eight_logo.png"
+              data-questions='[
+      {"id":"l8q1","time":5,"type":"single","text":"\"Actually\" in Spanish is…","options":["Actualmente","En realidad","Eventualmente"],"correct":1}
+    ]'
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video8.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>False friends: actually vs actualmente</div>
+              <div>
+                <small class="text-body-secondary"
+                  >5 days ago • 763 likes</small
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 9 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_nine_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Orion Coding Camp
+                </div>
+                <small class="text-body-secondary">Remote</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video9.mp4"
+              data-user="Orion Coding Camp"
+              data-caption="Flex vs Grid — when to use each"
+              data-avatar="../assets/img/course_nine_logo.png"
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video9.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>Flex vs Grid — when to use each</div>
+              <div>
+                <small class="text-body-secondary"
+                  >3 days ago • 1,003 likes</small
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 10 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_ten_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Horizon Finance Institute
+                </div>
+                <small class="text-body-secondary">New York, US</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video10.mp4"
+              data-user="Horizon Finance Institute"
+              data-caption="Compound interest in 20 seconds"
+              data-avatar="../assets/img/course_ten_logo.png"
+              data-questions='[
+      {"id":"f10q1","time":6,"type":"single","text":"Annual rate is 5%, principal grows…","options":["Linearly","Exponentially"],"correct":1}
+    ]'
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video10.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>Compound interest in 20 seconds</div>
+              <div>
+                <small class="text-body-secondary">Last week • 678 likes</small>
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 11 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_eleven_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Gaia Environmental Studies
+                </div>
+                <small class="text-body-secondary">Wellington, NZ</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video11.mp4"
+              data-user="Gaia Environmental Studies"
+              data-caption="Carbon footprint — quick reducers"
+              data-avatar="../assets/img/course_eleven_logo.png"
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video11.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>Carbon footprint — quick reducers</div>
+              <div>
+                <small class="text-body-secondary"
+                  >2 weeks ago • 245 likes</small
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Video card 12 -->
+          <article class="vcard mt-4">
+            <header class="d-flex align-items-center gap-2 p-3">
+              <img
+                src="../assets/img/course_twelve_logo.png"
+                class="rounded-circle"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="color: #000">
+                  Helix Chemistry Club
+                </div>
+                <small class="text-body-secondary">Paris, FR</small>
+              </div>
+              <button class="btn btn-sm btn-link text-body-secondary">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </header>
+
+            <button
+              class="vthumb-btn open-fs"
+              data-src="../assets/video/video12.mp4"
+              data-user="Helix Chemistry Club"
+              data-caption="pH scale — fast refresher"
+              data-avatar="../assets/img/course_twelve_logo.png"
+              data-questions='[
+      {"id":"c12q1","time":5,"type":"single","text":"Neutral pH is…","options":["5","7","9"],"correct":1}
+    ]'
+            >
+              <video class="vthumb" preload="metadata" muted playsinline loop>
+                <source src="../assets/video/video12.mp4" type="video/mp4" />
+              </video>
+              <span class="play-badge"
+                ><i class="bi bi-play-fill me-1"></i>Watch</span
+              >
+            </button>
+
+            <div class="px-3 pt-2 pb-3">
+              <div>pH scale — fast refresher</div>
+              <div>
+                <small class="text-body-secondary"
+                  >3 weeks ago • 198 likes</small
+                >
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="col-lg-4 d-none d-lg-block">
+          <div class="position-sticky" style="top: 88px">
+            <div class="d-flex align-items-center">
+              <img
+                src="https://i.pravatar.cc/56?img=5"
+                class="rounded-circle me-3"
+                width="56"
+                height="56"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <div class="fw-semibold">you</div>
+                <small class="text-body-secondary">Your Name</small>
+              </div>
+            </div>
+
+            <div class="mt-4 text-body-secondary small">© 2025 MicroTapybl</div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <!-- Fake Fullscreen Overlay -->
+    <section class="fshell" id="fshell" aria-hidden="true">
+      <div class="fshell__video-wrap" id="fsWrap">
+        <video id="fsVideo" playsinline></video>
+
+        <!-- Double‑tap like heart -->
+        <div class="dbl-like" id="dblLike">
+          <i
+            class="bi bi-heart-fill"
+            style="font-size: 5rem; color: #ff2e63"
+          ></i>
+        </div>
+
+        <!-- Top bar -->
+        <div class="fshell__topbar">
+          <button class="fshell__close" id="fsClose" aria-label="Close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+          <img
+            id="fsAvatar"
+            src=""
+            class="rounded-circle"
+            width="32"
+            height="32"
+            alt=""
+          />
+          <div id="fsUser" class="fw-semibold"></div>
+          <div class="ms-auto d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-light" id="fsFollow">
+              Follow
+            </button>
+            <button class="btn btn-sm btn-outline-light">
+              <i class="bi bi-three-dots"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right actions -->
+        <div class="fshell__actions text-center">
+          <div>
+            <button class="action" id="fsLike" aria-label="Like">
+              <i class="bi bi-heart"></i>
+            </button>
+            <div class="count" id="likeCount">1.0k</div>
+          </div>
+          <!-- <div>
+          <button class="action" id="fsComment" aria-label="Comment"><i class="bi bi-chat"></i></button>
+          <div class="count">34</div>
+        </div> -->
+          <div>
+            <button class="action" id="fsShare" aria-label="Share">
+              <i class="bi bi-send"></i>
+            </button>
+            <div class="count">Share</div>
+          </div>
+          <!-- <div>
+          <button class="action" id="fsMute" aria-label="Mute/Unmute"><i class="bi bi-volume-mute"></i></button>
+        </div> -->
+        </div>
+
+        <!-- Bottom info -->
+        <div class="fshell__bottom">
+          <div class="caption">
+            <div class="fw-semibold" id="fsUser2">user</div>
+            <div id="fsCaption" class="text-body-secondary">Caption</div>
+            <!-- <form class="d-flex gap-2 mt-2" id="commentForm">
+            <input class="form-control form-control-sm" placeholder="Add a comment…">
+            <button class="btn btn-sm btn-primary">Post</button>
+          </form> -->
+          </div>
+          <div class="progress-ghost mt-2"><i id="fsProgress"></i></div>
+        </div>
+
+        <!-- Quiz Overlay -->
+        <div class="quiz-shell" id="quizShell" hidden>
+          <div class="quiz-card p-3">
+            <div class="d-flex align-items-start gap-3">
+              <div class="flex-grow-1">
+                <div class="quiz-title mb-2" id="quizQuestion">
+                  Question goes here
+                </div>
+                <div id="quizOptions" class="d-flex flex-wrap gap-2"></div>
+                <div class="quiz-feedback small mt-2" id="quizFeedback"></div>
+              </div>
+              <!-- <div class="text-end">
+              <button class="btn btn-sm btn-outline-light" id="quizSkip">Skip</button>
+            </div> -->
+            </div>
+          </div>
+        </div>
+        <!-- /Quiz Overlay -->
+      </div>
+    </section>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      /* ===== Dynamic VH fix (mobile safe fullscreen) ===== */
+      function setVhUnit() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty("--vh", vh + "px");
+      }
+      setVhUnit();
+      window.addEventListener("resize", setVhUnit);
+      window.addEventListener("orientationchange", setVhUnit);
+
+      const fshell = document.getElementById("fshell");
+      const fsVideo = document.getElementById("fsVideo");
+      const fsClose = document.getElementById("fsClose");
+      const fsUser = document.getElementById("fsUser");
+      const fsUser2 = document.getElementById("fsUser2");
+      const fsCaption = document.getElementById("fsCaption");
+      const fsAvatar = document.getElementById("fsAvatar");
+      const fsMuteBtn = document.getElementById("fsMute");
+      const fsLikeBtn = document.getElementById("fsLike");
+      const likeCountEl = document.getElementById("likeCount");
+      const fsProgress = document.getElementById("fsProgress");
+      const dblLike = document.getElementById("dblLike");
+
+      // Quiz elements
+      const quizShell = document.getElementById("quizShell");
+      const quizQ = document.getElementById("quizQuestion");
+      const quizOptions = document.getElementById("quizOptions");
+      const quizFeedback = document.getElementById("quizFeedback");
+      const quizSkipBtn = document.getElementById("quizSkip");
+
+      // Default questions if a video doesn't provide data-questions
+      const DEFAULT_QUESTIONS = [
+        {
+          id: "q1",
+          time: 3,
+          type: "single",
+          text: "What is the chemical formula for water?",
+          options: ["h20", "02", "c02","NaCl"],
+          correct: 0,
+        },
+        {
+          id: "q2",
+          time: 8,
+          type: "poll",
+          text: "Do you want more content like this?",
+          options: ["Yes", "Not now"],
+        },
+      ];
+
+      let lastTap = 0;
+      let liked = false;
+      let savedScrollY = 0;
+
+      // Quiz state
+      let currentQuestions = [];
+      let askedSet = new Set();
+      let nextIdx = 0;
+
+      function parseQuestionsFrom(btn) {
+        try {
+          if (btn && btn.dataset.questions)
+            return JSON.parse(btn.dataset.questions);
+        } catch (e) {
+          /* ignore parse errors */
+        }
+        return DEFAULT_QUESTIONS;
+      }
+
+      function resetQuizState() {
+        askedSet.clear();
+        nextIdx = 0;
+        hideQuiz();
+      }
+
+      function showQuiz(q) {
+        quizQ.textContent = q.text || "";
+        quizOptions.innerHTML = "";
+        (q.options || []).forEach((label, i) => {
+          const b = document.createElement("button");
+          b.className = "btn btn-sm btn-light";
+          b.textContent = label;
+          b.addEventListener("click", () => handleAnswer(q, i));
+          quizOptions.appendChild(b);
+        });
+        quizFeedback.textContent = "";
+        quizFeedback.className = "quiz-feedback small mt-2";
+        quizShell.hidden = false;
+        fsVideo.pause();
+      }
+
+      function hideQuiz() {
+        quizShell.hidden = true;
+      }
+
+      function handleAnswer(q, chosenIdx) {
+        askedSet.add(q.id);
+        let resumeDelay = 800;
+
+        if (q.type === "single" && Number.isInteger(q.correct)) {
+          if (chosenIdx === q.correct) {
+            quizFeedback.textContent = "Correct!";
+            quizFeedback.classList.add("ok");
+            quizFeedback.classList.remove("err");
+          } else {
+            quizFeedback.textContent = "Not quite!";
+            quizFeedback.classList.add("err");
+            quizFeedback.classList.remove("ok");
+          }
+        } else {
+          quizFeedback.textContent = "Thanks for voting!";
+          quizFeedback.classList.remove("err");
+          quizFeedback.classList.add("ok");
+        }
+
+        setTimeout(() => {
+          hideQuiz();
+          fsVideo.play().catch(() => {});
+        }, resumeDelay);
+      }
+
+      // quizSkipBtn.addEventListener('click', () => {
+      //   const q = currentQuestions[nextIdx] || null;
+      //   if (q) askedSet.add(q.id);
+      //   hideQuiz();
+      //   fsVideo.play().catch(()=>{});
+      // });
+
+      function checkQuizTick() {
+        if (!currentQuestions.length || nextIdx >= currentQuestions.length)
+          return;
+        const q = currentQuestions[nextIdx];
+        if (askedSet.has(q.id)) {
+          nextIdx++;
+          return;
+        }
+        if (fsVideo.currentTime >= (q.time || 0)) {
+          showQuiz(q);
+          nextIdx++;
+        }
+      }
+
+      function openFS({
+        src,
+        user,
+        caption,
+        avatar,
+        startAt = 0,
+        btnEl = null,
+      }) {
+        // Lock scroll
+        savedScrollY = window.scrollY;
+        document.body.style.top = `-${savedScrollY}px`;
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
+
+        fshell.classList.add("active");
+        fshell.setAttribute("aria-hidden", "false");
+
+        // Populate UI
+        fsUser.textContent = user;
+        fsUser2.textContent = user;
+        fsCaption.textContent = caption || "";
+        fsAvatar.src = avatar || "";
+
+        // Prepare video
+        fsVideo.src = src;
+        fsVideo.currentTime = startAt;
+        fsVideo.muted = false;
+        fsVideo.autoplay = true;
+        fsVideo.playsInline = true;
+        fsVideo.play().catch(() => {});
+
+        // Reset likes
+        liked = false;
+        likeCountEl.textContent = "1.0k";
+        fsLikeBtn.querySelector("i").className = "bi bi-heart";
+
+        // Prepare questions for this video
+        currentQuestions = parseQuestionsFrom(btnEl);
+        currentQuestions.sort((a, b) => (a.time || 0) - (b.time || 0));
+        resetQuizState();
+
+        updateProgress();
+      }
+
+      function closeFS() {
+        // Unlock scroll
+        document.body.style.position = "";
+        document.body.style.top = "";
+        window.scrollTo(0, savedScrollY);
+
+        fshell.classList.remove("active");
+        fshell.setAttribute("aria-hidden", "true");
+        fsVideo.pause();
+        fsVideo.removeAttribute("src");
+        fsVideo.load();
+
+        // Reset quiz overlay
+        resetQuizState();
+      }
+
+      // Open handlers
+      document.querySelectorAll(".open-fs").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const src = btn.dataset.src;
+          const user = btn.dataset.user;
+          const caption = btn.dataset.caption;
+          const avatar = btn.dataset.avatar;
+
+          const thumbVideo = btn.querySelector("video");
+          const startAt = thumbVideo ? thumbVideo.currentTime : 0;
+
+          openFS({ src, user, caption, avatar, startAt, btnEl: btn });
+        });
+      });
+
+      // Close actions
+      fsClose.addEventListener("click", closeFS);
+      fshell.addEventListener("click", (e) => {
+        const wrap = document.getElementById("fsWrap");
+        if (!wrap.contains(e.target) || e.target === fshell) closeFS();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && fshell.classList.contains("active"))
+          closeFS();
+      });
+
+      // Mute toggle
+      // fsMuteBtn.addEventListener('click', () => {
+      //   fsVideo.muted = !fsVideo.muted;
+      //   fsMuteBtn.querySelector('i').className = fsVideo.muted ? 'bi bi-volume-mute' : 'bi bi-volume-up';
+      // });
+
+      // Like toggle (button)
+      fsLikeBtn.addEventListener("click", () => {
+        liked = !liked;
+        fsLikeBtn.querySelector("i").className = liked
+          ? "bi bi-heart-fill"
+          : "bi bi-heart";
+        fsLikeBtn.style.background = liked
+          ? "rgba(255,46,99,.6)"
+          : "rgba(0,0,0,.45)";
+        const n =
+          parseInt((likeCountEl.textContent || "").replace(/\D/g, ""), 10) ||
+          1000;
+        likeCountEl.textContent = (
+          liked ? n + 1 : Math.max(0, n - 1)
+        ).toLocaleString();
+      });
+
+      // Double‑tap to like with heart pop
+      fsVideo.addEventListener("click", () => {
+        const now = Date.now();
+        if (now - lastTap < 300) {
+          liked = true;
+          fsLikeBtn.querySelector("i").className = "bi bi-heart-fill";
+          fsLikeBtn.style.background = "rgba(255,46,99,.6)";
+          dblLike.classList.add("show");
+          setTimeout(() => dblLike.classList.remove("show"), 400);
+        }
+        lastTap = now;
+      });
+
+      // Progress bar loop
+      function updateProgress() {
+        if (!fshell.classList.contains("active")) return;
+        const pct = fsVideo.duration
+          ? (fsVideo.currentTime / fsVideo.duration) * 100
+          : 0;
+        fsProgress.style.width = pct + "%";
+        requestAnimationFrame(updateProgress);
+      }
+      fsVideo.addEventListener("loadedmetadata", updateProgress);
+      fsVideo.addEventListener("timeupdate", updateProgress);
+      fsVideo.addEventListener("timeupdate", checkQuizTick);
+
+      // Prevent empty comment submit
+      // document.getElementById('commentForm').addEventListener('submit', (e)=>{
+      //   const input = e.currentTarget.querySelector('input');
+      //   if (!input.value.trim()) e.preventDefault();
+      // });
+    </script>
+  </body>
+</html>
