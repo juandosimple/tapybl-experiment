@@ -23,7 +23,7 @@
     <!-- Nav -->
     <nav class="navbar navbar-dark border-bottom border-dark sticky-top">
       <div class="container feed-wrapper">
-        <a class="navbar-brand fw-bold" href="#">MicroTapybl</a>
+        <a class="navbar-brand fw-bold" href="#">TapyblReels</a>
         <div class="d-none d-md-block" style="max-width: 340px; width: 100%">
           <input
             class="form-control form-control-sm bg-dark-subtle border-0"
@@ -128,13 +128,13 @@
 
             <div class="px-3 pt-2 pb-3">
               <div>Did you know? – Science Fact Friday</div>
-              <div class="topic-label">
+              <!-- <div class="topic-label">
                 <img src="../assets/img/choice_branch.svg" alt="" />Choice
-              </div>
+              </div> -->
               <div>
-                <small class="text-body-secondary"
+                <!-- <small class="text-body-secondary"
                   >2 hours ago • 1,024 likes</small
-                >
+                > -->
               </div>
             </div>
           </article>
@@ -190,13 +190,13 @@
             <div class="px-3 pt-2 pb-3">
               <div>
                 <div>Choose a math topic to dive into</div>
-                <div class="topic-label">
+                <!-- <div class="topic-label">
                   <img
                     src="../assets/img/challenge_branch.svg"
                     alt=""
                   />Challenge
-                </div>
-                <small class="text-body-secondary">Yesterday • 542 likes</small>
+                </div> -->
+                <!-- <small class="text-body-secondary">Yesterday • 542 likes</small> -->
               </div>
             </div>
           </article>
@@ -703,7 +703,7 @@
               </div>
             </div>
 
-            <div class="mt-4 text-body-secondary small">© 2025 MicroTapybl</div>
+            <div class="mt-4 text-body-secondary small">© 2025 TapyblReels</div>
           </div>
         </aside>
       </div>
@@ -739,30 +739,13 @@
           </a>
           <div id="fsUser" class="fw-semibold"></div>
           <div class="ms-auto d-flex align-items-center gap-2">
-            <button class="btn btn-sm btn-outline-light" id="fsFollow">
-              Follow
-            </button>
             <button class="btn btn-sm btn-outline-light">
               <i class="bi bi-three-dots"></i>
             </button>
           </div>
         </div>
 
-        <!-- Right actions -->
-        <div class="fshell__actions text-center">
-          <div>
-            <button class="action" id="fsLike" aria-label="Like">
-              <i class="bi bi-heart"></i>
-            </button>
-            <div class="count" id="likeCount">1.0k</div>
-          </div>
-          <div>
-            <button class="action" id="fsShare" aria-label="Share">
-              <i class="bi bi-send"></i>
-            </button>
-            <div class="count">Share</div>
-          </div>
-        </div>
+
 
         <!-- Bottom info -->
         <div class="fshell__bottom">
@@ -995,9 +978,9 @@
         fsVideo.play().catch(() => {});
 
         // Reset likes
-        liked = false;
-        likeCountEl.textContent = "1.0k";
-        fsLikeBtn.querySelector("i").className = "bi bi-heart";
+        // liked = false;
+        // likeCountEl.textContent = "1.0k";
+        // fsLikeBtn.querySelector("i").className = "bi bi-heart";
 
         // Prepare questions for this video
         currentQuestions = parseQuestionsFrom(btnEl);
@@ -1050,34 +1033,34 @@
       });
 
       // Like toggle (button)
-      fsLikeBtn.addEventListener("click", () => {
-        liked = !liked;
-        fsLikeBtn.querySelector("i").className = liked
-          ? "bi bi-heart-fill"
-          : "bi bi-heart";
-        fsLikeBtn.style.background = liked
-          ? "rgba(255,46,99,.6)"
-          : "rgba(0,0,0,.45)";
-        const n =
-          parseInt((likeCountEl.textContent || "").replace(/\D/g, ""), 10) ||
-          1000;
-        likeCountEl.textContent = (
-          liked ? n + 1 : Math.max(0, n - 1)
-        ).toLocaleString();
-      });
+      // fsLikeBtn.addEventListener("click", () => {
+      //   liked = !liked;
+      //   fsLikeBtn.querySelector("i").className = liked
+      //     ? "bi bi-heart-fill"
+      //     : "bi bi-heart";
+      //   fsLikeBtn.style.background = liked
+      //     ? "rgba(255,46,99,.6)"
+      //     : "rgba(0,0,0,.45)";
+      //   const n =
+      //     parseInt((likeCountEl.textContent || "").replace(/\D/g, ""), 10) ||
+      //     1000;
+      //   likeCountEl.textContent = (
+      //     liked ? n + 1 : Math.max(0, n - 1)
+      //   ).toLocaleString();
+      // });
 
       // Double‑tap to like with heart pop
-      fsVideo.addEventListener("click", () => {
-        const now = Date.now();
-        if (now - lastTap < 300) {
-          liked = true;
-          fsLikeBtn.querySelector("i").className = "bi bi-heart-fill";
-          fsLikeBtn.style.background = "rgba(255,46,99,.6)";
-          dblLike.classList.add("show");
-          setTimeout(() => dblLike.classList.remove("show"), 400);
-        }
-        lastTap = now;
-      });
+      // fsVideo.addEventListener("click", () => {
+      //   const now = Date.now();
+      //   if (now - lastTap < 300) {
+      //     liked = true;
+      //     fsLikeBtn.querySelector("i").className = "bi bi-heart-fill";
+      //     fsLikeBtn.style.background = "rgba(255,46,99,.6)";
+      //     dblLike.classList.add("show");
+      //     setTimeout(() => dblLike.classList.remove("show"), 400);
+      //   }
+      //   lastTap = now;
+      // });
 
       // Progress bar loop
       function updateProgress() {
