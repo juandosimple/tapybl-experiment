@@ -404,3 +404,70 @@ body {
   margin: 5px 0;
 }
 /* instagram header */
+
+/* ANIMATION */
+/* --- Swipe vertical con rebote (mueve TODO el contenido) --- */
+.fshell {
+  position: fixed; inset: 0; /* ya lo tenés, lo explicitamos */
+}
+.fshell__video-wrap {
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+/* Capa temporal entrante (clon liviano: video + textos) */
+.fswipe-pane {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr auto; /* video al fondo + caption abajo */
+  z-index: 5;
+  pointer-events: none; /* no roba eventos durante la animación */
+}
+.fswipe-pane__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fswipe-pane__topbar,
+.fswipe-pane__bottom {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  padding: 12px 14px;
+}
+.fswipe-pane__topbar {
+  display: flex; align-items: center; gap: 8px;
+}
+.fswipe-pane__bottom {
+  margin-top: auto;
+}
+
+/* Estados de entrada/salida */
+.fswipe-anim { transition: transform 420ms cubic-bezier(.22,.8,.26,1), opacity 420ms ease; }
+.fswipe-enter-from-bottom { transform: translateY(100%); opacity: .9; }
+.fswipe-enter-from-top    { transform: translateY(-100%); opacity: .9; }
+.fswipe-exit-to-top       { transform: translateY(-100%); opacity: .9; }
+.fswipe-exit-to-bottom    { transform: translateY(100%);  opacity: .9; }
+
+/* Rebote sutil al entrar */
+@keyframes swipeBounceUp {
+  0%   { transform: translateY(100%); }
+  82%  { transform: translateY(0%); }
+  92%  { transform: translateY(-1.8%); }
+  100% { transform: translateY(0%); }
+}
+@keyframes swipeBounceDown {
+  0%   { transform: translateY(-100%); }
+  82%  { transform: translateY(0%); }
+  92%  { transform: translateY(1.8%); }
+  100% { transform: translateY(0%); }
+}
+
+/* Aplica rebote sólo al pane entrante (sutil) */
+.fswipe-bounce-up   { animation: swipeBounceUp 440ms cubic-bezier(.22,.8,.26,1); }
+.fswipe-bounce-down { animation: swipeBounceDown 440ms cubic-bezier(.22,.8,.26,1); }
+/* ANIMATION */

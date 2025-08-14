@@ -745,8 +745,6 @@
           </div>
         </div>
 
-
-
         <!-- Bottom info -->
         <div class="fshell__bottom">
           <div class="caption">
@@ -1081,11 +1079,8 @@
 
         if (idx >= 0 && idx < allBtns.length - 1) {
           const nextBtn = allBtns[idx + 1];
-          // Reutilizamos tu misma lógica de apertura:
-          const { src, user, caption, avatar } = nextBtn.dataset;
-          openFS({ src, user, caption, avatar, startAt: 0, btnEl: nextBtn });
+          transitionToBtn(nextBtn, +1); // swipe up con rebote
         } else {
-          // No hay más videos: cerramos el fullscreen
           closeFS();
         }
       });
@@ -1121,6 +1116,130 @@
         { passive: false }
       );
 
+      /* ===== Swipe helper con video temporal ===== */
+      let isTransitioning = false;
+
+      /* Clona "liviano": arma un pane con video + textos (user/caption) del botón destino */
+      function buildSwipePane(targetBtn) {
+        const pane = document.createElement("div");
+        pane.className = "fswipe-pane fswipe-anim";
+
+        // VIDEO
+        const v = document.createElement("video");
+        v.className = "fswipe-pane__video";
+        v.setAttribute("playsinline", "");
+        v.autoplay = true;
+        v.muted = false; // si querés “crossfade” silencioso poné true
+        v.src = targetBtn.dataset.src;
+        v.currentTime = 0;
+
+        // TOP BAR (minimal)
+        const top = document.createElement("div");
+        top.className = "fswipe-pane__topbar";
+        const topUser = document.createElement("div");
+        topUser.className = "fw-semibold";
+        topUser.textContent = targetBtn.dataset.user || "";
+        top.appendChild(topUser);
+
+        // BOTTOM (caption)
+        const bottom = document.createElement("div");
+        bottom.className = "fswipe-pane__bottom";
+        const cap1 = document.createElement("div");
+        cap1.className = "fw-semibold";
+        cap1.textContent = targetBtn.dataset.user || "";
+        const cap2 = document.createElement("div");
+        cap2.className = "text-body-secondary";
+        cap2.textContent = targetBtn.dataset.caption || "";
+        bottom.appendChild(cap1);
+        bottom.appendChild(cap2);
+
+        pane.appendChild(v);
+        pane.appendChild(top);
+        pane.appendChild(bottom);
+
+        return { pane, video: v };
+      }
+
+      function setFsUiFromBtn(btn) {
+        // Actualizá los textos/imagen reales del FS (tu UI original)
+        const { user, caption, avatar } = btn.dataset;
+        fsUser.textContent = user || "";
+        fsUser2.textContent = user || "";
+        fsCaption.textContent = caption || "";
+        fsAvatar.src = avatar || "";
+
+        // Preguntas
+        currentQuestions = parseQuestionsFrom(btn).sort(
+          (a, b) => (a.time || 0) - (b.time || 0)
+        );
+        resetQuizState();
+      }
+
+      /** dir: +1 siguiente (swipe up), -1 anterior (swipe down) */
+      function transitionToBtn(targetBtn, dir) {
+        if (!targetBtn || isTransitioning) return;
+        isTransitioning = true;
+
+        const wrap = document.getElementById("fsWrap");
+
+        // Construimos pane entrante
+        const { pane, video: incomingVid } = buildSwipePane(targetBtn);
+        pane.classList.add(
+          dir > 0 ? "fswipe-enter-from-bottom" : "fswipe-enter-from-top"
+        );
+
+        // Estado base del contenedor actual (sale)
+        wrap.classList.add("fswipe-anim");
+        wrap.style.willChange = "transform";
+
+        // Insertar pane por encima
+        fshell.appendChild(pane); // dentro del overlay, arriba de todo
+
+        // Forzar reflow para aplicar animaciones
+        void pane.offsetHeight;
+
+        // Disparar animaciones: entra pane con rebote, sale wrap
+        pane.classList.add(dir > 0 ? "fswipe-bounce-up" : "fswipe-bounce-down");
+        wrap.classList.add(
+          dir > 0 ? "fswipe-exit-to-top" : "fswipe-exit-to-bottom"
+        );
+
+        // Al terminar la animación del WRAP saliente:
+        const onWrapEnd = () => {
+          wrap.removeEventListener("transitionend", onWrapEnd);
+
+          // 1) Switchear el video REAL a la nueva src y tiempo actual del pane
+          const t = incomingVid.currentTime || 0;
+          fsVideo.pause();
+          fsVideo.src = targetBtn.dataset.src;
+          fsVideo.currentTime = t;
+          fsVideo.muted = false;
+          fsVideo.play().catch(() => {});
+
+          // 2) Actualizar UI real + preguntas
+          currentBtnEl = targetBtn;
+          setFsUiFromBtn(targetBtn);
+
+          // 3) Resetear clases/estilos
+          wrap.classList.remove(
+            "fswipe-anim",
+            "fswipe-exit-to-top",
+            "fswipe-exit-to-bottom"
+          );
+          wrap.style.transform = "";
+          wrap.style.opacity = "";
+          wrap.style.willChange = "";
+
+          // 4) Remover pane temporal
+          incomingVid.pause();
+          pane.remove();
+
+          isTransitioning = false;
+        };
+        wrap.addEventListener("transitionend", onWrapEnd, { once: true });
+      }
+
+      /* Sobrescribimos tu goRelativeVideo para usar la animación nueva */
       function goRelativeVideo(step) {
         const allBtns = Array.from(document.querySelectorAll(".open-fs"));
         const idx = allBtns.indexOf(currentBtnEl);
@@ -1128,11 +1247,7 @@
 
         if (nextIdx >= 0 && nextIdx < allBtns.length) {
           const nextBtn = allBtns[nextIdx];
-          const { src, user, caption, avatar } = nextBtn.dataset;
-          openFS({ src, user, caption, avatar, startAt: 0, btnEl: nextBtn });
-        } else {
-          // Optional: close if out of bounds
-          // closeFS();
+          transitionToBtn(nextBtn, step > 0 ? +1 : -1);
         }
       }
 
