@@ -207,7 +207,7 @@ body {
 .quiz-card {
   pointer-events: auto;
   width: min(720px, 92vw);
-  background: rgba(0, 0, 0, 0.7);
+  background: #210933;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0.75rem;
   backdrop-filter: blur(6px);
@@ -294,7 +294,7 @@ body {
 .quiz-card {
   pointer-events: auto;
   width: min(720px, 92vw);
-  background: rgba(0, 0, 0, 0.7);
+  background: #210933;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0.75rem;
   backdrop-filter: blur(6px);

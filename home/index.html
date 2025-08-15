@@ -164,7 +164,7 @@
               data-avatar="../assets/img/course_one_logo.png"
               data-questions='[{
               "id":"q2",
-              "time":51,
+              "time":50.5,
               "type":"single",
               "text":"Which of the following is NOT a primary goal of environmental laws?",
               "options":[
@@ -220,7 +220,7 @@
               data-avatar="../assets/img/course_one_logo.png"
               data-questions='[{
                 "id":"q3",
-                "time":45,
+                "time":45.2,
                 "type":"single",
                 "text":"What is a key reason why international cooperation is essential for addressing environmental challenges?",
                 "options":[
@@ -273,7 +273,7 @@
               data-avatar="../assets/img/course_one_logo.png"
               data-questions='[{
                 "id":"q4",
-                "time":49,
+                "time":49.4,
                 "type":"single",
                 "text":"What is the most effective approach to achieving a sustainable future?",
                 "options":[
@@ -388,13 +388,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       /* ===== Dynamic VH fix (mobile safe fullscreen) ===== */
-      function setVhUnit() {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty("--vh", vh + "px");
-      }
-      setVhUnit();
-      window.addEventListener("resize", setVhUnit);
-      window.addEventListener("orientationchange", setVhUnit);
+      (function () {
+        function setVhUnit() {
+          const vh = window.innerHeight * 0.01;
+          document.documentElement.style.setProperty("--vh", vh + "px");
+        }
+        setVhUnit();
+        window.addEventListener("resize", setVhUnit);
+        window.addEventListener("orientationchange", setVhUnit);
+      })();
 
       /* ===== Elements ===== */
       const fshell = document.getElementById("fshell");
@@ -471,27 +473,49 @@
       /* ===== State ===== */
       let savedScrollY = 0;
       let currentBtnEl = null;
-
       let currentQuestions = [];
       let askedSet = new Set();
       let nextIdx = 0;
 
-      /* ===== Quiz helpers ===== */
+      /* ===== Helpers ===== */
+      function getCorrectIndex(q) {
+        const len = q.options?.length ?? 0;
+        const c = q.correct;
+        if (Number.isInteger(c)) {
+          if (c >= 0 && c < len) return c; // 0-based
+          if (c >= 1 && c <= len) return c - 1; // 1-based → 0-based
+        }
+        return -1;
+      }
+
       function parseQuestionsFrom(btn) {
         try {
-          if (btn && btn.dataset.questions)
+          if (btn && btn.dataset.questions) {
             return JSON.parse(btn.dataset.questions);
+          }
         } catch (e) {}
         return DEFAULT_QUESTIONS;
       }
+
       function resetQuizState() {
         askedSet.clear();
         nextIdx = 0;
         hideQuiz();
       }
+
       function showQuiz(q) {
+        if (!quizShell || !quizOptions || !quizFeedback || !quizQ) return;
+
+        // limpiar título y feedback previos
+        const oldTitle =
+          quizOptions.parentNode.querySelector(".quiz-result-title");
+        if (oldTitle) oldTitle.remove();
+        quizFeedback.textContent = "";
+        quizFeedback.className = "quiz-feedback small mt-2";
+
         quizQ.textContent = q.text || "";
         quizOptions.innerHTML = "";
+
         if (q.type === "icons") {
           quizOptions.className = "d-flex flex-wrap gap-2 icon-grid";
           (q.options || []).forEach((opt, i) => {
@@ -518,71 +542,89 @@
             quizOptions.appendChild(b);
           });
         }
-        quizFeedback.textContent = "";
-        quizFeedback.className = "quiz-feedback small mt-2";
+
         quizShell.hidden = false;
-        fsVideo.pause();
+        fsVideo?.pause();
       }
+
       function hideQuiz() {
+        if (!quizShell || !quizOptions) return;
         quizShell.hidden = true;
+        const oldTitle =
+          quizOptions.parentNode.querySelector(".quiz-result-title");
+        if (oldTitle) oldTitle.remove();
       }
 
       function handleAnswer(q, chosenIdx) {
-  askedSet.add(q.id);
+        askedSet.add(q.id);
 
-  if (q.type === "branch" || q.type === "icons") {
-    const opt = q.options?.[chosenIdx];
-    hideQuiz();
-    if (opt && typeof opt === "object" && Number.isFinite(opt.seek)) {
-      fsVideo.currentTime = Math.max(0, opt.seek);
-    }
-    fsVideo.play().catch(() => {});
-    return;
-  }
+        if (q.type === "branch" || q.type === "icons") {
+          const opt = q.options?.[chosenIdx];
+          hideQuiz();
+          if (
+            fsVideo &&
+            opt &&
+            typeof opt === "object" &&
+            Number.isFinite(opt.seek)
+          ) {
+            fsVideo.currentTime = Math.max(0, opt.seek);
+          }
+          fsVideo?.play().catch(() => {});
+          return;
+        }
 
-  if (q.type === "single" && Number.isInteger(q.correct)) {
-    // Añadir título arriba
-    const title = document.createElement("h1");
-    title.textContent = "Correct answer!";
-    title.className = "w-100 text-center mb-3 text-success";
-    quizOptions.parentNode.insertBefore(title, quizOptions);
+        if (q.type === "single") {
+          const correctIdx = getCorrectIndex(q);
+          const isCorrect = chosenIdx === correctIdx;
 
-    // Resaltar botones
-    const buttons = quizOptions.querySelectorAll("button");
-    buttons.forEach((btn, idx) => {
-      if (idx === q.correct) {
-        btn.style.backgroundColor = "green";
-        btn.style.color = "white";
+          const title = document.createElement("h1");
+          title.textContent = isCorrect
+            ? "Correct answer!"
+            : "Incorrect answer";
+          title.className = `quiz-result-title w-100 text-center mb-3 ${
+            isCorrect ? "text-success" : "text-danger"
+          }`;
+          quizOptions.parentNode.insertBefore(title, quizOptions);
+
+          const buttons = quizOptions.querySelectorAll("button");
+          buttons.forEach((btn, idx) => {
+            if (idx === correctIdx) {
+              btn.style.backgroundColor = "green";
+              btn.style.color = "white";
+            }
+            if (idx === chosenIdx && !isCorrect) {
+              btn.style.backgroundColor = "red";
+              btn.style.color = "white";
+            }
+            btn.disabled = true;
+          });
+
+          fsVideo?.pause();
+          setTimeout(() => {
+            hideQuiz();
+            fsVideo?.play().catch(() => {});
+          }, 3000);
+          return;
+        }
+
+        // fallback encuesta simple
+        if (quizFeedback) {
+          quizFeedback.textContent = "Thanks for voting!";
+          quizFeedback.classList.add("ok");
+          quizFeedback.classList.remove("err");
+        }
+        setTimeout(() => {
+          hideQuiz();
+          fsVideo?.play().catch(() => {});
+        }, 3000);
       }
-      if (idx === chosenIdx && chosenIdx !== q.correct) {
-        btn.style.backgroundColor = "red";
-        btn.style.color = "white";
-      }
-      btn.disabled = true;
-    });
-
-    // Pausar el video mientras se ve la respuesta
-    fsVideo.pause();
-
-    // Reanudar después de 3 segundos
-    setTimeout(() => {
-      hideQuiz();
-      fsVideo.play().catch(() => {});
-    }, 3000);
-
-  } else {
-    quizFeedback.textContent = "Thanks for voting!";
-    quizFeedback.classList.add("ok");
-    quizFeedback.classList.remove("err");
-    setTimeout(() => {
-      hideQuiz();
-      fsVideo.play().catch(() => {});
-    }, 3000);
-  }
-}
 
       function checkQuizTick() {
-        if (!currentQuestions.length || nextIdx >= currentQuestions.length)
+        if (
+          !fsVideo ||
+          !currentQuestions.length ||
+          nextIdx >= currentQuestions.length
+        )
           return;
         const q = currentQuestions[nextIdx];
         if (askedSet.has(q.id)) {
@@ -595,13 +637,12 @@
         }
       }
 
-      /* ===== UI helpers ===== */
       function setFsUiFromBtn(btn) {
-        const { user, caption, avatar } = btn.dataset;
-        fsUser.textContent = user || "";
-        fsUser2.textContent = user || "";
-        fsCaption.textContent = caption || "";
-        fsAvatar.src = avatar || "";
+        const { user, caption, avatar } = btn.dataset || {};
+        if (fsUser) fsUser.textContent = user || "";
+        if (fsUser2) fsUser2.textContent = user || "";
+        if (fsCaption) fsCaption.textContent = caption || "";
+        if (fsAvatar) fsAvatar.src = avatar || "";
         currentQuestions = parseQuestionsFrom(btn).sort(
           (a, b) => (a.time || 0) - (b.time || 0)
         );
@@ -623,30 +664,39 @@
         document.body.style.width = "100%";
 
         currentBtnEl = btnEl;
-        fshell.classList.add("active");
-        fshell.setAttribute("aria-hidden", "false");
+        if (fshell) {
+          fshell.classList.add("active");
+          fshell.setAttribute("aria-hidden", "false");
+        }
 
         setFsUiFromBtn(btnEl || { dataset: { user, caption, avatar } });
 
-        fsVideo.src = src;
-        fsVideo.currentTime = startAt;
-        fsVideo.muted = false;
-        fsVideo.autoplay = true;
-        fsVideo.playsInline = true;
-        fsVideo.play().catch(() => {});
+        if (fsVideo) {
+          fsVideo.src = src;
+          fsVideo.currentTime = startAt;
+          fsVideo.muted = false;
+          fsVideo.autoplay = true;
+          fsVideo.playsInline = true;
+          fsVideo.play().catch(() => {});
+        }
 
         updateProgress();
       }
+
       function closeFS() {
         document.body.style.position = "";
         document.body.style.top = "";
         window.scrollTo(0, savedScrollY);
 
-        fshell.classList.remove("active");
-        fshell.setAttribute("aria-hidden", "true");
-        fsVideo.pause();
-        fsVideo.removeAttribute("src");
-        fsVideo.load();
+        if (fshell) {
+          fshell.classList.remove("active");
+          fshell.setAttribute("aria-hidden", "true");
+        }
+        if (fsVideo) {
+          fsVideo.pause();
+          fsVideo.removeAttribute("src");
+          fsVideo.load();
+        }
 
         resetQuizState();
       }
@@ -661,28 +711,35 @@
         });
       });
 
-      /* ===== Close actions ===== */
-      fsClose.addEventListener("click", closeFS);
-      fshell.addEventListener("click", (e) => {
-        if (!fsWrap.contains(e.target) || e.target === fshell) closeFS();
-      });
+      /* ===== Close actions (defensivas) ===== */
+      if (fsClose) {
+        fsClose.addEventListener("click", closeFS);
+      }
+      if (fshell && fsWrap) {
+        fshell.addEventListener("click", (e) => {
+          if (!fsWrap.contains(e.target) || e.target === fshell) closeFS();
+        });
+      }
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && fshell.classList.contains("active"))
+        if (e.key === "Escape" && fshell?.classList.contains("active"))
           closeFS();
       });
 
       /* ===== Progress bar ===== */
       function updateProgress() {
-        if (!fshell.classList.contains("active")) return;
+        if (!fshell?.classList.contains("active") || !fsVideo || !fsProgress)
+          return;
         const pct = fsVideo.duration
           ? (fsVideo.currentTime / fsVideo.duration) * 100
           : 0;
         fsProgress.style.width = pct + "%";
         requestAnimationFrame(updateProgress);
       }
-      fsVideo.addEventListener("loadedmetadata", updateProgress);
-      fsVideo.addEventListener("timeupdate", updateProgress);
-      fsVideo.addEventListener("timeupdate", checkQuizTick);
+      if (fsVideo) {
+        fsVideo.addEventListener("loadedmetadata", updateProgress);
+        fsVideo.addEventListener("timeupdate", updateProgress);
+        fsVideo.addEventListener("timeupdate", checkQuizTick);
+      }
 
       /* =========================================================================
    DRAG SIMPLE: seguimiento 1:1 + commit por transición CSS
@@ -710,6 +767,8 @@
 
       /* Commit animado: el wrap sale con transición CSS; en 'transitionend' swapeamos */
       function commitSwipe(dir) {
+        if (!fsWrap || !fsVideo) return;
+
         const targetBtn = neighborBtn(dir);
         if (!targetBtn) {
           // fuera de rango → volver a 0
@@ -761,7 +820,7 @@
 
       /* Drag handlers */
       function onPointerDown(e) {
-        if (!fshell.classList.contains("active")) return;
+        if (!fshell?.classList.contains("active") || !fsWrap) return;
         if (isCommitting) return;
         if (e.pointerType === "mouse" && e.button !== 0) return;
 
@@ -780,7 +839,7 @@
         e.preventDefault();
       }
       function onPointerMove(e) {
-        if (!dragging) return;
+        if (!dragging || !fsWrap) return;
 
         const now = performance.now();
         const curY = e.clientY;
@@ -804,7 +863,7 @@
         fsWrap.style.transform = `translateY(${dy}px)`;
       }
       function onPointerUp() {
-        if (!dragging) return;
+        if (!dragging || !fsWrap) return;
         dragging = false;
 
         const absDy = Math.abs(dy);
@@ -819,16 +878,23 @@
           fsWrap.style.transform = `translateY(0)`;
         }
       }
-      fshell.addEventListener("pointerdown", onPointerDown, { passive: false });
+
+      /* Bind de eventos de drag (defensivos) */
+      if (fshell) {
+        fshell.addEventListener("pointerdown", onPointerDown, {
+          passive: false,
+        });
+      }
       window.addEventListener("pointermove", onPointerMove, { passive: false });
       window.addEventListener("pointerup", onPointerUp, { passive: true });
       window.addEventListener("pointercancel", onPointerUp, { passive: true });
 
       /* ===== Auto-next al terminar ===== */
-      fsVideo.addEventListener("ended", () => {
-        // mismo gesto suave hacia el siguiente
-        commitSwipe(+1);
-      });
+      if (fsVideo) {
+        fsVideo.addEventListener("ended", () => {
+          commitSwipe(+1);
+        });
+      }
     </script>
   </body>
 </html>
