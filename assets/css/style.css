@@ -35,6 +35,11 @@ body {
   padding: 0;
   background: transparent;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  overflow: hidden;
 }
 .vthumb-btn::after {
   content: "";
@@ -49,12 +54,10 @@ body {
 }
 .play-badge {
   position: absolute;
-  bottom: 0.75rem;
-  left: 0.75rem;
   background: rgba(255, 255, 255, 0.55);
   border-radius: 999px;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.85rem;
+  padding: .5rem 1rem;
+  font-size: 2rem;
 }
 
 /* Fake fullscreen overlay */
@@ -234,10 +237,7 @@ body {
     padding: 0.75rem !important;
   }
   .play-badge {
-    font-size: 0.8rem;
-    padding: 0.2rem 0.45rem;
-    bottom: 0.5rem;
-    left: 0.5rem;
+    /* font-size: 0.8rem; */
   }
 
   /* Bigger tap targets in FS on phones */
@@ -269,7 +269,7 @@ body {
   }
   #quizOptions {
     display: grid !important;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 0.5rem !important;
   }
   #quizOptions .btn {
@@ -369,15 +369,20 @@ body {
   height: 64px;
   border-radius: 50%;
   padding: 2px;
-  background: linear-gradient(
+  border:2px solid #f89d41;
+  /* background: linear-gradient(
     45deg,
     #feda75,
     #fa7e1e,
     #d62976,
     #962fbf,
     #4f5bd5
-  );
+  ); */
   object-fit: cover;
+}
+
+.insta-story:last-child img {
+  border:2px solid transparent;
 }
 .insta-story span {
   margin-top: 4px;
@@ -393,15 +398,19 @@ body {
 
 .topic-label {
   border-radius: 5rem;
-  background: #d9f9e6;
   padding: 0.3rem 1rem;
-  display: flex;
+  display: inline-block;
   align-items: center;
   gap: 5px;
-  width: 130px;
   font-size: 0.7rem;
   text-transform: uppercase;
   margin: 5px 0;
+}
+.assessable{
+  background: #d9f9e6;
+}
+.non-assesable{
+  background: #d7f1ff;;
 }
 /* instagram header */
 
@@ -470,4 +479,55 @@ body {
 /* Aplica rebote sólo al pane entrante (sutil) */
 .fswipe-bounce-up   { animation: swipeBounceUp 440ms cubic-bezier(.22,.8,.26,1); }
 .fswipe-bounce-down { animation: swipeBounceDown 440ms cubic-bezier(.22,.8,.26,1); }
+/* Drag UX */
+.fshell--dragging {
+  cursor: grabbing;
+}
+.fshell--dragging * {
+  user-select: none !important;
+}
+.fswrap-snap {
+  transition: transform 280ms cubic-bezier(.22,.8,.26,1), opacity 280ms ease;
+}
+.fswrap-shadow {
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+/* Sensación app: sombras + parallax suave durante drag */
+.fswrap-shadow { box-shadow: 0 12px 38px rgba(0,0,0,.28); }
+.fshell--dragging { cursor: grabbing; }
+.fshell--dragging * { user-select: none !important; }
+
+/* Pane de preview (entra/sale con transform) */
+.fswipe-pane {
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  display: grid; grid-template-rows: 1fr auto;
+  will-change: transform, opacity;
+}
+.fswipe-pane__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* Hints de perf para el contenedor y el pane */
+.fshell__video-wrap,
+.fswipe-pane {
+  will-change: transform, opacity;
+  transform: translateZ(0); /* fuerza GPU */
+}
+
+/* Un poquito menos de opacidad al salir para que no “oscurezca” tanto */
+.fswipe-exit-to-top,
+.fswipe-exit-to-bottom {
+  opacity: .95;
+}
+
+/* Evita que el navegador "robe" el gesto vertical (scroll/pull-to-refresh) */
+#fshell { touch-action: none; }
+
+/* Transición única del contenedor (suave tipo app) */
+#fsWrap {
+  transition: transform 260ms cubic-bezier(.22,.8,.26,1);
+  will-change: transform;
+}
+
+/* Durante el drag desactivamos la transición para seguir el dedo 1:1 */
+#fsWrap.no-trans { transition: none !important; }
 /* ANIMATION */

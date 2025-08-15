@@ -37,7 +37,7 @@
             ></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link p-0" href="#"
+            <a class="nav-link p-0" href="../profile/"
               ><img
                 src="https://i.pravatar.cc/28?img=5"
                 class="rounded-circle"
@@ -53,28 +53,16 @@
     <!-- Bloque Stories -->
     <div class="insta-stories">
       <div class="insta-story">
-        <img src="../assets/img/course_four_logo.png" alt="Usuario 1" />
-        <span>TerraBio Research</span>
+        <img src="../assets/img/story-1.jpg" alt="Usuario 1" />
+        <!-- <span>Boundless Learning</span> -->
       </div>
       <div class="insta-story">
-        <img src="../assets/img/course_five_logo.png" alt="Usuario 2" />
-        <span>Quantum Learning Hub</span>
+        <img src="../assets/img/story-2.jpg" alt="Usuario 2" />
+        <!-- <span>Boundless Learning</span> -->
       </div>
       <div class="insta-story">
-        <img src="../assets/img/course_two_logo.png" alt="Usuario 3" />
-        <span>Summit Mathematics Center</span>
-      </div>
-      <div class="insta-story">
-        <img src="../assets/img/course_six_logo.png" alt="Usuario 4" />
-        <span>Atlas History Guild</span>
-      </div>
-      <div class="insta-story">
-        <img src="../assets/img/course_eleven_logo.png" alt="Usuario 5" />
-        <span>Gaia Environmental Studies</span>
-      </div>
-      <div class="insta-story">
-        <img src="../assets/img/course_nine_logo.png" alt="Usuario 6" />
-        <span>Orion Coding Camp</span>
+        <img src="../assets/img/story-3.jpg" alt="Usuario 3" />
+        <!-- <span>Boundless Learning</span> -->
       </div>
     </div>
 
@@ -97,12 +85,15 @@
               <div class="flex-grow-1">
                 <div class="fw-semibold" style="color: #000">
                   <a href="../channel/novamind-institute/"
-                    >NovaMind Institute</a
+                    >Importance of sustainability</a
                   >
                 </div>
-                <small class="text-body-secondary">Cambridge, England</small>
+                <small class="text-body-secondary">Law & Sustainability</small>
               </div>
-              <button class="btn btn-sm btn-link text-body-secondary">
+              <button
+                class="btn btn-sm btn-link text-body-secondary"
+                style="display: none"
+              >
                 <i class="bi bi-three-dots"></i>
               </button>
             </header>
@@ -110,27 +101,32 @@
             <button
               class="vthumb-btn open-fs"
               data-src="../assets/video/video1.mp4"
-              data-user="NovaMind Institute"
-              data-caption="Did you know? – Science Fact Friday"
+              data-user="Law & Sustainability"
+              data-caption="Importance of sustainability"
               data-avatar="../assets/img/course_one_logo.png"
-              data-questions='[
-                {"id":"q1a","time":4,"type":"single","text":"What is the chemical formula for water?","options":["H2O","O2","CO2","NaCl"],"correct":0},
-                {"id":"q2a","time":16,"type":"poll","text":"Want more science shorts?","options":["Yes","Maybe later"]}
-              ]'
+              data-questions='[{
+              "id":"q1",
+              "time":44,
+              "type":"single",
+              "text":"What is the primary consequence of ignoring sustainability?",
+              "options":[
+                "Increased economic growth.",
+                "Pollution, climate change, and deforestation.",
+                "A decrease in global population.",
+                "Improved air and water quality."
+              ],
+              "correct":1
+            }]'
             >
               <video class="vthumb" preload="metadata" muted playsinline loop>
                 <source src="../assets/video/video1.mp4" type="video/mp4" />
               </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
+              <span class="play-badge"><i class="bi bi-play-fill"></i></span>
             </button>
 
             <div class="px-3 pt-2 pb-3">
-              <div>Did you know? – Science Fact Friday</div>
-              <!-- <div class="topic-label">
-                <img src="../assets/img/choice_branch.svg" alt="" />Choice
-              </div> -->
+              <!-- <div>Did you know? – Science Fact Friday</div> -->
+              <div class="topic-label assessable">Assessable</div>
               <div>
                 <!-- <small class="text-body-secondary"
                   >2 hours ago • 1,024 likes</small
@@ -143,7 +139,7 @@
           <article class="vcard mt-4">
             <header class="d-flex align-items-center gap-2 p-3">
               <img
-                src="../assets/img/course_two_logo.png"
+                src="../assets/img/course_one_logo.png"
                 class="rounded-circle"
                 width="40"
                 height="40"
@@ -151,9 +147,9 @@
               />
               <div class="flex-grow-1">
                 <div class="fw-semibold" style="color: #000">
-                  Summit Mathematics Center
+                  Environmental Laws
                 </div>
-                <small class="text-body-secondary">Buenos Aires, AR</small>
+                <small class="text-body-secondary">Law & Sustainability</small>
               </div>
               <button class="btn btn-sm btn-link text-body-secondary">
                 <i class="bi bi-three-dots"></i>
@@ -163,40 +159,34 @@
             <button
               class="vthumb-btn open-fs"
               data-src="../assets/video/video2.mp4"
-              data-user="Summit Mathematics Center"
-              data-caption="Choose a math topic to dive into"
-              data-avatar="../assets/img/course_two_logo.png"
-              data-questions='[
-                {
-                  "id":"m2q1",
-                  "time":2,
-                  "type":"branch",
-                  "text":"What are you interested in?",
-                  "options":[
-                    { "label":"Option A: Algebra",  "seek":5 },
-                    { "label":"Option B: Geometry","seek":6 }
-                  ]
-                }
-              ]'
+              data-user="Law & Sustainability"
+              data-caption="Environmental Laws"
+              data-avatar="../assets/img/course_one_logo.png"
+              data-questions='[{
+              "id":"q2",
+              "time":51,
+              "type":"single",
+              "text":"Which of the following is NOT a primary goal of environmental laws?",
+              "options":[
+                "Limiting pollution from factories and cars.",
+                "Protecting forests from deforestation.",
+                "Promoting unsustainable practices in agriculture.",
+                "Encouraging the use of renewable energy."
+              ],
+              "correct":2
+            }]'
             >
               <video class="vthumb" preload="metadata" muted playsinline loop>
                 <source src="../assets/video/video2.mp4" type="video/mp4" />
               </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
+              <span class="play-badge"><i class="bi bi-play-fill"></i></span>
             </button>
 
             <div class="px-3 pt-2 pb-3">
               <div>
-                <div>Choose a math topic to dive into</div>
-                <!-- <div class="topic-label">
-                  <img
-                    src="../assets/img/challenge_branch.svg"
-                    alt=""
-                  />Challenge
-                </div> -->
-                <!-- <small class="text-body-secondary">Yesterday • 542 likes</small> -->
+                <!-- <div>Choose a math topic to dive into</div> -->
+                <div class="topic-label non-assesable">Non Assessable</div>
+                <!-- <small class="text-body-secondary">Law & Sustainabilityall> -->
               </div>
             </div>
           </article>
@@ -205,7 +195,7 @@
           <article class="vcard mt-4">
             <header class="d-flex align-items-center gap-2 p-3">
               <img
-                src="../assets/img/course_three_logo.png"
+                src="../assets/img/course_one_logo.png"
                 class="rounded-circle"
                 width="40"
                 height="40"
@@ -213,9 +203,9 @@
               />
               <div class="flex-grow-1">
                 <div class="fw-semibold" style="color: #000">
-                  Aurora Physics Lab
+                  Global Cooperation
                 </div>
-                <small class="text-body-secondary">Zurich, CH</small>
+                <small class="text-body-secondary">Law & Sustainability</small>
               </div>
               <button class="btn btn-sm btn-link text-body-secondary">
                 <i class="bi bi-three-dots"></i>
@@ -225,36 +215,32 @@
             <button
               class="vthumb-btn open-fs"
               data-src="../assets/video/video3.mp4"
-              data-user="Aurora Physics Lab"
-              data-caption="Wave–particle duality in 30s"
-              data-avatar="../assets/img/course_three_logo.png"
-              data-questions='[
-  {
-    "id":"p3icons",
-    "time":4,
-    "type":"icons",
-    "text":"Pick a deep‑dive:",
-    "options":[
-      { "label":"Energy",       "icon":"bi bi-lightning-charge", "seek":5  },
-      { "label":"Double-slit",  "icon":"bi bi-collection-play",  "seek":15 },
-      { "label":"Equations",    "icon":"bi bi-braces",           "seek":24 }
-    ]
-  }
-]'
+              data-user="Law & Sustainability"
+              data-caption="Global Cooperation"
+              data-avatar="../assets/img/course_one_logo.png"
+              data-questions='[{
+                "id":"q3",
+                "time":45,
+                "type":"single",
+                "text":"What is a key reason why international cooperation is essential for addressing environmental challenges?",
+                "options":[
+                  "It eliminates all disagreements between countries.",
+                  "It forces all countries to adopt the same environmental policies.",
+                  "It allows countries to share knowledge and resources, learning from each others experiences.",
+                  "It ensures that wealthier nations solely fund environmental initiatives in poorer nations."
+                ],
+                "correct":2
+              }]'
             >
               <video class="vthumb" preload="metadata" muted playsinline loop>
                 <source src="../assets/video/video3.mp4" type="video/mp4" />
               </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
+              <span class="play-badge"><i class="bi bi-play-fill"></i></span>
             </button>
 
             <div class="px-3 pt-2 pb-3">
-              <div>Wave–particle duality in 30s</div>
-              <div>
-                <small class="text-body-secondary">Today • 312 likes</small>
-              </div>
+              <!-- <div>Wave–particle duality in 30s</div> -->
+              <div class="topic-label non-assesable">Non Assessable</div>
             </div>
           </article>
 
@@ -262,7 +248,7 @@
           <article class="vcard mt-4">
             <header class="d-flex align-items-center gap-2 p-3">
               <img
-                src="../assets/img/course_four_logo.png"
+                src="../assets/img/course_one_logo.png"
                 class="rounded-circle"
                 width="40"
                 height="40"
@@ -270,9 +256,9 @@
               />
               <div class="flex-grow-1">
                 <div class="fw-semibold" style="color: #000">
-                  TerraBio Research
+                  Individual and Collective Action
                 </div>
-                <small class="text-body-secondary">Cali, CO</small>
+                <small class="text-body-secondary">Law & Sustainability</small>
               </div>
               <button class="btn btn-sm btn-link text-body-secondary">
                 <i class="bi bi-three-dots"></i>
@@ -282,408 +268,34 @@
             <button
               class="vthumb-btn open-fs"
               data-src="../assets/video/video4.mp4"
-              data-user="TerraBio Research"
-              data-caption="Photosynthesis — the 10‑second version 🌿"
-              data-avatar="../assets/img/course_four_logo.png"
-              data-questions='[
-      {"id":"b4q1","time":6,"type":"single","text":"Main pigment is…","options":["Chlorophyll","Carotene","Myoglobin"],"correct":0}
-    ]'
+              data-user="Law & Sustainability"
+              data-caption="Individual and Collective Action 🌿"
+              data-avatar="../assets/img/course_one_logo.png"
+              data-questions='[{
+                "id":"q4",
+                "time":49,
+                "type":"single",
+                "text":"What is the most effective approach to achieving a sustainable future?",
+                "options":[
+                  "Relying solely on governmental regulations and laws.",
+                  "Focusing on individual actions without community or government involvement.",
+                  "Collective action involving individuals, communities, and governments.",
+                  "Depending on corporations to self-regulate their environmental impact."
+                ],
+                "correct":2
+              }]'
             >
               <video class="vthumb" preload="metadata" muted playsinline loop>
                 <source src="../assets/video/video4.mp4" type="video/mp4" />
               </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
+              <span class="play-badge"><i class="bi bi-play-fill"></i></span>
             </button>
 
             <div class="px-3 pt-2 pb-3">
-              <div>Photosynthesis — the 10‑second version</div>
-              <div>
-                <small class="text-body-secondary">Today • 221 likes</small>
-              </div>
+              <!-- <div>Photosynthesis — the 10‑second version</div> -->
+              <div class="topic-label assessable">Assessable</div>
             </div>
           </article>
-
-          <!-- Video card 5 -->
-          <article class="vcard mt-4">
-            <header class="d-flex align-items-center gap-2 p-3">
-              <img
-                src="../assets/img/course_five_logo.png"
-                class="rounded-circle"
-                width="40"
-                height="40"
-                alt=""
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold" style="color: #000">
-                  Quantum Learning Hub
-                </div>
-                <small class="text-body-secondary">Tokyo, JP</small>
-              </div>
-              <button class="btn btn-sm btn-link text-body-secondary">
-                <i class="bi bi-three-dots"></i>
-              </button>
-            </header>
-
-            <button
-              class="vthumb-btn open-fs"
-              data-src="../assets/video/video5.mp4"
-              data-user="Quantum Learning Hub"
-              data-caption="Qubits vs bits — quick compare"
-              data-avatar="../assets/img/course_five_logo.png"
-            >
-              <video class="vthumb" preload="metadata" muted playsinline loop>
-                <source src="../assets/video/video5.mp4" type="video/mp4" />
-              </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
-            </button>
-
-            <div class="px-3 pt-2 pb-3">
-              <div>Qubits vs bits — quick compare</div>
-              <div>
-                <small class="text-body-secondary"
-                  >2 days ago • 889 likes</small
-                >
-              </div>
-            </div>
-          </article>
-
-          <!-- Video card 6 -->
-          <article class="vcard mt-4">
-            <header class="d-flex align-items-center gap-2 p-3">
-              <img
-                src="../assets/img/course_six_logo.png"
-                class="rounded-circle"
-                width="40"
-                height="40"
-                alt=""
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold" style="color: #000">
-                  Atlas History Guild
-                </div>
-                <small class="text-body-secondary">Athens, GR</small>
-              </div>
-              <button class="btn btn-sm btn-link text-body-secondary">
-                <i class="bi bi-three-dots"></i>
-              </button>
-            </header>
-
-            <button
-              class="vthumb-btn open-fs"
-              data-src="../assets/video/video6.mp4"
-              data-user="Atlas History Guild"
-              data-caption="What started the Peloponnesian War?"
-              data-avatar="../assets/img/course_six_logo.png"
-              data-questions='[
-      {"id":"h6q1","time":7,"type":"poll","text":"Want more ancient history shorts?","options":["Yes","No"]}
-    ]'
-            >
-              <video class="vthumb" preload="metadata" muted playsinline loop>
-                <source src="../assets/video/video6.mp4" type="video/mp4" />
-              </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
-            </button>
-
-            <div class="px-3 pt-2 pb-3">
-              <div>What started the Peloponnesian War?</div>
-              <div>
-                <small class="text-body-secondary"
-                  >3 days ago • 403 likes</small
-                >
-              </div>
-            </div>
-          </article>
-
-          <!-- Video card 7 -->
-          <article class="vcard mt-4">
-            <header class="d-flex align-items-center gap-2 p-3">
-              <img
-                src="../assets/img/course_seven_logo.png"
-                class="rounded-circle"
-                width="40"
-                height="40"
-                alt=""
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold" style="color: #000">
-                  Pixel Arts Academy
-                </div>
-                <small class="text-body-secondary">Los Angeles, US</small>
-              </div>
-              <button class="btn btn-sm btn-link text-body-secondary">
-                <i class="bi bi-three-dots"></i>
-              </button>
-            </header>
-
-            <button
-              class="vthumb-btn open-fs"
-              data-src="../assets/video/video7.mp4"
-              data-user="Pixel Arts Academy"
-              data-caption="Color theory in a minute 🎨"
-              data-avatar="../assets/img/course_seven_logo.png"
-            >
-              <video class="vthumb" preload="metadata" muted playsinline loop>
-                <source src="../assets/video/video7.mp4" type="video/mp4" />
-              </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
-            </button>
-
-            <div class="px-3 pt-2 pb-3">
-              <div>Color theory in a minute</div>
-              <div>
-                <small class="text-body-secondary"
-                  >1 week ago • 1,540 likes</small
-                >
-              </div>
-            </div>
-          </article>
-
-          <!-- Video card 8 -->
-          <article class="vcard mt-4">
-            <header class="d-flex align-items-center gap-2 p-3">
-              <img
-                src="../assets/img/course_eight_logo.png"
-                class="rounded-circle"
-                width="40"
-                height="40"
-                alt=""
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold" style="color: #000">
-                  Veritas Language School
-                </div>
-                <small class="text-body-secondary">Madrid, ES</small>
-              </div>
-              <button class="btn btn-sm btn-link text-body-secondary">
-                <i class="bi bi-three-dots"></i>
-              </button>
-            </header>
-
-            <button
-              class="vthumb-btn open-fs"
-              data-src="../assets/video/video8.mp4"
-              data-user="Veritas Language School"
-              data-caption="False friends: actually vs actualmente 😅"
-              data-avatar="../assets/img/course_eight_logo.png"
-              data-questions='[
-      {"id":"l8q1","time":5,"type":"single","text":"\"Actually\" in Spanish is…","options":["Actualmente","En realidad","Eventualmente"],"correct":1}
-    ]'
-            >
-              <video class="vthumb" preload="metadata" muted playsinline loop>
-                <source src="../assets/video/video8.mp4" type="video/mp4" />
-              </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
-            </button>
-
-            <div class="px-3 pt-2 pb-3">
-              <div>False friends: actually vs actualmente</div>
-              <div>
-                <small class="text-body-secondary"
-                  >5 days ago • 763 likes</small
-                >
-              </div>
-            </div>
-          </article>
-
-          <!-- Video card 9 -->
-          <article class="vcard mt-4">
-            <header class="d-flex align-items-center gap-2 p-3">
-              <img
-                src="../assets/img/course_nine_logo.png"
-                class="rounded-circle"
-                width="40"
-                height="40"
-                alt=""
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold" style="color: #000">
-                  Orion Coding Camp
-                </div>
-                <small class="text-body-secondary">Remote</small>
-              </div>
-              <button class="btn btn-sm btn-link text-body-secondary">
-                <i class="bi bi-three-dots"></i>
-              </button>
-            </header>
-
-            <button
-              class="vthumb-btn open-fs"
-              data-src="../assets/video/video9.mp4"
-              data-user="Orion Coding Camp"
-              data-caption="Flex vs Grid — when to use each"
-              data-avatar="../assets/img/course_nine_logo.png"
-            >
-              <video class="vthumb" preload="metadata" muted playsinline loop>
-                <source src="../assets/video/video9.mp4" type="video/mp4" />
-              </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
-            </button>
-
-            <div class="px-3 pt-2 pb-3">
-              <div>Flex vs Grid — when to use each</div>
-              <div>
-                <small class="text-body-secondary"
-                  >3 days ago • 1,003 likes</small
-                >
-              </div>
-            </div>
-          </article>
-
-          <!-- Video card 10 -->
-          <article class="vcard mt-4">
-            <header class="d-flex align-items-center gap-2 p-3">
-              <img
-                src="../assets/img/course_ten_logo.png"
-                class="rounded-circle"
-                width="40"
-                height="40"
-                alt=""
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold" style="color: #000">
-                  Horizon Finance Institute
-                </div>
-                <small class="text-body-secondary">New York, US</small>
-              </div>
-              <button class="btn btn-sm btn-link text-body-secondary">
-                <i class="bi bi-three-dots"></i>
-              </button>
-            </header>
-
-            <button
-              class="vthumb-btn open-fs"
-              data-src="../assets/video/video10.mp4"
-              data-user="Horizon Finance Institute"
-              data-caption="Compound interest in 20 seconds"
-              data-avatar="../assets/img/course_ten_logo.png"
-              data-questions='[
-      {"id":"f10q1","time":6,"type":"single","text":"Annual rate is 5%, principal grows…","options":["Linearly","Exponentially"],"correct":1}
-    ]'
-            >
-              <video class="vthumb" preload="metadata" muted playsinline loop>
-                <source src="../assets/video/video10.mp4" type="video/mp4" />
-              </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
-            </button>
-
-            <div class="px-3 pt-2 pb-3">
-              <div>Compound interest in 20 seconds</div>
-              <div>
-                <small class="text-body-secondary">Last week • 678 likes</small>
-              </div>
-            </div>
-          </article>
-
-          <!-- Video card 11 -->
-          <article class="vcard mt-4">
-            <header class="d-flex align-items-center gap-2 p-3">
-              <img
-                src="../assets/img/course_eleven_logo.png"
-                class="rounded-circle"
-                width="40"
-                height="40"
-                alt=""
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold" style="color: #000">
-                  Gaia Environmental Studies
-                </div>
-                <small class="text-body-secondary">Wellington, NZ</small>
-              </div>
-              <button class="btn btn-sm btn-link text-body-secondary">
-                <i class="bi bi-three-dots"></i>
-              </button>
-            </header>
-
-            <button
-              class="vthumb-btn open-fs"
-              data-src="../assets/video/video11.mp4"
-              data-user="Gaia Environmental Studies"
-              data-caption="Carbon footprint — quick reducers"
-              data-avatar="../assets/img/course_eleven_logo.png"
-            >
-              <video class="vthumb" preload="metadata" muted playsinline loop>
-                <source src="../assets/video/video11.mp4" type="video/mp4" />
-              </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
-            </button>
-
-            <div class="px-3 pt-2 pb-3">
-              <div>Carbon footprint — quick reducers</div>
-              <div>
-                <small class="text-body-secondary"
-                  >2 weeks ago • 245 likes</small
-                >
-              </div>
-            </div>
-          </article>
-
-          <!-- Video card 12 -->
-          <article class="vcard mt-4">
-            <header class="d-flex align-items-center gap-2 p-3">
-              <img
-                src="../assets/img/course_twelve_logo.png"
-                class="rounded-circle"
-                width="40"
-                height="40"
-                alt=""
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold" style="color: #000">
-                  Helix Chemistry Club
-                </div>
-                <small class="text-body-secondary">Paris, FR</small>
-              </div>
-              <button class="btn btn-sm btn-link text-body-secondary">
-                <i class="bi bi-three-dots"></i>
-              </button>
-            </header>
-
-            <button
-              class="vthumb-btn open-fs"
-              data-src="../assets/video/video12.mp4"
-              data-user="Helix Chemistry Club"
-              data-caption="pH scale — fast refresher"
-              data-avatar="../assets/img/course_twelve_logo.png"
-              data-questions='[
-      {"id":"c12q1","time":5,"type":"single","text":"Neutral pH is…","options":["5","7","9"],"correct":1}
-    ]'
-            >
-              <video class="vthumb" preload="metadata" muted playsinline loop>
-                <source src="../assets/video/video12.mp4" type="video/mp4" />
-              </video>
-              <span class="play-badge"
-                ><i class="bi bi-play-fill me-1"></i>Watch</span
-              >
-            </button>
-
-            <div class="px-3 pt-2 pb-3">
-              <div>pH scale — fast refresher</div>
-              <div>
-                <small class="text-body-secondary"
-                  >3 weeks ago • 198 likes</small
-                >
-              </div>
-            </div>
-          </article>
-
-          <!-- ... (rest of your cards unchanged) ... -->
         </div>
 
         <!-- Sidebar -->
@@ -699,7 +311,7 @@
               />
               <div class="flex-grow-1">
                 <div class="fw-semibold" style="color: #000">Learner</div>
-                <small class="text-body-secondary">Level 5</small>
+                <small class="text-body-secondary">Law & Sustainability</small>
               </div>
             </div>
 
@@ -784,54 +396,87 @@
       window.addEventListener("resize", setVhUnit);
       window.addEventListener("orientationchange", setVhUnit);
 
+      /* ===== Elements ===== */
       const fshell = document.getElementById("fshell");
+      const fsWrap = document.getElementById("fsWrap");
       const fsVideo = document.getElementById("fsVideo");
       const fsClose = document.getElementById("fsClose");
       const fsUser = document.getElementById("fsUser");
       const fsUser2 = document.getElementById("fsUser2");
       const fsCaption = document.getElementById("fsCaption");
       const fsAvatar = document.getElementById("fsAvatar");
-      const fsLikeBtn = document.getElementById("fsLike");
-      const likeCountEl = document.getElementById("likeCount");
       const fsProgress = document.getElementById("fsProgress");
-      const dblLike = document.getElementById("dblLike");
 
-      // Quiz elements
+      /* ===== Quiz ===== */
       const quizShell = document.getElementById("quizShell");
       const quizQ = document.getElementById("quizQuestion");
       const quizOptions = document.getElementById("quizOptions");
       const quizFeedback = document.getElementById("quizFeedback");
 
-      // Default questions if a video doesn't provide data-questions
       const DEFAULT_QUESTIONS = [
         {
           id: "q1",
           time: 3,
           type: "single",
-          text: "What is the chemical formula for water?",
-          options: ["H2O", "O2", "CO2", "NaCl"],
-          correct: 0,
+          text: "What is the primary consequence of ignoring sustainability?",
+          options: [
+            "Increased economic growth.",
+            "Pollution, climate change, and deforestation.",
+            "A decrease in global population.",
+            "Improved air and water quality.",
+          ],
+          correct: 1,
         },
         {
           id: "q2",
           time: 14,
-          type: "poll",
-          text: "Do you want more content like this?",
-          options: ["Yes", "Not now"],
+          type: "single",
+          text: "Which of the following is NOT a primary goal of environmental laws?",
+          options: [
+            "Limiting pollution from factories and cars.",
+            "Protecting forests from deforestation.",
+            "Promoting unsustainable practices in agriculture.",
+            "Encouraging the use of renewable energy.",
+          ],
+          correct: 2,
+        },
+        {
+          id: "q3",
+          time: 14,
+          type: "single",
+          text: "What is a key reason why international cooperation is essential for addressing environmental challenges?",
+          options: [
+            "It eliminates all disagreements between countries.",
+            "It forces all countries to adopt the same environmental policies.",
+            "It allows countries to share knowledge and resources, learning from each other's experiences.",
+            "It ensures that wealthier nations solely fund environmental initiatives in poorer nations.",
+          ],
+          correct: 3,
+        },
+        {
+          id: "q4",
+          time: 14,
+          type: "single",
+          text: "What is the most effective approach to achieving a sustainable future?",
+          options: [
+            "Relying solely on governmental regulations and laws.",
+            "Focusing on individual actions without community or government involvement.",
+            "Collective action involving individuals, communities, and governments.",
+            "Depending on corporations to self-regulate their environmental impact.",
+          ],
+          correct: 3,
         },
       ];
 
-      let lastTap = 0;
-      let liked = false;
+      /* ===== State ===== */
       let savedScrollY = 0;
+      let currentBtnEl = null;
 
-      // Quiz state
       let currentQuestions = [];
       let askedSet = new Set();
       let nextIdx = 0;
 
-      let currentBtnEl = null; // stores the .open-fs button that opened fullscreen
-
+      /* ===== Quiz helpers ===== */
       function parseQuestionsFrom(btn) {
         try {
           if (btn && btn.dataset.questions)
@@ -839,34 +484,27 @@
         } catch (e) {}
         return DEFAULT_QUESTIONS;
       }
-
       function resetQuizState() {
         askedSet.clear();
         nextIdx = 0;
         hideQuiz();
       }
-
       function showQuiz(q) {
         quizQ.textContent = q.text || "";
         quizOptions.innerHTML = "";
-
-        // ICONS MODE
         if (q.type === "icons") {
-          quizOptions.className = "d-flex flex-wrap gap-2"; // reset
-          quizOptions.classList.add("icon-grid");
+          quizOptions.className = "d-flex flex-wrap gap-2 icon-grid";
           (q.options || []).forEach((opt, i) => {
             const card = document.createElement("button");
             card.type = "button";
             card.className = "icon-pick btn btn-transparent text-white";
-            card.innerHTML = `
-        <i class="${opt.icon || "bi bi-dot"}"></i>
-        <small>${opt.label || "Option"}</small>
-      `;
+            card.innerHTML = `<i class="${
+              opt.icon || "bi bi-dot"
+            }"></i><small>${opt.label || "Option"}</small>`;
             card.addEventListener("click", () => handleAnswer(q, i));
             quizOptions.appendChild(card);
           });
         } else {
-          // DEFAULT (text buttons)
           quizOptions.className = "d-flex flex-wrap gap-2";
           (q.options || []).forEach((opt, i) => {
             const label =
@@ -880,55 +518,68 @@
             quizOptions.appendChild(b);
           });
         }
-
         quizFeedback.textContent = "";
         quizFeedback.className = "quiz-feedback small mt-2";
         quizShell.hidden = false;
         fsVideo.pause();
       }
-
       function hideQuiz() {
         quizShell.hidden = true;
       }
 
       function handleAnswer(q, chosenIdx) {
-        askedSet.add(q.id);
+  askedSet.add(q.id);
 
-        // ==== Branching: jump to time and resume
-        // Branching & Icons both SEEK
-        if (q.type === "branch" || q.type === "icons") {
-          const opt = q.options?.[chosenIdx];
-          hideQuiz();
-          if (opt && typeof opt === "object" && Number.isFinite(opt.seek)) {
-            fsVideo.currentTime = Math.max(0, opt.seek);
-          }
-          fsVideo.play().catch(() => {});
-          return;
-        }
+  if (q.type === "branch" || q.type === "icons") {
+    const opt = q.options?.[chosenIdx];
+    hideQuiz();
+    if (opt && typeof opt === "object" && Number.isFinite(opt.seek)) {
+      fsVideo.currentTime = Math.max(0, opt.seek);
+    }
+    fsVideo.play().catch(() => {});
+    return;
+  }
 
-        // Regular quiz/poll flow
-        let resumeDelay = 800;
-        if (q.type === "single" && Number.isInteger(q.correct)) {
-          if (chosenIdx === q.correct) {
-            quizFeedback.textContent = "Correct!";
-            quizFeedback.classList.add("ok");
-            quizFeedback.classList.remove("err");
-          } else {
-            quizFeedback.textContent = "Not quite!";
-            quizFeedback.classList.add("err");
-            quizFeedback.classList.remove("ok");
-          }
-        } else {
-          quizFeedback.textContent = "Thanks for voting!";
-          quizFeedback.classList.remove("err");
-          quizFeedback.classList.add("ok");
-        }
+  if (q.type === "single" && Number.isInteger(q.correct)) {
+    // Añadir título arriba
+    const title = document.createElement("h1");
+    title.textContent = "Correct answer!";
+    title.className = "w-100 text-center mb-3 text-success";
+    quizOptions.parentNode.insertBefore(title, quizOptions);
 
-        setTimeout(() => {
-          hideQuiz();
-          fsVideo.play().catch(() => {});
-        }, resumeDelay);
+    // Resaltar botones
+    const buttons = quizOptions.querySelectorAll("button");
+    buttons.forEach((btn, idx) => {
+      if (idx === q.correct) {
+        btn.style.backgroundColor = "green";
+        btn.style.color = "white";
       }
+      if (idx === chosenIdx && chosenIdx !== q.correct) {
+        btn.style.backgroundColor = "red";
+        btn.style.color = "white";
+      }
+      btn.disabled = true;
+    });
+
+    // Pausar el video mientras se ve la respuesta
+    fsVideo.pause();
+
+    // Reanudar después de 3 segundos
+    setTimeout(() => {
+      hideQuiz();
+      fsVideo.play().catch(() => {});
+    }, 3000);
+
+  } else {
+    quizFeedback.textContent = "Thanks for voting!";
+    quizFeedback.classList.add("ok");
+    quizFeedback.classList.remove("err");
+    setTimeout(() => {
+      hideQuiz();
+      fsVideo.play().catch(() => {});
+    }, 3000);
+  }
+}
 
       function checkQuizTick() {
         if (!currentQuestions.length || nextIdx >= currentQuestions.length)
@@ -944,6 +595,20 @@
         }
       }
 
+      /* ===== UI helpers ===== */
+      function setFsUiFromBtn(btn) {
+        const { user, caption, avatar } = btn.dataset;
+        fsUser.textContent = user || "";
+        fsUser2.textContent = user || "";
+        fsCaption.textContent = caption || "";
+        fsAvatar.src = avatar || "";
+        currentQuestions = parseQuestionsFrom(btn).sort(
+          (a, b) => (a.time || 0) - (b.time || 0)
+        );
+        resetQuizState();
+      }
+
+      /* ===== Open / Close FS ===== */
       function openFS({
         src,
         user,
@@ -952,22 +617,17 @@
         startAt = 0,
         btnEl = null,
       }) {
-        // Lock scroll
         savedScrollY = window.scrollY;
         document.body.style.top = `-${savedScrollY}px`;
         document.body.style.position = "fixed";
         document.body.style.width = "100%";
+
         currentBtnEl = btnEl;
         fshell.classList.add("active");
         fshell.setAttribute("aria-hidden", "false");
 
-        // Populate UI
-        fsUser.textContent = user;
-        fsUser2.textContent = user;
-        fsCaption.textContent = caption || "";
-        fsAvatar.src = avatar || "";
+        setFsUiFromBtn(btnEl || { dataset: { user, caption, avatar } });
 
-        // Prepare video
         fsVideo.src = src;
         fsVideo.currentTime = startAt;
         fsVideo.muted = false;
@@ -975,21 +635,9 @@
         fsVideo.playsInline = true;
         fsVideo.play().catch(() => {});
 
-        // Reset likes
-        // liked = false;
-        // likeCountEl.textContent = "1.0k";
-        // fsLikeBtn.querySelector("i").className = "bi bi-heart";
-
-        // Prepare questions for this video
-        currentQuestions = parseQuestionsFrom(btnEl);
-        currentQuestions.sort((a, b) => (a.time || 0) - (b.time || 0));
-        resetQuizState();
-
         updateProgress();
       }
-
       function closeFS() {
-        // Unlock scroll
         document.body.style.position = "";
         document.body.style.top = "";
         window.scrollTo(0, savedScrollY);
@@ -1000,67 +648,30 @@
         fsVideo.removeAttribute("src");
         fsVideo.load();
 
-        // Reset quiz overlay
         resetQuizState();
       }
 
-      // Open handlers
+      /* ===== Open handlers (thumbnails) ===== */
       document.querySelectorAll(".open-fs").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const src = btn.dataset.src;
-          const user = btn.dataset.user;
-          const caption = btn.dataset.caption;
-          const avatar = btn.dataset.avatar;
-
+          const { src, user, caption, avatar } = btn.dataset;
           const thumbVideo = btn.querySelector("video");
           const startAt = thumbVideo ? thumbVideo.currentTime : 0;
-
           openFS({ src, user, caption, avatar, startAt, btnEl: btn });
         });
       });
 
-      // Close actions
+      /* ===== Close actions ===== */
       fsClose.addEventListener("click", closeFS);
       fshell.addEventListener("click", (e) => {
-        const wrap = document.getElementById("fsWrap");
-        if (!wrap.contains(e.target) || e.target === fshell) closeFS();
+        if (!fsWrap.contains(e.target) || e.target === fshell) closeFS();
       });
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && fshell.classList.contains("active"))
           closeFS();
       });
 
-      // Like toggle (button)
-      // fsLikeBtn.addEventListener("click", () => {
-      //   liked = !liked;
-      //   fsLikeBtn.querySelector("i").className = liked
-      //     ? "bi bi-heart-fill"
-      //     : "bi bi-heart";
-      //   fsLikeBtn.style.background = liked
-      //     ? "rgba(255,46,99,.6)"
-      //     : "rgba(0,0,0,.45)";
-      //   const n =
-      //     parseInt((likeCountEl.textContent || "").replace(/\D/g, ""), 10) ||
-      //     1000;
-      //   likeCountEl.textContent = (
-      //     liked ? n + 1 : Math.max(0, n - 1)
-      //   ).toLocaleString();
-      // });
-
-      // Double‑tap to like with heart pop
-      // fsVideo.addEventListener("click", () => {
-      //   const now = Date.now();
-      //   if (now - lastTap < 300) {
-      //     liked = true;
-      //     fsLikeBtn.querySelector("i").className = "bi bi-heart-fill";
-      //     fsLikeBtn.style.background = "rgba(255,46,99,.6)";
-      //     dblLike.classList.add("show");
-      //     setTimeout(() => dblLike.classList.remove("show"), 400);
-      //   }
-      //   lastTap = now;
-      // });
-
-      // Progress bar loop
+      /* ===== Progress bar ===== */
       function updateProgress() {
         if (!fshell.classList.contains("active")) return;
         const pct = fsVideo.duration
@@ -1073,194 +684,150 @@
       fsVideo.addEventListener("timeupdate", updateProgress);
       fsVideo.addEventListener("timeupdate", checkQuizTick);
 
-      fsVideo.addEventListener("ended", () => {
-        const allBtns = Array.from(document.querySelectorAll(".open-fs"));
-        const idx = allBtns.indexOf(currentBtnEl);
+      /* =========================================================================
+   DRAG SIMPLE: seguimiento 1:1 + commit por transición CSS
+   =======================================================================*/
+      let dragging = false;
+      let startY = 0,
+        lastY = 0,
+        lastT = 0;
+      let dy = 0,
+        vy = 0;
+      let isCommitting = false;
 
-        if (idx >= 0 && idx < allBtns.length - 1) {
-          const nextBtn = allBtns[idx + 1];
-          transitionToBtn(nextBtn, +1); // swipe up con rebote
-        } else {
-          closeFS();
+      const DEADZONE = 8; // px para empezar
+      const THRESHOLD = 56; // px para commit
+      const VEL_THRESH = 0.3 / 1000; // px/ms para "flick"
+      const RESISTANCE = 0.35; // 0..1 (más alto = más pesado)
+
+      /* Siguiente/Anterior en base al botón actual */
+      function neighborBtn(dir) {
+        const all = Array.from(document.querySelectorAll(".open-fs"));
+        const idx = all.indexOf(currentBtnEl);
+        const n = idx + (dir > 0 ? +1 : -1);
+        return n >= 0 && n < all.length ? all[n] : null;
+      }
+
+      /* Commit animado: el wrap sale con transición CSS; en 'transitionend' swapeamos */
+      function commitSwipe(dir) {
+        const targetBtn = neighborBtn(dir);
+        if (!targetBtn) {
+          // fuera de rango → volver a 0
+          fsWrap.classList.remove("no-trans");
+          fsWrap.style.transform = `translateY(0)`;
+          return;
         }
-      });
 
-      let wheelBusy = false;
-      const WHEEL_COOLDOWN_MS = 450; // feel free to tweak
-      const DELTA_THRESHOLD = 30; // ignore tiny touchpad jitters
+        isCommitting = true;
+        fsWrap.classList.remove("no-trans");
 
-      fshell.addEventListener(
-        "wheel",
-        (e) => {
-          if (!fshell.classList.contains("active")) return;
+        const endY = dir > 0 ? -window.innerHeight : window.innerHeight; // siguiente: hacia arriba
+        fsWrap.style.transform = `translateY(${endY}px)`;
 
-          // prevent the page from scrolling behind the fake fullscreen
-          e.preventDefault();
+        const onEnd = () => {
+          fsWrap.removeEventListener("transitionend", onEnd);
 
-          if (wheelBusy) return;
-          const dy = e.deltaY || 0;
-          if (Math.abs(dy) < DELTA_THRESHOLD) return;
-
-          wheelBusy = true;
-          if (dy > 0) {
-            // scroll down → next
-            goRelativeVideo(+1);
-          } else {
-            // scroll up → previous
-            goRelativeVideo(-1);
-          }
-          setTimeout(() => {
-            wheelBusy = false;
-          }, WHEEL_COOLDOWN_MS);
-        },
-        { passive: false }
-      );
-
-      /* ===== Swipe helper con video temporal ===== */
-      let isTransitioning = false;
-
-      /* Clona "liviano": arma un pane con video + textos (user/caption) del botón destino */
-      function buildSwipePane(targetBtn) {
-        const pane = document.createElement("div");
-        pane.className = "fswipe-pane fswipe-anim";
-
-        // VIDEO
-        const v = document.createElement("video");
-        v.className = "fswipe-pane__video";
-        v.setAttribute("playsinline", "");
-        v.autoplay = true;
-        v.muted = false; // si querés “crossfade” silencioso poné true
-        v.src = targetBtn.dataset.src;
-        v.currentTime = 0;
-
-        // TOP BAR (minimal)
-        const top = document.createElement("div");
-        top.className = "fswipe-pane__topbar";
-        const topUser = document.createElement("div");
-        topUser.className = "fw-semibold";
-        topUser.textContent = targetBtn.dataset.user || "";
-        top.appendChild(topUser);
-
-        // BOTTOM (caption)
-        const bottom = document.createElement("div");
-        bottom.className = "fswipe-pane__bottom";
-        const cap1 = document.createElement("div");
-        cap1.className = "fw-semibold";
-        cap1.textContent = targetBtn.dataset.user || "";
-        const cap2 = document.createElement("div");
-        cap2.className = "text-body-secondary";
-        cap2.textContent = targetBtn.dataset.caption || "";
-        bottom.appendChild(cap1);
-        bottom.appendChild(cap2);
-
-        pane.appendChild(v);
-        pane.appendChild(top);
-        pane.appendChild(bottom);
-
-        return { pane, video: v };
-      }
-
-      function setFsUiFromBtn(btn) {
-        // Actualizá los textos/imagen reales del FS (tu UI original)
-        const { user, caption, avatar } = btn.dataset;
-        fsUser.textContent = user || "";
-        fsUser2.textContent = user || "";
-        fsCaption.textContent = caption || "";
-        fsAvatar.src = avatar || "";
-
-        // Preguntas
-        currentQuestions = parseQuestionsFrom(btn).sort(
-          (a, b) => (a.time || 0) - (b.time || 0)
-        );
-        resetQuizState();
-      }
-
-      /** dir: +1 siguiente (swipe up), -1 anterior (swipe down) */
-      function transitionToBtn(targetBtn, dir) {
-        if (!targetBtn || isTransitioning) return;
-        isTransitioning = true;
-
-        const wrap = document.getElementById("fsWrap");
-
-        // Construimos pane entrante
-        const { pane, video: incomingVid } = buildSwipePane(targetBtn);
-        pane.classList.add(
-          dir > 0 ? "fswipe-enter-from-bottom" : "fswipe-enter-from-top"
-        );
-
-        // Estado base del contenedor actual (sale)
-        wrap.classList.add("fswipe-anim");
-        wrap.style.willChange = "transform";
-
-        // Insertar pane por encima
-        fshell.appendChild(pane); // dentro del overlay, arriba de todo
-
-        // Forzar reflow para aplicar animaciones
-        void pane.offsetHeight;
-
-        // Disparar animaciones: entra pane con rebote, sale wrap
-        pane.classList.add(dir > 0 ? "fswipe-bounce-up" : "fswipe-bounce-down");
-        wrap.classList.add(
-          dir > 0 ? "fswipe-exit-to-top" : "fswipe-exit-to-bottom"
-        );
-
-        // Al terminar la animación del WRAP saliente:
-        const onWrapEnd = () => {
-          wrap.removeEventListener("transitionend", onWrapEnd);
-
-          // 1) Switchear el video REAL a la nueva src y tiempo actual del pane
-          const t = incomingVid.currentTime || 0;
+          // Swap: set video + UI del destino
+          const { src } = targetBtn.dataset;
           fsVideo.pause();
-          fsVideo.src = targetBtn.dataset.src;
-          fsVideo.currentTime = t;
+          fsVideo.src = src;
+          fsVideo.currentTime = 0;
           fsVideo.muted = false;
-          fsVideo.play().catch(() => {});
+          fsVideo.playsInline = true;
 
-          // 2) Actualizar UI real + preguntas
-          currentBtnEl = targetBtn;
-          setFsUiFromBtn(targetBtn);
+          // Para evitar frame negro, arrancamos el play y recién después reseteamos el wrap
+          const resume = () => {
+            fsVideo.play().catch(() => {});
+            // Reset inmediato para el próximo gesto
+            fsWrap.classList.add("no-trans");
+            fsWrap.style.transform = "translateY(0)";
+            // Fuerza reflow y quitamos 'no-trans' para reactivar la transición en el próximo commit
+            void fsWrap.offsetHeight;
+            fsWrap.classList.remove("no-trans");
 
-          // 3) Resetear clases/estilos
-          wrap.classList.remove(
-            "fswipe-anim",
-            "fswipe-exit-to-top",
-            "fswipe-exit-to-bottom"
-          );
-          wrap.style.transform = "";
-          wrap.style.opacity = "";
-          wrap.style.willChange = "";
+            // Actualizamos puntero y UI/questions
+            currentBtnEl = targetBtn;
+            setFsUiFromBtn(targetBtn);
 
-          // 4) Remover pane temporal
-          incomingVid.pause();
-          pane.remove();
+            isCommitting = false;
+          };
 
-          isTransitioning = false;
+          if (fsVideo.readyState >= 2) resume();
+          else fsVideo.addEventListener("loadeddata", resume, { once: true });
         };
-        wrap.addEventListener("transitionend", onWrapEnd, { once: true });
+
+        fsWrap.addEventListener("transitionend", onEnd);
       }
 
-      /* Sobrescribimos tu goRelativeVideo para usar la animación nueva */
-      function goRelativeVideo(step) {
-        const allBtns = Array.from(document.querySelectorAll(".open-fs"));
-        const idx = allBtns.indexOf(currentBtnEl);
-        const nextIdx = idx + step;
-
-        if (nextIdx >= 0 && nextIdx < allBtns.length) {
-          const nextBtn = allBtns[nextIdx];
-          transitionToBtn(nextBtn, step > 0 ? +1 : -1);
-        }
-      }
-
-      document.addEventListener("keydown", (e) => {
+      /* Drag handlers */
+      function onPointerDown(e) {
         if (!fshell.classList.contains("active")) return;
-        if (e.key === "ArrowDown" || e.key === "PageDown") {
-          e.preventDefault();
-          goRelativeVideo(+1);
+        if (isCommitting) return;
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+
+        dragging = true;
+        startY = lastY = e.clientY;
+        lastT = performance.now();
+        dy = 0;
+        vy = 0;
+
+        // Durante el drag, sin transición:
+        fsWrap.classList.add("no-trans");
+
+        try {
+          e.target.setPointerCapture?.(e.pointerId);
+        } catch {}
+        e.preventDefault();
+      }
+      function onPointerMove(e) {
+        if (!dragging) return;
+
+        const now = performance.now();
+        const curY = e.clientY;
+        const rawDy = curY - startY;
+
+        if (Math.abs(rawDy) < DEADZONE) {
+          lastY = curY;
+          lastT = now;
+          return;
         }
-        if (e.key === "ArrowUp" || e.key === "PageUp") {
-          e.preventDefault();
-          goRelativeVideo(-1);
+
+        const factor =
+          1 - Math.min(Math.abs(rawDy) / window.innerHeight, 0.85) * RESISTANCE;
+        dy = rawDy * factor;
+
+        const dt = Math.max(1, now - lastT);
+        vy = (curY - lastY) / dt; // px/ms
+        lastY = curY;
+        lastT = now;
+
+        fsWrap.style.transform = `translateY(${dy}px)`;
+      }
+      function onPointerUp() {
+        if (!dragging) return;
+        dragging = false;
+
+        const absDy = Math.abs(dy);
+        const dir = dy < 0 ? +1 : -1; // arrastrar hacia arriba → siguiente
+        const fast = Math.abs(vy) > VEL_THRESH; // “flick”
+
+        if (absDy > THRESHOLD || fast) {
+          commitSwipe(dir);
+        } else {
+          // Volver a 0 con transición CSS
+          fsWrap.classList.remove("no-trans");
+          fsWrap.style.transform = `translateY(0)`;
         }
+      }
+      fshell.addEventListener("pointerdown", onPointerDown, { passive: false });
+      window.addEventListener("pointermove", onPointerMove, { passive: false });
+      window.addEventListener("pointerup", onPointerUp, { passive: true });
+      window.addEventListener("pointercancel", onPointerUp, { passive: true });
+
+      /* ===== Auto-next al terminar ===== */
+      fsVideo.addEventListener("ended", () => {
+        // mismo gesto suave hacia el siguiente
+        commitSwipe(+1);
       });
     </script>
   </body>

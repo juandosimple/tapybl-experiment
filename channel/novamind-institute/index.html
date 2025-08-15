@@ -20,100 +20,116 @@
     <link href="../../assets/css/style.css" rel="stylesheet" />
 
     <style>
-      /* --- Channel profile only (kept minimal; rest comes from style.css) --- */
-      .channel-cover {
-        position: relative;
-        background: #0f0f12;
-        border-bottom: 1px solid #ebf2ff;
-      }
-      .channel-cover__img {
-        width: 100%;
-        height: 240px;
-        object-fit: cover;
-        display: block;
-      }
-      @media (max-width: 575.98px) {
-        .channel-cover__img {
-          height: 180px;
-        }
-      }
+            /* --- Channel profile only (kept minimal; rest comes from style.css) --- */
+            .channel-cover {
+              position: relative;
+              background: #0f0f12;
+              border-bottom: 1px solid #ebf2ff;
+            }
+            .channel-cover__img {
+              width: 100%;
+              height: 240px;
+              object-fit: cover;
+              display: block;
+            }
+            @media (max-width: 575.98px) {
+              .channel-cover__img {
+                height: 180px;
+              }
+            }
 
-      .channel-meta {
-        position: relative;
+            .channel-meta {
+              position: relative;
+            }
+            .channel-avatar {
+              position: absolute;
+              left: 1rem;
+              top: -48px;
+              width: 96px;
+              height: 96px;
+              border-radius: 50%;
+              border: 4px solid #ebf2ff;
+              object-fit: cover;
+            }
+            @media (max-width: 575.98px) {
+              .channel-avatar {
+                width: 80px;
+                height: 80px;
+                top: -40px;
+              }
+            }
+
+            .channel-actions .btn {
+              min-width: 110px;
+            }
+
+            .stat-pill {
+              background: rgba(255, 255, 255, 0.06);
+              border: 1px solid rgba(255, 255, 255, 0.08);
+              border-radius: 0.75rem;
+              padding: 0.75rem 0.9rem;
+              text-align: center;
+              min-width: 120px;
+            }
+
+            /* Video grid */
+            .vthumb-card {
+              border: 1px solid rgba(255, 255, 255, 0.08);
+              border-radius: 0.75rem;
+              overflow: hidden;
+              background: #ffffff;
+            }
+            .vthumb-card .vthumb {
+              aspect-ratio: 9/16;
+              object-fit: cover;
+            }
+            .vthumb-card .play-badge {
+              position: absolute;
+              bottom: 0.5rem;
+              left: 0.5rem;
+              background: rgba(255, 255, 255, 0.55);
+              border-radius: 999px;
+              padding: 0.2rem 0.5rem;
+              font-size: 0.8rem;
+            }
+            .vthumb-wrap {
+              position: relative;
+            }
+
+            /* Tabs */
+            .nav-underline .nav-link {
+              color: var(--bs-body-color);
+            }
+            .nav-underline .nav-link.active {
+              color: #000';
+            }
+
+            /* Safe spacing under avatar */
+            .channel-spacer {
+              height: 56px;
+            }
+
+            .navbar-nav.flex-row.ms-auto {
+              align-items: center;
+            }
+            .vcard{
+              color:#000;
+            }
+
+          .vthumb-btn {
+          position: relative;
+          border: 0;
+          padding: 0;
+          background: transparent;
+          width: 100%;
+          overflow: hidden;
+          border-radius: 15px;
       }
-      .channel-avatar {
+      .title-text{
         position: absolute;
-        left: 1rem;
-        top: -48px;
-        width: 96px;
-        height: 96px;
-        border-radius: 50%;
-        border: 4px solid #ebf2ff;
-        object-fit: cover;
-      }
-      @media (max-width: 575.98px) {
-        .channel-avatar {
-          width: 80px;
-          height: 80px;
-          top: -40px;
-        }
-      }
-
-      .channel-actions .btn {
-        min-width: 110px;
-      }
-
-      .stat-pill {
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 0.75rem;
-        padding: 0.75rem 0.9rem;
-        text-align: center;
-        min-width: 120px;
-      }
-
-      /* Video grid */
-      .vthumb-card {
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 0.75rem;
-        overflow: hidden;
-        background: #ffffff;
-      }
-      .vthumb-card .vthumb {
-        aspect-ratio: 9/16;
-        object-fit: cover;
-      }
-      .vthumb-card .play-badge {
-        position: absolute;
-        bottom: 0.5rem;
-        left: 0.5rem;
-        background: rgba(255, 255, 255, 0.55);
-        border-radius: 999px;
-        padding: 0.2rem 0.5rem;
-        font-size: 0.8rem;
-      }
-      .vthumb-wrap {
-        position: relative;
-      }
-
-      /* Tabs */
-      .nav-underline .nav-link {
-        color: var(--bs-body-color);
-      }
-      .nav-underline .nav-link.active {
-        color: #000';
-      }
-
-      /* Safe spacing under avatar */
-      .channel-spacer {
-        height: 56px;
-      }
-
-      .navbar-nav.flex-row.ms-auto {
-        align-items: center;
-      }
-      .vcard{
-        color:#000;
+        bottom: 10px;
+        color:#Fff;
+        z-index: 5;
       }
     </style>
   </head>
@@ -158,7 +174,10 @@
     </header>
 
     <!-- Channel Meta -->
-    <section class="border-bottom border-dark" style="border-color:#ebf2ff!important">
+    <section
+      class="border-bottom border-dark"
+      style="border-color: #ebf2ff !important"
+    >
       <div class="container feed-wrapper">
         <div class="channel-meta position-relative">
           <img
@@ -172,16 +191,24 @@
             class="d-flex flex-wrap align-items-center gap-3 ps-0 ps-sm-2 ps-md-3"
           >
             <div class="me-auto">
-              <h1 class="h4 mb-1" id="chName" style="color:#000">NovaMind Institute</h1>
+              <h1 class="h4 mb-1" id="chName" style="color: #000">
+                Boundless Learning
+              </h1>
               <div class="text-body-secondary small" id="chHandle">
-                @NovaMind Institute
+                @BoundlessLearning
               </div>
             </div>
 
-            <div
-              class="channel-actions d-flex align-items-center gap-2 "
-            >
-              <button class="btn btn-primary btn-sm" id="btnFollow" style="background-color: #141e30;border:0">
+            <div class="channel-actions d-flex align-items-center gap-2">
+              <button
+                class="btn btn-primary btn-sm"
+                id="btnFollow"
+                style="
+                  background-color: #141e30;
+                  border: 0;
+                  display: none !important;
+                "
+              >
                 <i class="bi bi-person-plus me-1"></i>Follow
               </button>
               <button class="btn btn-outline-light btn-sm" id="btnShare">
@@ -190,40 +217,45 @@
             </div>
           </div>
 
-          <div
-            class="row g-3 mt-3 ps-0 ps-sm-2 ps-md-3"
-            style=""
-          >
+          <div class="row g-3 mt-3 ps-0 ps-sm-2 ps-md-3" style="">
             <div class="col-4 col-sm-auto">
               <div class="stat-pill">
-                <div class="h5 mb-0" id="chFollowers" style="color:#000">12.4k</div>
-                <small class="text-body-secondary">Followers</small>
+                <div class="h5 mb-0" id="chFollowers" style="color: #000">
+                  12.4k
+                </div>
+                <small class="text-body-secondary">Students</small>
               </div>
             </div>
             <div class="col-4 col-sm-auto">
               <div class="stat-pill">
-                <div class="h5 mb-0" id="chVideos" style="color:#000">3</div>
-                <small class="text-body-secondary" style="color:#000">Videos</small>
+                <div class="h5 mb-0" id="chVideos" style="color: #000">128</div>
+                <small class="text-body-secondary" style="color: #000"
+                  >Lessons</small
+                >
               </div>
             </div>
-            <div class="col-4 col-sm-auto">
+            <!-- <div class="col-4 col-sm-auto">
               <div class="stat-pill">
                 <div class="h5 mb-0" id="chViews" style="color:#000">1.2M</div>
                 <small class="text-body-secondary" style="color:#000">Views</small>
               </div>
-            </div>
+            </div> -->
           </div>
 
-          <div
-            class="mt-3 ps-0 ps-sm-2 ps-md-3"
-            style="max-width: 820px"
-          >
-            <p class="mb-2" id="chBio" style="color:#000">
-              Hello everyone! 👋 Are you passionate about the world of chemistry, from the most explosive experiments to the reactions that happen in your kitchen? Then you've come to the right place!
+          <div class="mt-3 ps-0 ps-sm-2 ps-md-3" style="max-width: 820px">
+            <p class="mb-2" id="chBio" style="color: #000">
+              We provide actionable insight and strategic solutions to help drive digital transformation for organizations around the world. See what can happen by leveraging our industry expertise. The possibilities are endless.
             </p>
-            <div class="d-flex flex-wrap gap-2" style="padding-bottom:1rem;">
-              <span class="badge rounded-pill text-bg-secondary">#chemistry</span>
-              <span class="badge rounded-pill text-bg-secondary">#novamind</span>
+            <div
+              class="d-flex flex-wrap gap-2"
+              style="padding-bottom: 1rem; display: none !important"
+            >
+              <span class="badge rounded-pill text-bg-secondary"
+                >#chemistry</span
+              >
+              <span class="badge rounded-pill text-bg-secondary"
+                >#novamind</span
+              >
               <span class="badge rounded-pill text-bg-secondary">#science</span>
             </div>
           </div>
@@ -246,7 +278,7 @@
               aria-controls="videos"
               aria-selected="true"
             >
-              <i class="bi bi-play-btn-fill me-1"></i> Videos
+              <i class="bi bi-play-btn-fill me-1"></i> Lessons
             </button>
           </li>
           <li class="nav-item" role="presentation">
@@ -275,7 +307,10 @@
             tabindex="0"
           >
             <!-- Filters (optional) -->
-            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <div
+              class="d-flex flex-wrap align-items-center gap-2 mb-3"
+              style="display: none !important"
+            >
               <div class="ms-auto"></div>
               <select
                 class="form-select form-select-sm"
@@ -288,13 +323,13 @@
             </div>
 
             <!-- Grid -->
-            <div class="row g-3" style="padding-bottom:10rem">
+            <div class="row g-3" style="padding-bottom: 10rem">
               <!-- Card 1 -->
               <div class="col-6 col-md-4 col-xl-3">
                 <article class="vthumb-card">
                   <button
                     class="vthumb-btn w-100 open-fs"
-                    data-src="../../assets/video/video2.mp4"
+                    data-src="../../assets/video/video1.mp4"
                     data-user="studiox"
                     data-caption="Night city ride 🚴‍♂️"
                     data-avatar="https://i.pravatar.cc/80?img=22"
@@ -308,15 +343,15 @@
                         loop
                       >
                         <source
-                          src="../../assets/video/video2.mp4"
+                          src="../../assets/video/video1.mp4"
                           type="video/mp4"
                         />
                       </video>
-                      <span class="play-badge"
-                        ><i class="bi bi-play-fill me-1"></i>Subscribe</span
-                      >
+                      <!-- <span class="play-badge"
+                        ><i class="bi bi-play-fill me-1"></i>Watch now</span
+                      > -->
                     </div>
-                    <div class="p-2 small text-truncate">
+                    <div class="p-2 small text-truncate title-text">
                       Night city ride — UI motion
                     </div>
                   </button>
@@ -328,7 +363,7 @@
                 <article class="vthumb-card">
                   <button
                     class="vthumb-btn w-100 open-fs"
-                    data-src="../../assets/video/video1.mp4"
+                    data-src="../../assets/video/video2.mp4"
                     data-user="studiox"
                     data-caption="Golden hour surf session 🌅"
                     data-avatar="https://i.pravatar.cc/80?img=22"
@@ -345,15 +380,15 @@
                         loop
                       >
                         <source
-                          src="../../assets/video/video1.mp4"
+                          src="../../assets/video/video2.mp4"
                           type="video/mp4"
                         />
                       </video>
-                      <span class="play-badge"
+                      <!-- <span class="play-badge"
                         ><i class="bi bi-play-fill me-1"></i>Watch</span
-                      >
+                      > -->
                     </div>
-                    <div class="p-2 small text-truncate">
+                    <div class="p-2 small text-truncate title-text">
                       Golden hour surf — tips
                     </div>
                   </button>
@@ -365,7 +400,7 @@
                 <article class="vthumb-card">
                   <button
                     class="vthumb-btn w-100 open-fs"
-                    data-src="../../assets/video/video2.mp4"
+                    data-src="../../assets/video/video3.mp4"
                     data-user="studiox"
                     data-caption="Micro‑interaction pattern"
                     data-avatar="https://i.pravatar.cc/80?img=22"
@@ -379,15 +414,15 @@
                         loop
                       >
                         <source
-                          src="../../assets/video/video2.mp4"
+                          src="../../assets/video/video3.mp4"
                           type="video/mp4"
                         />
                       </video>
-                      <span class="play-badge"
+                      <!-- <span class="play-badge"
                         ><i class="bi bi-play-fill me-1"></i>Watch</span
-                      >
+                      > -->
                     </div>
-                    <div class="p-2 small text-truncate">
+                    <div class="p-2 small text-truncate title-text">
                       Pattern: swipe to reveal
                     </div>
                   </button>
@@ -398,7 +433,7 @@
                 <article class="vthumb-card">
                   <button
                     class="vthumb-btn w-100 open-fs"
-                    data-src="../../assets/video/video1.mp4"
+                    data-src="../../assets/video/video4.mp4"
                     data-user="studiox"
                     data-caption="Accessibility contrast check"
                     data-avatar="https://i.pravatar.cc/80?img=22"
@@ -412,15 +447,15 @@
                         loop
                       >
                         <source
-                          src="../../assets/video/video1.mp4"
+                          src="../../assets/video/video4.mp4"
                           type="video/mp4"
                         />
                       </video>
-                      <span class="play-badge"
+                      <!-- <span class="play-badge"
                         ><i class="bi bi-play-fill me-1"></i>Watch</span
-                      >
+                      > -->
                     </div>
-                    <div class="p-2 small text-truncate">
+                    <div class="p-2 small text-truncate title-text">
                       A11y: color contrast
                     </div>
                   </button>
@@ -437,32 +472,33 @@
             aria-labelledby="about-tab"
             tabindex="0"
           >
-            <div class="row g-4" style="padding-bottom:14rem;">
+            <div class="row g-4" style="padding-bottom: 14rem">
               <div class="col-lg-8">
                 <div class="vcard p-3">
-                  <h2 class="h5">NovaMind Institute</h2>
+                  <h2 class="h5">Boundless Learning</h2>
                   <p class="mb-2">
-What you'll find here:
-At-home and lab experiments: You'll see chemistry in action with projects you can do at home (always with proper supervision) and more advanced ones. <br>
-
-Clear and concise explanations: From the periodic table to stoichiometry, we'll explain everything without complicated jargon.<br>
-
-Real-life chemistry: We'll discover the science behind the food you eat, the products you use, and the world around you.<br><br>
-
-Join our community of curious minds and scientists! It doesn't matter if you're a student, a professional, or just someone who wants to learn—there's always something new to discover here.<br><br>
-
-Subscribe and hit the bell so you don't miss any reactions! 🧪✨
+                    Education is evolving — are you ready to lead the way? How
+                    we approach and consume learning is changing faster than
+                    ever. With advancements in technology, rising competition,
+                    and the need for personalized experiences, staying ahead
+                    requires innovative products and services. At Boundless
+                    Learning, we deliver learner-focused, tech-forward solutions
+                    designed to meet the demands of today and prepare you for
+                    tomorrow.
                   </p>
                   <ul class="list-unstyled small text-body-secondary mb-0">
-                    <li><i class="bi bi-geo-alt me-1"></i> Cambridge, UK</li>
                     <li>
                       <i class="bi bi-link-45deg me-1"></i>
-                      <a href="#" class="link-light link-underline-opacity-50" style="color: var(--bs-secondary-color)!important"
-                        >novamindinstute.com</a
+                      <a
+                        href="#"
+                        class="link-light link-underline-opacity-50"
+                        style="color: var(--bs-secondary-color) !important"
+                        >boundlesslearning.com</a
                       >
                     </li>
                     <li>
-                      <i class="bi bi-envelope me-1"></i> hello@novamindinstute.com
+                      <i class="bi bi-envelope me-1"></i>
+                      hello@boundlesslearning.com
                     </li>
                   </ul>
                 </div>
@@ -490,13 +526,19 @@ Subscribe and hit the bell so you don't miss any reactions! 🧪✨
                   <h3 class="h6">Contacts</h3>
                   <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-instagram"></i>
-                    <a href="#" class="small link-light" style="color:var(--bs-secondary-color)!important"
+                    <a
+                      href="#"
+                      class="small link-light"
+                      style="color: var(--bs-secondary-color) !important"
                       >instagram.com/novamind</a
                     >
                   </div>
                   <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-youtube"></i>
-                    <a href="#" class="small link-light"style="color:var(--bs-secondary-color)!important"
+                    <a
+                      href="#"
+                      class="small link-light"
+                      style="color: var(--bs-secondary-color) !important"
                       >youtube.com/@novamind</a
                     >
                   </div>
