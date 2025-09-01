@@ -56,7 +56,7 @@ body {
   position: absolute;
   background: rgba(255, 255, 255, 0.55);
   border-radius: 999px;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   font-size: 2rem;
 }
 
@@ -235,6 +235,8 @@ body {
   /* Tighter cards on phones */
   .vcard header {
     padding: 0.75rem !important;
+    position: absolute;
+    z-index: 1;
   }
   .play-badge {
     /* font-size: 0.8rem; */
@@ -326,7 +328,14 @@ body {
 }
 
 .navbar.navbar-dark.border-bottom.border-dark.sticky-top {
-  background: linear-gradient(180deg, #141e30, #243b55);
+  bottom: 9px;
+  top: auto;
+  position: fixed;
+  width: 90%;
+  left: calc(5vh - 5%);
+  border-radius: 50px;
+  background: #000000a8;
+  backdrop-filter: blur(4px);
 }
 
 .navbar-nav.flex-row.ms-auto {
@@ -369,7 +378,7 @@ body {
   height: 64px;
   border-radius: 50%;
   padding: 2px;
-  border:2px solid #f89d41;
+  border: 2px solid #f89d41;
   /* background: linear-gradient(
     45deg,
     #feda75,
@@ -382,7 +391,7 @@ body {
 }
 
 .insta-story:last-child img {
-  border:2px solid transparent;
+  border: 2px solid transparent;
 }
 .insta-story span {
   margin-top: 4px;
@@ -406,18 +415,19 @@ body {
   text-transform: uppercase;
   margin: 5px 0;
 }
-.assessable{
+.assessable {
   background: #d9f9e6;
 }
-.non-assesable{
-  background: #d7f1ff;;
+.non-assesable {
+  background: #d7f1ff;
 }
 /* instagram header */
 
 /* ANIMATION */
 /* --- Swipe vertical con rebote (mueve TODO el contenido) --- */
 .fshell {
-  position: fixed; inset: 0; /* ya lo tenés, lo explicitamos */
+  position: fixed;
+  inset: 0; /* ya lo tenés, lo explicitamos */
 }
 .fshell__video-wrap {
   position: relative;
@@ -449,36 +459,73 @@ body {
   padding: 12px 14px;
 }
 .fswipe-pane__topbar {
-  display: flex; align-items: center; gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .fswipe-pane__bottom {
   margin-top: auto;
 }
 
 /* Estados de entrada/salida */
-.fswipe-anim { transition: transform 420ms cubic-bezier(.22,.8,.26,1), opacity 420ms ease; }
-.fswipe-enter-from-bottom { transform: translateY(100%); opacity: .9; }
-.fswipe-enter-from-top    { transform: translateY(-100%); opacity: .9; }
-.fswipe-exit-to-top       { transform: translateY(-100%); opacity: .9; }
-.fswipe-exit-to-bottom    { transform: translateY(100%);  opacity: .9; }
+.fswipe-anim {
+  transition: transform 420ms cubic-bezier(0.22, 0.8, 0.26, 1),
+    opacity 420ms ease;
+}
+.fswipe-enter-from-bottom {
+  transform: translateY(100%);
+  opacity: 0.9;
+}
+.fswipe-enter-from-top {
+  transform: translateY(-100%);
+  opacity: 0.9;
+}
+.fswipe-exit-to-top {
+  transform: translateY(-100%);
+  opacity: 0.9;
+}
+.fswipe-exit-to-bottom {
+  transform: translateY(100%);
+  opacity: 0.9;
+}
 
 /* Rebote sutil al entrar */
 @keyframes swipeBounceUp {
-  0%   { transform: translateY(100%); }
-  82%  { transform: translateY(0%); }
-  92%  { transform: translateY(-1.8%); }
-  100% { transform: translateY(0%); }
+  0% {
+    transform: translateY(100%);
+  }
+  82% {
+    transform: translateY(0%);
+  }
+  92% {
+    transform: translateY(-1.8%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
 }
 @keyframes swipeBounceDown {
-  0%   { transform: translateY(-100%); }
-  82%  { transform: translateY(0%); }
-  92%  { transform: translateY(1.8%); }
-  100% { transform: translateY(0%); }
+  0% {
+    transform: translateY(-100%);
+  }
+  82% {
+    transform: translateY(0%);
+  }
+  92% {
+    transform: translateY(1.8%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
 }
 
 /* Aplica rebote sólo al pane entrante (sutil) */
-.fswipe-bounce-up   { animation: swipeBounceUp 440ms cubic-bezier(.22,.8,.26,1); }
-.fswipe-bounce-down { animation: swipeBounceDown 440ms cubic-bezier(.22,.8,.26,1); }
+.fswipe-bounce-up {
+  animation: swipeBounceUp 440ms cubic-bezier(0.22, 0.8, 0.26, 1);
+}
+.fswipe-bounce-down {
+  animation: swipeBounceDown 440ms cubic-bezier(0.22, 0.8, 0.26, 1);
+}
 /* Drag UX */
 .fshell--dragging {
   cursor: grabbing;
@@ -487,24 +534,41 @@ body {
   user-select: none !important;
 }
 .fswrap-snap {
-  transition: transform 280ms cubic-bezier(.22,.8,.26,1), opacity 280ms ease;
+  transition: transform 280ms cubic-bezier(0.22, 0.8, 0.26, 1),
+    opacity 280ms ease;
 }
 .fswrap-shadow {
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 /* Sensación app: sombras + parallax suave durante drag */
-.fswrap-shadow { box-shadow: 0 12px 38px rgba(0,0,0,.28); }
-.fshell--dragging { cursor: grabbing; }
-.fshell--dragging * { user-select: none !important; }
+.fswrap-shadow {
+  box-shadow: 0 12px 38px rgba(0, 0, 0, 0.28);
+}
+.fshell--dragging {
+  cursor: grabbing;
+}
+.fshell--dragging * {
+  user-select: none !important;
+}
 
 /* Pane de preview (entra/sale con transform) */
 .fswipe-pane {
-  position: absolute; inset: 0; z-index: 5; pointer-events: none;
-  display: grid; grid-template-rows: 1fr auto;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  display: grid;
+  grid-template-rows: 1fr auto;
   will-change: transform, opacity;
 }
-.fswipe-pane__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fswipe-pane__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 /* Hints de perf para el contenedor y el pane */
 .fshell__video-wrap,
@@ -516,18 +580,22 @@ body {
 /* Un poquito menos de opacidad al salir para que no “oscurezca” tanto */
 .fswipe-exit-to-top,
 .fswipe-exit-to-bottom {
-  opacity: .95;
+  opacity: 0.95;
 }
 
 /* Evita que el navegador "robe" el gesto vertical (scroll/pull-to-refresh) */
-#fshell { touch-action: none; }
+#fshell {
+  touch-action: none;
+}
 
 /* Transición única del contenedor (suave tipo app) */
 #fsWrap {
-  transition: transform 260ms cubic-bezier(.22,.8,.26,1);
+  transition: transform 260ms cubic-bezier(0.22, 0.8, 0.26, 1);
   will-change: transform;
 }
 
 /* Durante el drag desactivamos la transición para seguir el dedo 1:1 */
-#fsWrap.no-trans { transition: none !important; }
+#fsWrap.no-trans {
+  transition: none !important;
+}
 /* ANIMATION */
