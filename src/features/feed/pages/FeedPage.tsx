@@ -98,7 +98,7 @@ export default function FeedPage() {
   }
 
   return (
-    <div style={{ paddingBottom: 80 }}>
+    <div style={{ padding: 10 }}>
       {items.map((ml) => (
         <MicroLessonCard
           key={ml.id}

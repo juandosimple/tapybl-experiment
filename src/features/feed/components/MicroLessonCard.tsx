@@ -1,5 +1,5 @@
 import type { Microlesson } from "../types";
-import { PlayCircleIcon } from "@heroicons/react/24/outline";
+import { PlayCircleIcon, PlayIcon } from "@heroicons/react/24/outline";
 
 export default function MicroLessonCard({
   item,
@@ -10,28 +10,41 @@ export default function MicroLessonCard({
 }) {
   const created = new Date(item.dateCreated);
   return (
-    <article style={{ borderBottom: "8px solid #000" }}>
+    <article
+      style={{
+        marginBottom: "2rem",
+        position: "relative",
+      }}
+    >
       <header
         style={{
           display: "flex",
           alignItems: "center",
           gap: 8,
           padding: "8px 12px",
+          position: "absolute",
+          zIndex: 1,
+          borderRadius: "30px",
+          background: "rgba(36,51,77,.60)",
+          top: "10px",
+          left: "10px",
+          backdropFilter: "blur(5px)",
         }}
       >
-        <PlayCircleIcon className="icon" />
         <div style={{ overflow: "hidden" }}>
           <div
             style={{
-              fontWeight: 600,
+              fontWeight: 400,
               whiteSpace: "nowrap",
               textOverflow: "ellipsis",
               overflow: "hidden",
+              fontSize: ".9rem",
+              color: "#fff",
             }}
           >
-            {item.title || "(sin título)"}
+            {item.title || "(No title)"}
           </div>
-          <div style={{ fontSize: 12, color: "#aaa" }}>
+          <div style={{ fontSize: 12, color: "#fff" }}>
             {/* {item.statusString} · {created.toLocaleString()} */}
           </div>
         </div>
@@ -51,20 +64,38 @@ export default function MicroLessonCard({
           style={{
             position: "relative",
             aspectRatio: "1 / 1",
-            background: "#111",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           {item.poster ? (
-            <img
-              src={item.poster}
-              alt=""
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-              }}
-            />
+            <>
+              <PlayIcon
+                style={{
+                  position: "absolute",
+                  zIndex: 9,
+                  fill: "rgba(36, 51, 77, 1)",
+                  color: "rgba(36, 51, 77, 1)",
+                  width: "32px",
+                  strokeWidth: 1,
+                  background: "rgba(184,239,54,.6)",
+                  borderRadius: "50%",
+                  outline: "15px solid rgba(184, 239, 54, 0.6)",
+                }}
+              />
+              <img
+                src={item.poster}
+                alt=""
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                  borderRadius: 10,
+                }}
+              />
+            </>
           ) : (
             <div
               style={{
@@ -74,19 +105,37 @@ export default function MicroLessonCard({
                 placeItems: "center",
                 color: "#555",
                 fontSize: 14,
+                border: "1px solid #ccc",
+                background: "rgba(36, 51, 77, 0.2)",
+                borderRadius: "20px",
               }}
             >
-              (No poster)
+              <PlayIcon
+                style={{
+                  position: "absolute",
+                  zIndex: 9,
+                  fill: "rgba(36, 51, 77, 1)",
+                  color: "rgba(36, 51, 77, 1)",
+                  width: "32px",
+                  strokeWidth: 1.2,
+                  background: "rgba(184,239,54,.6)",
+                  borderRadius: "50%",
+                  outline: "15px solid rgba(184, 239, 54, 0.6)",
+                }}
+              />
+              <p style={{ fontSize: "1.5rem", color: "rgba(0,0,0,.2)" }}>
+                (No poster)
+              </p>
             </div>
           )}
         </div>
       </button>
 
-      {item.description && (
+      {/* {item.description && (
         <div style={{ padding: "8px 12px", fontSize: 14, color: "#ddd" }}>
           {item.description}
         </div>
-      )}
+      )} */}
     </article>
   );
 }

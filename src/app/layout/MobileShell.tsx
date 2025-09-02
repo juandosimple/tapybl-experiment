@@ -8,13 +8,13 @@ export default function MobileShell({ children }: PropsWithChildren) {
         display: "flex",
         flexDirection: "column",
         minHeight: "100dvh",
-        background: "#000",
+        background: "#fff",
         color: "#fff",
       }}
     >
       {/* header simple */}
-      <header style={{ padding: "10px", borderBottom: "1px solid #333" }}>
-        <strong>microreels</strong>
+      <header style={{ padding: "10px" }}>
+        <strong style={{color:"#000"}}>Tapybl Micro reels</strong>
       </header>
 
       {/* contenido dinámico */}

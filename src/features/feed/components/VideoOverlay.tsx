@@ -9,8 +9,8 @@ import {
   findChoiceGroupAfter,
   getMenuForGroup,
   toSegment,
-  resolveFromText,
 } from "../graphHelpers";
+import { CircleStackIcon } from "@heroicons/react/16/solid";
 
 type Props = { organizationId: string; lessonId: string; onClose: () => void };
 
@@ -22,7 +22,7 @@ export default function VideoOverlay({
   const [preview, setPreview] = useState<any>(null);
   const [list, setList] = useState<any>(null);
 
-  const [currentNodeId, setCurrentNodeId] = useState<string | null>(null); // nodo “timeline”
+  const [currentNodeId, setCurrentNodeId] = useState<string | null>(null);
   const [segment, setSegment] = useState<{
     url: string;
     start: number;
@@ -30,16 +30,21 @@ export default function VideoOverlay({
     poster?: string;
     title?: string;
   } | null>(null);
-  const [baseUrl, setBaseUrl] = useState<string | null>(null); // primer contentUrl
+  const [baseUrl, setBaseUrl] = useState<string | null>(null);
   const [poster, setPoster] = useState<string | undefined>(undefined);
 
   // overlays
-  const [menuId, setMenuId] = useState<string | null>(null); // id del CHOICE_GROUP actual
-  const [quizId, setQuizId] = useState<string | null>(null); // id del QUIZ actual
+  const [menuId, setMenuId] = useState<string | null>(null);
+  const [quizId, setQuizId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  /** --- PROGRESO (read-only) --- **/
+  const [segDuration, setSegDuration] = useState<number>(0); // duración efectiva del segmento
+  const [segCurrent, setSegCurrent] = useState<number>(0); // tiempo transcurrido dentro del segmento
+  const [bufferedEnd, setBufferedEnd] = useState<number>(0); // fin de buffer relativo al segmento
 
   // load preview
   useEffect(() => {
@@ -78,9 +83,9 @@ export default function VideoOverlay({
         setBaseUrl(seg.url);
         setPoster(seg.poster);
 
-        // pre-chequeo: si luego del primer video hay menú, lo mostraremos al cortar en `end`
+        // Si hay menú después del primer video, lo mostraremos al cortar en `end`
         const g = findChoiceGroupAfter(l, firstVideoId);
-        if (g) setMenuId(null); // lo activamos al terminar el clip
+        if (g) setMenuId(null);
       } catch (e: any) {
         if (!cancel) setError(e?.message || "Error cargando preview.");
       } finally {
@@ -92,36 +97,69 @@ export default function VideoOverlay({
     };
   }, [organizationId, lessonId]);
 
-  // on metadata loaded: seek al start del segmento actual
+  // on metadata loaded: setear currentTime al start, calcular duración efectiva y buffer
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !segment) return;
+
     const onLoaded = () => {
       try {
-        v.currentTime = Math.max(0, segment.start ?? 0);
+        const start = Math.max(0, segment.start ?? 0);
+        const rawDur = Number.isFinite(v.duration) ? v.duration : 0;
+        const end =
+          segment.end != null ? Math.min(segment.end, rawDur) : rawDur;
+        const effDur = Math.max(0, end - start);
+
+        v.currentTime = start;
+        setSegDuration(effDur);
+        setSegCurrent(0);
+        updateBufferedRelative(v, start);
       } catch {}
       v.play().catch(() => {});
     };
-    v.addEventListener("loadedmetadata", onLoaded);
-    return () => v.removeEventListener("loadedmetadata", onLoaded);
-  }, [segment?.url, segment?.start]);
 
-  // timeupdate: cortar en end y mostrar overlay adecuado
+    const onProgress = () => {
+      const start = segment.start ?? 0;
+      updateBufferedRelative(v, start);
+    };
+
+    v.addEventListener("loadedmetadata", onLoaded);
+    v.addEventListener("progress", onProgress);
+    return () => {
+      v.removeEventListener("loadedmetadata", onLoaded);
+      v.removeEventListener("progress", onProgress);
+    };
+  }, [segment?.url, segment?.start, segment?.end]);
+
+  // timeupdate: cortar en end y mostrar overlay; también actualizar progreso
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !list || !segment || !currentNodeId) return;
+
     const onTime = () => {
+      const start = segment.start ?? 0;
+      const endAbs =
+        segment.end != null
+          ? segment.end
+          : Number.isFinite(v.duration)
+          ? v.duration
+          : Infinity;
+
+      // actualizar progreso relativo al segmento
+      const rel = Math.max(
+        0,
+        Math.min(v.currentTime - start, Math.max(0, endAbs - start))
+      );
+      setSegCurrent(rel);
+
       if (segment.end != null && v.currentTime >= segment.end) {
         v.pause();
-        // ¿hay choice group después?
         const g = findChoiceGroupAfter(list, currentNodeId);
         if (g) {
           setMenuId(g);
           setQuizId(null);
           return;
         }
-
-        // ¿hay quiz (6) después directo?
         const kids = children(node(list, currentNodeId));
         const next = node(list, kids[0]);
         if (isType(next, T.QUIZ)) {
@@ -129,8 +167,6 @@ export default function VideoOverlay({
           setMenuId(null);
           return;
         }
-
-        // sino, avanzar automático al siguiente VIDEO directo (si existiera)
         const nextVid = kids.find((id) => isType(node(list, id), T.VIDEO));
         if (nextVid) {
           const nv = node(list, nextVid);
@@ -138,29 +174,39 @@ export default function VideoOverlay({
         }
       }
     };
+
     v.addEventListener("timeupdate", onTime);
     return () => v.removeEventListener("timeupdate", onTime);
-  }, [segment?.end, list, currentNodeId]);
+  }, [segment?.end, segment?.start, list, currentNodeId]);
 
   function goToVideoNode(id: string, videoNode: any) {
     const seg = toSegment(videoNode);
     setCurrentNodeId(id);
     setPoster(seg.poster);
 
-    // si la URL es la misma, solo seek; si cambia, reemplazamos src
     if (baseUrl && seg.url === baseUrl) {
-      setSegment(seg); // mismo source, cambia el tramo
-      // forzar seek inmediato en el próximo frame
+      setSegment(seg);
       requestAnimationFrame(() => {
         const v = videoRef.current;
         if (v) {
           v.currentTime = seg.start ?? 0;
+          // reset progreso
+          setSegCurrent(0);
+          setSegDuration(
+            Math.max(
+              0,
+              (seg.end ?? (Number.isFinite(v.duration) ? v.duration : 0)) -
+                (seg.start ?? 0)
+            )
+          );
           v.play().catch(() => {});
         }
       });
     } else {
-      setSegment(seg); // y actualizamos baseUrl por si cambió
+      setSegment(seg);
       setBaseUrl(seg.url);
+      setSegCurrent(0);
+      setSegDuration(0); // se recalcula onLoaded
     }
     setMenuId(null);
     setQuizId(null);
@@ -173,17 +219,14 @@ export default function VideoOverlay({
     if (!t) return;
 
     if (isType(t, T.CHOICE_GROUP)) {
-      // otro menú
       setMenuId(targetId);
       return;
     }
     if (isType(t, T.VIDEO)) {
-      // ir a clip de video
       goToVideoNode(targetId, t);
       return;
     }
     if (isType(t, T.JUMP)) {
-      // salto a lo que sea
       const dest = t.data?.jumpToNodeId;
       if (!dest) return;
       const d = node(list, dest);
@@ -196,7 +239,6 @@ export default function VideoOverlay({
         return;
       }
     }
-    // fallback: busca algún video alcanzable desde ese id
     const q = [targetId];
     const seen = new Set<string>();
     while (q.length) {
@@ -219,14 +261,14 @@ export default function VideoOverlay({
     [list, menuId]
   );
 
-  // UI de quiz mínima (muestra y sigue al primer hijo luego de responder)
+  // UI de quiz mínima
   function Quiz() {
     if (!list || !quizId) return null;
     const q = node(list, quizId);
     const question = q?.data?.question ?? "Question";
     const answers: Array<{ value: string; isCorrect?: boolean }> =
       q?.data?.answers ?? [];
-    const nextId = children(q)[0]; // siguiente luego de quiz (según tu JSON)
+    const nextId = children(q)[0];
 
     return (
       <div style={overlayBox}>
@@ -238,7 +280,6 @@ export default function VideoOverlay({
                 key={i}
                 style={btn}
                 onClick={() => {
-                  // podrías validar a.isCorrect antes de avanzar
                   if (nextId) {
                     const n = node(list, nextId);
                     if (isType(n, T.VIDEO)) goToVideoNode(nextId, n);
@@ -249,13 +290,38 @@ export default function VideoOverlay({
                   }
                 }}
               >
-                {a.value}
+                <PlayCircleIcon style={{ width: 20, height: 20 }} /> {a.value}
               </button>
             ))}
           </div>
         </div>
       </div>
     );
+  }
+
+  function fmt(t: number) {
+    if (!Number.isFinite(t)) return "0:00";
+    const s = Math.max(0, Math.floor(t));
+    const m = Math.floor(s / 60);
+    const r = s % 60;
+    return `${m}:${r.toString().padStart(2, "0")}`;
+  }
+
+  function updateBufferedRelative(v: HTMLVideoElement, start: number) {
+    try {
+      const b = v.buffered;
+      let end = 0;
+      for (let i = 0; i < b.length; i++) {
+        const to = b.end(i);
+        if (to >= v.currentTime) {
+          end = Math.max(end, to);
+        }
+      }
+      const rel = Math.max(0, end - start);
+      setBufferedEnd(rel);
+    } catch {
+      setBufferedEnd(0);
+    }
   }
 
   if (loading)
@@ -268,23 +334,81 @@ export default function VideoOverlay({
 
   return overlayRoot(
     <>
-      {/* VIDEO: siempre un solo <video> */}
+      {/* VIDEO */}
       {baseUrl && (
-        <video
-          ref={videoRef}
-          src={baseUrl}
-          poster={poster}
-          controls
-          autoPlay
-          playsInline
+        <div
           style={{
             width: "100%",
-            height: "100%",
             maxWidth: 900,
-            background: "#000",
-            borderRadius: 12,
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+            position: "relative",
+            height: "100%",
           }}
-        />
+        >
+          <video
+            ref={videoRef}
+            src={baseUrl}
+            poster={poster}
+            controls={false}
+            autoPlay
+            playsInline
+            style={{
+              width: "100%",
+              height: "auto",
+              background: "#000",
+              borderRadius: 12,
+              display: "block",
+            }}
+          />
+
+          {/* PROGRESS (READ-ONLY) */}
+          <div style={progressWrap} aria-hidden={false}>
+            <div style={timeLabel}>
+              <span aria-label="elapsed">{fmt(segCurrent)}</span>
+              <span aria-label="duration">{fmt(segDuration)}</span>
+            </div>
+
+            <div
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={segDuration || 0}
+              aria-valuenow={Math.min(segCurrent, segDuration)}
+              aria-label="Video progress"
+              tabIndex={-1} // sin foco, sin interacción
+              style={trackReadOnly}
+            >
+              {/* buffer */}
+              <div
+                style={{
+                  ...bufferBar,
+                  width:
+                    segDuration > 0
+                      ? `${
+                          (Math.min(bufferedEnd, segDuration) / segDuration) *
+                          100
+                        }%`
+                      : "0%",
+                }}
+              />
+              {/* progreso */}
+              <div
+                style={{
+                  ...progressBar,
+                  width:
+                    segDuration > 0
+                      ? `${
+                          (Math.min(segCurrent, segDuration) / segDuration) *
+                          100
+                        }%`
+                      : "0%",
+                }}
+              />
+            </div>
+          </div>
+        </div>
       )}
 
       {/* MENÚ */}
@@ -299,7 +423,7 @@ export default function VideoOverlay({
                   style={btn}
                   onClick={() => onSelectOption(opt.targetId)}
                 >
-                  <PlayCircleIcon style={{ width: 20, height: 20 }} />{" "}
+                  <CircleStackIcon style={{ width: 20, height: 20 }} />
                   <span
                     style={{ overflow: "hidden", textOverflow: "ellipsis" }}
                   >
@@ -371,8 +495,8 @@ const overlayBox: React.CSSProperties = {
 };
 const overlayContainer: React.CSSProperties = {
   background: "rgba(36,51,77,.9)",
-  padding:"2rem",
-  borderRadius:"20px",
+  padding: "2rem",
+  borderRadius: "20px",
 };
 const overlayTitle: React.CSSProperties = {
   color: "#fff",
@@ -384,10 +508,53 @@ const btn: React.CSSProperties = {
   alignItems: "center",
   gap: 12,
   background: "rgba(0,0,0,.45)",
-  backdropFilter: "blur(4px)",
+  backdropFilter: "blur(5px)",
   border: "1px solid rgba(255,255,255,.08)",
   borderRadius: 16,
   padding: "12px 16px",
   color: "#fff",
   textAlign: "left",
+};
+
+/** ---- Progress bar styles (read-only) ---- */
+const progressWrap: React.CSSProperties = {
+  userSelect: "none",
+  paddingTop: 10,
+  position: "absolute",
+  bottom: 30,
+  width: "80%",
+};
+const timeLabel: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  color: "#cbd5e1",
+  fontSize: 12,
+  marginBottom: 6,
+  fontFamily: "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto",
+};
+const bufferBar: React.CSSProperties = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  height: 8,
+  borderRadius: 999,
+  background: "rgba(255,255,255,.25)",
+  pointerEvents: "none",
+};
+const progressBar: React.CSSProperties = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  height: 8,
+  borderRadius: 999,
+  background: "linear-gradient(90deg, #60840ab3, #b7ef36ff)",
+  pointerEvents: "none",
+};
+const trackReadOnly: React.CSSProperties = {
+  position: "relative",
+  height: 8,
+  borderRadius: 999,
+  background: "rgba(255,255,255,.15)",
+  cursor: "default",
+  pointerEvents: "none",
 };
