@@ -1,23 +1,20 @@
 import { http } from "../../lib/http";
 
 // Shapes devueltos por tu API (según ejemplo)
-export type AuthResponse = {
-  userIdentityId: string;
-  emailConfirmed: boolean;
-};
+export type AuthResponse = { userIdentityId: string; emailConfirmed: boolean };
 
-export async function apiLogin(
-  email: string,
-  password: string
-): Promise<AuthResponse> {
-  // POST https://api-dev.edu.tapybl.com/api/authentication/login
-  return http.post<AuthResponse>("/authentication/login", { email, password });
+export function apiLogin(email: string, password: string) {
+  return http.post<AuthResponse>(
+    "/authentication/login",
+    { email, password },
+    { skipRefresh: true }
+  );
 }
 
-export async function apiRefresh(): Promise<AuthResponse> {
-  // POST https://api-dev.edu.tapybl.com/api/Authentication/refresh-token
-  // (observa la A mayúscula en Authentication según tu ejemplo)
-  return http.post<AuthResponse>("/Authentication/refresh-token");
+export function apiRefresh() {
+  return http.post<AuthResponse>("/Authentication/refresh-token", undefined, {
+    skipRefresh: true,
+  });
 }
 
 // Si tu backend tiene logout explícito, podrías llamarlo aquí.
@@ -37,8 +34,8 @@ export type OrganizationDetailsResponse = {
   // permissions, subscription, etc. están disponibles si los usás luego
 };
 
-export async function apiMyOrganization(): Promise<OrganizationDetailsResponse> {
-  return http.get<OrganizationDetailsResponse>(
-    "/organization/my_organization_details"
-  );
+export function apiMyOrganization() {
+  return http.get<{
+    organization: { id: string; name: string; avatar?: string | null };
+  }>("/organization/my_organization_details");
 }

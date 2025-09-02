@@ -32,7 +32,7 @@ export default function MicroLessonCard({
             {item.title || "(sin título)"}
           </div>
           <div style={{ fontSize: 12, color: "#aaa" }}>
-            {item.statusString} · {created.toLocaleString()}
+            {/* {item.statusString} · {created.toLocaleString()} */}
           </div>
         </div>
       </header>
@@ -76,7 +76,7 @@ export default function MicroLessonCard({
                 fontSize: 14,
               }}
             >
-              (sin imagen)
+              (No poster)
             </div>
           )}
         </div>

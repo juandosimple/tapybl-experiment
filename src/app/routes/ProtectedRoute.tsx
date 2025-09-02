@@ -1,15 +1,12 @@
-import { ReactNode } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../features/auth/useAuth";
+// src/app/routes/ProtectedRoute.tsx
+import { Navigate } from "react-router-dom";
+import { useAuthStore } from "../../features/auth/authStore";
+import { ReactNode } from "react";   // 👈 importar acá
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { isAuthenticated, initializing } = useAuth();
-  const loc = useLocation();
+  const { initializing, hasSession } = useAuthStore();
 
-  if (initializing) return <div style={{ padding: 16, color: "#fff" }}>Checking session…</div>;
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: loc }} />;
-  }
-  return <>{children}</>;
+  if (initializing) return <div style={{ padding: 16 }}>Loading...</div>;
+  if (!hasSession) return <Navigate to="/login" replace />;
+  return <>{children}</>;   // 👈 envolver en fragment
 }

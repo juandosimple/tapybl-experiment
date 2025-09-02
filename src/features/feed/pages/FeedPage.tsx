@@ -10,7 +10,7 @@ export default function FeedPage() {
   const { organizationId } = useAuth();
 
   const [items, setItems] = useState<Microlesson[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [pagesCount, setPagesCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string>("");
@@ -108,7 +108,7 @@ export default function FeedPage() {
       ))}
 
       <div ref={sentinelRef} style={{ height: 1 }} />
-      {loading && <div style={{ padding: 16, color: "#aaa" }}>Cargando…</div>}
+      {loading && <div style={{ padding: 16, color: "#aaa" }}>Loading...</div>}
       {!hasMore && items.length > 0 && (
         <div style={{ padding: 16, color: "#777", textAlign: "center" }}>
           Fin del feed

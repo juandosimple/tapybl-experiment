@@ -2,7 +2,7 @@ import { http } from "../../lib/http";
 import type { MicrolessonListResponse } from "./types";
 
 export async function fetchMicrolessons(organizationId: string, page: number, pageSize = 12) {
-  const body = { page, pageSize, orderBy: "", search: "", orderAsk: false };
+  const body = { page, pageSize, orderBy: "ASC", search: "", orderAsk: false };
   const orgId = encodeURIComponent(organizationId);
   return http.post<MicrolessonListResponse>(`/microlessons/${orgId}/list`, body);
 }

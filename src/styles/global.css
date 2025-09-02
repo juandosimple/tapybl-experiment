@@ -37,11 +37,14 @@ body {
 .bottomnav {
   display: flex;
   justify-content: space-around;
-  border-top: 1px solid #222;
   padding: 10px 0;
   position: sticky;
-  bottom: 0;
-  background: #000;
+  bottom: 20px;
+  background: rgba(184, 239, 54, 0.7);
+  width: 90%;
+  border-radius: 50px;
+  margin: 0 auto;
+  backdrop-filter: blur(5px);
 }
 .tab {
   background: none;
@@ -66,11 +69,12 @@ body {
   width: 24px;
   height: 24px;
   stroke-width: 2;
-  color: white;
+  color: #24334D;
 }
 /* ICONS */
 
-
 /* VIDEO */
-video::-webkit-media-controls-timeline { background: rgba(255,255,255,.08); }
+video::-webkit-media-controls-timeline {
+  background: rgba(255, 255, 255, 0.08);
+}
 /* VIDEO */

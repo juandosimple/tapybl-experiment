@@ -1,97 +1,82 @@
+// src/features/auth/authStore.ts
 import { create } from "zustand";
-import {
-  apiLogin,
-  apiRefresh,
-  apiMyOrganization,
-  type AuthResponse,
-} from "./api";
+import { apiLogin, apiRefresh, apiMyOrganization, type AuthResponse } from "./api";
 
-type OrgSnapshot = { id: string; name: string; avatar?: string | null } | null;
-type UserSnapshot = AuthResponse | null;
+type Org = { id: string; name: string; avatar?: string | null } | null;
+type User = AuthResponse | null;
 
 type AuthState = {
-  user: UserSnapshot;
-  org: OrgSnapshot; // 👈 organización actual
+  user: User;
+  org: Org;
   initializing: boolean;
+  hasSession: boolean; // 👈 derivada, pero útil para http.ts
   login: (email: string, password: string) => Promise<boolean>;
   refreshToken: () => Promise<boolean>;
   logout: () => Promise<void>;
-  _hydrateFromStorage: () => void;
+  _hydrate: () => void;
 };
 
 const LS_USER = "auth:user";
-const LS_ORG = "auth:org";
+const LS_ORG  = "auth:org";
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   org: null,
   initializing: true,
+  hasSession: false,
 
-  _hydrateFromStorage() {
+  _hydrate() {
     try {
-      const raw = localStorage.getItem(LS_ORG);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        // 🛠️ migración: si quedó guardado el objeto completo (tiene "organization"),
-        // lo convertimos a snapshot {id, name, avatar}.
-        const org: OrgSnapshot = parsed?.organization
-          ? {
-              id: parsed.organization.id,
-              name: parsed.organization.name,
-              avatar: parsed.organization.avatar,
-            }
-          : parsed?.id
-          ? parsed
-          : null;
-        if (org) set({ org });
-      }
-      // ...hidrata también el user si lo tenés en LS
+      const u = localStorage.getItem(LS_USER);
+      if (u) set({ user: JSON.parse(u), hasSession: true });
+      const o = localStorage.getItem(LS_ORG);
+      if (o) set({ org: JSON.parse(o) });
     } catch {}
   },
 
   async login(email, password) {
-    const user = await apiLogin(email, password);
-    set({ user });
-    localStorage.setItem("auth:user", JSON.stringify(user));
+    try {
+      const user = await apiLogin(email, password);
+      set({ user, hasSession: true });
+      localStorage.setItem(LS_USER, JSON.stringify(user));
 
-    const orgRes = await apiMyOrganization();
-    const org: OrgSnapshot = {
-      id: orgRes.organization.id,
-      name: orgRes.organization.name,
-      avatar: orgRes.organization.avatar,
-    };
-    set({ org });
-    localStorage.setItem(LS_ORG, JSON.stringify(org));
-    return true;
+      const orgRes = await apiMyOrganization();
+      const org = { id: orgRes.organization.id, name: orgRes.organization.name, avatar: orgRes.organization.avatar ?? null };
+      set({ org });
+      localStorage.setItem(LS_ORG, JSON.stringify(org));
+      return true;
+    } catch {
+      set({ user: null, org: null, hasSession: false });
+      localStorage.removeItem(LS_USER);
+      localStorage.removeItem(LS_ORG);
+      return false;
+    }
   },
 
   async refreshToken() {
-    const user = await apiRefresh();
-    set({ user });
-    localStorage.setItem("auth:user", JSON.stringify(user));
+    try {
+      const user = await apiRefresh(); // skipRefresh: true
+      set({ user, hasSession: true });
+      localStorage.setItem(LS_USER, JSON.stringify(user));
 
-    const orgRes = await apiMyOrganization();
-    const org: OrgSnapshot = {
-      id: orgRes.organization.id,
-      name: orgRes.organization.name,
-      avatar: orgRes.organization.avatar,
-    };
-    set({ org });
-    localStorage.setItem(LS_ORG, JSON.stringify(org));
-    return true;
+      // traer org siempre después de refresh OK
+      const orgRes = await apiMyOrganization();
+      const org = { id: orgRes.organization.id, name: orgRes.organization.name, avatar: orgRes.organization.avatar ?? null };
+      set({ org });
+      localStorage.setItem(LS_ORG, JSON.stringify(org));
+      return true;
+    } catch {
+      // refresh falló → limpiar sesión
+      set({ user: null, org: null, hasSession: false });
+      localStorage.removeItem(LS_USER);
+      localStorage.removeItem(LS_ORG);
+      return false;
+    }
   },
 
   async logout() {
-    // si luego tenés endpoint /authentication/logout, llámalo aquí
-    set({ user: null, org: null });
+    set({ user: null, org: null, hasSession: false });
     localStorage.removeItem(LS_USER);
     localStorage.removeItem(LS_ORG);
   },
 }));
-
-export async function bootstrapAuth() {
-  const s = useAuthStore.getState();
-  s._hydrateFromStorage(); // evita parpadeos
-  await s.refreshToken(); // valida cookie y trae organización
-  useAuthStore.setState({ initializing: false });
-}

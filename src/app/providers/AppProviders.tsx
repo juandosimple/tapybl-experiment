@@ -1,20 +1,17 @@
-import { PropsWithChildren, useEffect, useState } from "react";
-import { bootstrapAuth } from "../../features/auth/authStore";
+// src/app/providers/AppProviders.tsx (o similar)
+import { useEffect } from "react";
+import { useAuthStore } from "../../features/auth/authStore";
 
-export default function AppProviders({ children }: PropsWithChildren) {
-  const [ready, setReady] = useState(false);
+export default function AppProviders({ children }: { children: React.ReactNode }) {
+  const initializing = useAuthStore(s => s.initializing);
+  const setState = useAuthStore.setState;
 
   useEffect(() => {
-    (async () => {
-      await bootstrapAuth();   // valida cookie/refresh y deja snapshot
-      setReady(true);
-    })();
+    const s = useAuthStore.getState();
+    s._hydrate();
+    s.refreshToken().finally(() => setState({ initializing: false }));
   }, []);
 
-  if (!ready) {
-    // Loading muy simple mientras hacemos refresh inicial
-    return <div style={{ padding: 16, color: "#fff" }}>Checking session…</div>;
-  }
-
+  if (initializing) return <div style={{padding:16}}>Loading...</div>;
   return <>{children}</>;
 }
