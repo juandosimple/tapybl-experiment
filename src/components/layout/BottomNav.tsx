@@ -1,14 +1,26 @@
-import { HomeIcon, BellIcon } from "@heroicons/react/24/outline";
+import { Link, useLocation } from "react-router-dom";
+import { HomeIcon, BellIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 
 export default function BottomNav() {
+  const { pathname } = useLocation();
+
+  const tabs = [
+    { to: "/", icon: HomeIcon, label: "Home" },
+    { to: "/notifications", icon: BellIcon, label: "Notificaciones" },
+    { to: "/profile", icon: UserCircleIcon, label: "Perfil" }, // 👈 tu nueva ruta
+  ];
+
   return (
     <nav className="bottomnav" aria-label="primary">
-      <button className="tab" aria-current="page">
-        <HomeIcon className="icon" />
-      </button>
-      <button className="tab">
-        <BellIcon className="icon" />
-      </button>
+      {tabs.map((t) => {
+        const Icon = t.icon;
+        const active = pathname === t.to;
+        return (
+          <Link key={t.to} to={t.to} className={`tab ${active ? "active" : ""}`}>
+            <Icon className="icon" />
+          </Link>
+        );
+      })}
     </nav>
   );
 }

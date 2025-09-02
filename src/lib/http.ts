@@ -15,21 +15,20 @@ async function request<T>(path: string, opts: HttpOptions = {}): Promise<T> {
       ...(headers ?? {}),
     },
     body: body ? JSON.stringify(body) : undefined,
-    credentials: "include", // quitalo si no usás cookies
+    credentials: "include",                 // 👈 CLAVE (cookies httpOnly)
   });
   if (!res.ok) {
     const msg = await res.text().catch(() => res.statusText);
     throw new Error(msg || `HTTP ${res.status}`);
   }
-  // si tu API a veces responde vacío (204), evitá parsear JSON
   if (res.status === 204) return undefined as T;
   return (await res.json()) as T;
 }
 
 export const http = {
-  get: <T>(path: string) => request<T>(path),
-  post: <T>(path: string, body?: unknown) => request<T>(path, { method: "POST", body }),
-  put:  <T>(path: string, body?: unknown) => request<T>(path, { method: "PUT", body }),
-  patch:<T>(path: string, body?: unknown) => request<T>(path, { method: "PATCH", body }),
-  del:  <T>(path: string) => request<T>(path, { method: "DELETE" }),
+  get:  <T>(p: string) => request<T>(p),
+  post: <T>(p: string, b?: unknown) => request<T>(p, { method: "POST", body: b }),
+  put:  <T>(p: string, b?: unknown) => request<T>(p, { method: "PUT", body: b }),
+  patch:<T>(p: string, b?: unknown) => request<T>(p, { method: "PATCH", body: b }),
+  del:  <T>(p: string) => request<T>(p, { method: "DELETE" }),
 };

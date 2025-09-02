@@ -1,9 +1,20 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
+import { bootstrapAuth } from "../../features/auth/authStore";
 
-/**
- * Punto único para agregar providers globales más adelante
- * (tema, router, React Query, i18n, etc.).
- */
 export default function AppProviders({ children }: PropsWithChildren) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      await bootstrapAuth();   // valida cookie/refresh y deja snapshot
+      setReady(true);
+    })();
+  }, []);
+
+  if (!ready) {
+    // Loading muy simple mientras hacemos refresh inicial
+    return <div style={{ padding: 16, color: "#fff" }}>Checking session…</div>;
+  }
+
   return <>{children}</>;
 }
