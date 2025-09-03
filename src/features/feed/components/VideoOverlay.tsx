@@ -11,6 +11,7 @@ import {
   toSegment,
 } from "../graphHelpers";
 import { CircleStackIcon } from "@heroicons/react/16/solid";
+import Loader from "../../../components/Loaders";
 
 type Props = { organizationId: string; lessonId: string; onClose: () => void };
 
@@ -326,11 +327,7 @@ export default function VideoOverlay({
     }
   }
 
-  if (loading)
-    return overlayRoot(
-      <div style={{ color: "#aaa" }}>Loading...</div>,
-      onClose
-    );
+  if (loading) return overlayRoot(<Loader />, onClose);
   if (error)
     return overlayRoot(<div style={{ color: "salmon" }}>{error}</div>, onClose);
 

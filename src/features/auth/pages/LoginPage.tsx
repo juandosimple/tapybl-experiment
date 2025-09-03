@@ -1,6 +1,11 @@
+// src/features/auth/pages/LoginPage.tsx
 import { FormEvent, useState } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../useAuth";
+import styles from "./Login.module.css";
+import VideoBg from "../components/VideoBg";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -22,36 +27,68 @@ export default function LoginPage() {
       const backTo = loc.state?.from?.pathname || "/";
       nav(backTo, { replace: true });
     } else {
-      setErr("Email o contraseña inválidos");
+      setErr(
+        "The password you entered is incorrect. Please try again or reset your password."
+      );
     }
   }
 
-  return (
-    <div className="p-4" style={{ maxWidth: 420, margin: "0 auto" }}>
-      <h1 className="mb-3">Login</h1>
-      <form onSubmit={onSubmit} className="d-flex flex-column gap-3">
-        <input
-          className="form-control bg-dark text-white"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          autoFocus
-        />
-        <input
-          type="password"
-          className="form-control bg-dark text-white"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit" className="btn btn-light" disabled={loading}>
-          {loading ? "Entrando..." : "Login"}
-        </button>
-        {err && <div className="text-danger small">{err}</div>}
-      </form>
+  // Playlist (rutas de tus videos cortos en /public o /assets)
+  const bgVideos = [
+    "/videos/bg1.mp4",
+    "/videos/bg2.mp4",
+    "/videos/bg3.mp4",
+    "/videos/bg4.mp4",
+    "/videos/bg5.mp4",
+  ];
 
-      <div className="mt-3 small">
-        ¿No tienes cuenta? <Link to="/register">Crear una</Link>
+  return (
+    <div className={styles.login}>
+      <VideoBg videos={bgVideos} crossfadeMs={700} />
+
+      <div className={styles.login__container}>
+        <h1 className={styles.login__title}>Tapybl Micro Reels</h1>
+        <Form onSubmit={onSubmit} className={styles.login__form}>
+          <Form.Group className={styles.login__group}>
+            <Form.Label id="email" className={styles.login__label}>
+              Email address
+            </Form.Label>
+            <Form.Control
+              className={styles.login__input}
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoFocus
+              name="email"
+            />
+          </Form.Group>
+          <Form.Group className={styles.login__group}>
+            <Form.Label id="password" className={styles.login__label}>
+              Password
+            </Form.Label>
+            <Form.Control
+              type="password"
+              className={styles.login__input}
+              placeholder="Password"
+              value={password}
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <Button
+            type="submit"
+            className={`${styles.login__button} btn`}
+            disabled={loading}
+          >
+            {loading ? "Signing in..." : "Login"}
+          </Button>
+
+          {err && (
+            <div className={`${styles.login__error}`}>
+              {err}
+            </div>
+          )}
+        </Form>
       </div>
     </div>
   );

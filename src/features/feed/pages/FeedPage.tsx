@@ -5,6 +5,7 @@ import type { Microlesson } from "../types";
 import MicroLessonCard from "../components/MicroLessonCard";
 import { useInfiniteScroll } from "../../../hooks/useInfiniteScroll";
 import VideoOverlay from "../components/VideoOverlay";
+import Loader from "../../../components/Loaders";
 
 export default function FeedPage() {
   const { organizationId } = useAuth();
@@ -108,14 +109,14 @@ export default function FeedPage() {
       ))}
 
       <div ref={sentinelRef} style={{ height: 1 }} />
-      {loading && <div style={{ padding: 16, color: "#aaa" }}>Loading...</div>}
+      {loading && <Loader />}
       {!hasMore && items.length > 0 && (
         <div style={{ padding: 16, color: "#777", textAlign: "center" }}>
           Fin del feed
         </div>
       )}
       {!loading && items.length === 0 && (
-        <div style={{ padding: 16 }}>No hay microlessons.</div>
+        <div style={{ padding: 16 }}>No microlesons found</div>
       )}
 
       {openLessonId && organizationId && (

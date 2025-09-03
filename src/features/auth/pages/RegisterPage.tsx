@@ -33,7 +33,7 @@ export default function RegisterPage() {
 
       <form onSubmit={onSubmit} className="d-flex flex-column gap-3">
         <input
-          className="form-control bg-dark text-white"
+          className="form-control"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -41,14 +41,14 @@ export default function RegisterPage() {
         />
         <input
           type="password"
-          className="form-control bg-dark text-white"
+          className="form-control"
           placeholder="Password"
           value={password1}
           onChange={(e) => setPassword1(e.target.value)}
         />
         <input
           type="password"
-          className="form-control bg-dark text-white"
+          className="form-control"
           placeholder="Repeat password"
           value={password2}
           onChange={(e) => setPassword2(e.target.value)}
