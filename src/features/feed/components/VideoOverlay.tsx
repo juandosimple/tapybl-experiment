@@ -133,7 +133,8 @@ export default function VideoOverlay({
       try {
         const start = Math.max(0, segment.start ?? 0);
         const rawDur = Number.isFinite(v.duration) ? v.duration : 0;
-        const end = segment.end != null ? Math.min(segment.end, rawDur) : rawDur;
+        const end =
+          segment.end != null ? Math.min(segment.end, rawDur) : rawDur;
         const effDur = Math.max(0, end - start);
 
         v.currentTime = start;
@@ -172,7 +173,10 @@ export default function VideoOverlay({
           : Infinity;
 
       // (A) Progreso relativo del segmento (para la barra)
-      const rel = Math.max(0, Math.min(v.currentTime - start, Math.max(0, endAbs - start)));
+      const rel = Math.max(
+        0,
+        Math.min(v.currentTime - start, Math.max(0, endAbs - start))
+      );
       setSegCurrent(rel);
 
       // (B) Cues internos (si existen)
@@ -266,20 +270,29 @@ export default function VideoOverlay({
     const t = node(list, targetId);
     if (!t) return;
 
+    // 1) Casos directos
     if (isType(t, T.CHOICE_GROUP)) {
       setMenuId(targetId);
+      setQuizId(null);
       return;
     }
     if (isType(t, T.VIDEO)) {
       goToVideoNode(targetId, t);
       return;
     }
+    if (isType(t, T.QUIZ)) {
+      setQuizId(targetId);
+      setMenuId(null);
+      return;
+    }
     if (isType(t, T.JUMP)) {
       const dest = t.data?.jumpToNodeId;
       if (!dest) return;
       const d = node(list, dest);
+      if (!d) return;
       if (isType(d, T.CHOICE_GROUP)) {
         setMenuId(dest);
+        setQuizId(null);
         return;
       }
       if (isType(d, T.VIDEO)) {
@@ -288,24 +301,53 @@ export default function VideoOverlay({
       }
       if (isType(d, T.QUIZ)) {
         setQuizId(dest);
+        setMenuId(null);
         return;
       }
+      // Si el destino es otra cosa, seguimos con BFS desde 'dest'
+      bfsResolve(dest);
+      return;
     }
 
-    // fallback: BFS hasta el primer VIDEO alcanzable
-    const q = [targetId];
-    const seen = new Set<string>();
-    while (q.length) {
-      const nid = q.shift()!;
-      if (seen.has(nid)) continue;
-      seen.add(nid);
-      const n = node(list, nid);
-      if (!n) continue;
-      if (isType(n, T.VIDEO)) {
-        goToVideoNode(nid, n);
-        return;
+    // 2) Fallback: BFS desde targetId hasta el primer destino “alcanzable”
+    bfsResolve(targetId);
+
+    function bfsResolve(startId: string) {
+      const q: string[] = [startId];
+      const seen = new Set<string>();
+
+      while (q.length) {
+        const nid = q.shift()!;
+        if (seen.has(nid)) continue;
+        seen.add(nid);
+
+        const n = node(list, nid);
+        if (!n) continue;
+
+        // Resolver en orden de prioridad natural: VIDEO > QUIZ > CHOICE_GROUP
+        if (isType(n, T.VIDEO)) {
+          goToVideoNode(nid, n);
+          return;
+        }
+        if (isType(n, T.QUIZ)) {
+          setQuizId(nid);
+          setMenuId(null);
+          return;
+        }
+        if (isType(n, T.CHOICE_GROUP)) {
+          setMenuId(nid);
+          setQuizId(null);
+          return;
+        }
+        if (isType(n, T.JUMP)) {
+          const dest = n.data?.jumpToNodeId;
+          if (dest) q.push(dest);
+        }
+
+        // Continuar expandiendo el grafo
+        for (const k of children(n) || []) q.push(k);
       }
-      for (const k of children(n)) q.push(k);
+      // Si no encuentra nada, no hace nada (evita crashear)
     }
   }
 
@@ -315,8 +357,13 @@ export default function VideoOverlay({
     [list, menuId]
   );
 
-  if (loading) return overlayRoot(<div style={{ color: "#aaa" }}>Loading...</div>, onClose);
-  if (error) return overlayRoot(<div style={{ color: "salmon" }}>{error}</div>, onClose);
+  if (loading)
+    return overlayRoot(
+      <div style={{ color: "#aaa" }}>Loading...</div>,
+      onClose
+    );
+  if (error)
+    return overlayRoot(<div style={{ color: "salmon" }}>{error}</div>, onClose);
 
   return overlayRoot(
     <>
@@ -404,8 +451,14 @@ export default function VideoOverlay({
             <h3 style={overlayTitle}>{menu.title}</h3>
             <div style={{ display: "grid", gap: 10, maxWidth: 560 }}>
               {menu.options.map((opt: { targetId: string; label: string }) => (
-                <button key={opt.targetId} style={btn} onClick={() => onSelectOption(opt.targetId)}>
-                  <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>
+                <button
+                  key={opt.targetId}
+                  style={btn}
+                  onClick={() => onSelectOption(opt.targetId)}
+                >
+                  <span
+                    style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+                  >
                     {opt.label}
                   </span>
                 </button>
@@ -437,7 +490,9 @@ function hasInteractiveAfter(list: any, videoNodeId: string) {
   const kids = children(node(list, videoNodeId));
   if (!kids?.length) return false;
   const next = node(list, kids[0]);
-  return isType(next, T.QUIZ) || isType(next, T.CHOICE_GROUP) || isType(next, T.JUMP);
+  return (
+    isType(next, T.QUIZ) || isType(next, T.CHOICE_GROUP) || isType(next, T.JUMP)
+  );
 }
 
 function updateBufferedRelative(
@@ -498,7 +553,8 @@ function Quiz({
 }) {
   const q = node(list, quizId);
   const question = q?.data?.question ?? "Question";
-  const answers: Array<{ value: string; isCorrect?: boolean }> = q?.data?.answers ?? [];
+  const answers: Array<{ value: string; isCorrect?: boolean }> =
+    q?.data?.answers ?? [];
   const nextId = children(q)[0];
 
   return (
@@ -567,6 +623,7 @@ const overlayBox: React.CSSProperties = {
   pointerEvents: "auto",
   justifyContent: "center",
   alignItems: "center",
+  zIndex: 5, 
 };
 const overlayContainer: React.CSSProperties = {
   background: "rgba(36,51,77,.9)",
