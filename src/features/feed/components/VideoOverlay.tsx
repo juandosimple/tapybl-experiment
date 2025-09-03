@@ -78,7 +78,8 @@ export default function VideoOverlay({
         if (!firstVideoId) throw new Error("No se encontró video.");
 
         setCurrentNodeId(firstVideoId);
-        const seg = toSegment(node(l, firstVideoId));
+        const raw = toSegment(node(l, firstVideoId));
+        const seg = { ...raw, end: undefined }; // ▶️ reproducir completo
         setSegment(seg);
         setBaseUrl(seg.url);
         setPoster(seg.poster);
@@ -180,7 +181,8 @@ export default function VideoOverlay({
   }, [segment?.end, segment?.start, list, currentNodeId]);
 
   function goToVideoNode(id: string, videoNode: any) {
-    const seg = toSegment(videoNode);
+    const raw = toSegment(videoNode);
+    const seg = { ...raw, end: undefined }; // ▶️ sin recorte
     setCurrentNodeId(id);
     setPoster(seg.poster);
 
