@@ -9,34 +9,42 @@ import {
   findChoiceGroupAfter,
   getMenuForGroup,
   toSegment,
+  resolveFromText,
 } from "../graphHelpers";
-import { CircleStackIcon } from "@heroicons/react/16/solid";
-import Loader from "../../../components/Loaders";
 
 type Props = { organizationId: string; lessonId: string; onClose: () => void };
+
+type Segment = {
+  url: string;
+  start: number;
+  end?: number;
+  poster?: string;
+  title?: string;
+};
+
+type Cue =
+  | { at: number; type: "quiz"; targetId: string }
+  | { at: number; type: "menu"; targetId: string }
+  | { at: number; type: "jump"; targetId: string };
 
 export default function VideoOverlay({
   organizationId,
   lessonId,
   onClose,
 }: Props) {
-  const [preview, setPreview] = useState<any>(null);
   const [list, setList] = useState<any>(null);
 
+  // timeline actual
   const [currentNodeId, setCurrentNodeId] = useState<string | null>(null);
-  const [segment, setSegment] = useState<{
-    url: string;
-    start: number;
-    end?: number;
-    poster?: string;
-    title?: string;
-  } | null>(null);
+  const [segment, setSegment] = useState<Segment | null>(null);
   const [baseUrl, setBaseUrl] = useState<string | null>(null);
   const [poster, setPoster] = useState<string | undefined>(undefined);
 
   // overlays
   const [menuId, setMenuId] = useState<string | null>(null);
   const [quizId, setQuizId] = useState<string | null>(null);
+
+  // estado
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -47,7 +55,23 @@ export default function VideoOverlay({
   const [segCurrent, setSegCurrent] = useState<number>(0); // tiempo transcurrido dentro del segmento
   const [bufferedEnd, setBufferedEnd] = useState<number>(0); // fin de buffer relativo al segmento
 
-  // load preview
+  /** -------- CUES internos (opcional, si el JSON los trae) -------- */
+  const [cueIndex, setCueIndex] = useState(0);
+  const cues: Cue[] = useMemo(() => {
+    if (!list || !currentNodeId) return [];
+    try {
+      // Ajustá esta llamada a la firma real de tu helper:
+      // resolveFromText(list, currentNodeId)  ó  resolveFromText(list, node)
+      const raw = (resolveFromText?.(list, currentNodeId) ?? []) as Cue[];
+      return raw
+        .filter((c) => Number.isFinite(c.at) && c.at >= 0)
+        .sort((a, b) => a.at - b.at);
+    } catch {
+      return [];
+    }
+  }, [list, currentNodeId]);
+
+  // ---------------------- DATA LOAD ----------------------
   useEffect(() => {
     let cancel = false;
     (async () => {
@@ -56,8 +80,8 @@ export default function VideoOverlay({
       try {
         const p = await fetchLessonPreview(organizationId, lessonId);
         if (cancel) return;
-        setPreview(p);
         const l = p?.lessonContent?.contentList;
+        if (!l) throw new Error("Contenido no disponible.");
         setList(l);
 
         // primer video alcanzable desde root
@@ -78,16 +102,17 @@ export default function VideoOverlay({
         }
         if (!firstVideoId) throw new Error("No se encontró video.");
 
+        // set inicial con lógica de mantener/expandir end
         setCurrentNodeId(firstVideoId);
         const raw = toSegment(node(l, firstVideoId));
-        const seg = { ...raw, end: undefined }; // ▶️ reproducir completo
+        const keepEnd = hasInteractiveAfter(l, firstVideoId) && raw.end != null;
+        const seg = keepEnd ? raw : { ...raw, end: undefined };
         setSegment(seg);
         setBaseUrl(seg.url);
         setPoster(seg.poster);
-
-        // Si hay menú después del primer video, lo mostraremos al cortar en `end`
-        const g = findChoiceGroupAfter(l, firstVideoId);
-        if (g) setMenuId(null);
+        setMenuId(null);
+        setQuizId(null);
+        setCueIndex(0);
       } catch (e: any) {
         if (!cancel) setError(e?.message || "Error cargando preview.");
       } finally {
@@ -99,7 +124,7 @@ export default function VideoOverlay({
     };
   }, [organizationId, lessonId]);
 
-  // on metadata loaded: setear currentTime al start, calcular duración efectiva y buffer
+  // ----------------- LOADED METADATA: duraciones & buffer -----------------
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !segment) return;
@@ -108,21 +133,20 @@ export default function VideoOverlay({
       try {
         const start = Math.max(0, segment.start ?? 0);
         const rawDur = Number.isFinite(v.duration) ? v.duration : 0;
-        const end =
-          segment.end != null ? Math.min(segment.end, rawDur) : rawDur;
+        const end = segment.end != null ? Math.min(segment.end, rawDur) : rawDur;
         const effDur = Math.max(0, end - start);
 
         v.currentTime = start;
         setSegDuration(effDur);
         setSegCurrent(0);
-        updateBufferedRelative(v, start);
+        updateBufferedRelative(v, start, setBufferedEnd);
       } catch {}
       v.play().catch(() => {});
     };
 
     const onProgress = () => {
       const start = segment.start ?? 0;
-      updateBufferedRelative(v, start);
+      updateBufferedRelative(v, start, setBufferedEnd);
     };
 
     v.addEventListener("loadedmetadata", onLoaded);
@@ -133,7 +157,7 @@ export default function VideoOverlay({
     };
   }, [segment?.url, segment?.start, segment?.end]);
 
-  // timeupdate: cortar en end y mostrar overlay; también actualizar progreso
+  // ----------------- TIME UPDATE: cues + corte en end + progreso -----------------
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !list || !segment || !currentNodeId) return;
@@ -147,21 +171,45 @@ export default function VideoOverlay({
           ? v.duration
           : Infinity;
 
-      // actualizar progreso relativo al segmento
-      const rel = Math.max(
-        0,
-        Math.min(v.currentTime - start, Math.max(0, endAbs - start))
-      );
+      // (A) Progreso relativo del segmento (para la barra)
+      const rel = Math.max(0, Math.min(v.currentTime - start, Math.max(0, endAbs - start)));
       setSegCurrent(rel);
 
-      if (segment.end != null && v.currentTime >= segment.end) {
+      // (B) Cues internos (si existen)
+      const nextCue = cues[cueIndex];
+      if (nextCue && rel >= nextCue.at - 0.05) {
         v.pause();
+        if (nextCue.type === "menu") {
+          setMenuId(nextCue.targetId);
+          setQuizId(null);
+        } else if (nextCue.type === "quiz") {
+          setQuizId(nextCue.targetId);
+          setMenuId(null);
+        } else if (nextCue.type === "jump") {
+          const dest = node(list, nextCue.targetId);
+          if (dest) {
+            if (isType(dest, T.VIDEO)) goToVideoNode(nextCue.targetId, dest);
+            else if (isType(dest, T.CHOICE_GROUP)) setMenuId(nextCue.targetId);
+            else if (isType(dest, T.QUIZ)) setQuizId(nextCue.targetId);
+          }
+        }
+        setCueIndex((i) => i + 1);
+        return;
+      }
+
+      // (C) Cortar en end si corresponde (solo cuando se mantuvo end)
+      if (segment.end != null && v.currentTime >= segment.end - 0.05) {
+        v.pause();
+
+        // ¿hay choice group después?
         const g = findChoiceGroupAfter(list, currentNodeId);
         if (g) {
           setMenuId(g);
           setQuizId(null);
           return;
         }
+
+        // ¿hay quiz directo después?
         const kids = children(node(list, currentNodeId));
         const next = node(list, kids[0]);
         if (isType(next, T.QUIZ)) {
@@ -169,6 +217,8 @@ export default function VideoOverlay({
           setMenuId(null);
           return;
         }
+
+        // avanzar automático al próximo VIDEO, si lo hay
         const nextVid = kids.find((id) => isType(node(list, id), T.VIDEO));
         if (nextVid) {
           const nv = node(list, nextVid);
@@ -179,13 +229,19 @@ export default function VideoOverlay({
 
     v.addEventListener("timeupdate", onTime);
     return () => v.removeEventListener("timeupdate", onTime);
-  }, [segment?.end, segment?.start, list, currentNodeId]);
+  }, [segment?.end, segment?.start, list, currentNodeId, cues, cueIndex]);
 
+  // ----------------- NAVEGACIÓN ENTRE VIDEOS -----------------
   function goToVideoNode(id: string, videoNode: any) {
+    if (!list) return;
+
     const raw = toSegment(videoNode);
-    const seg = { ...raw, end: undefined }; // ▶️ sin recorte
+    const keepEnd = hasInteractiveAfter(list, id) && raw.end != null;
+    const seg = keepEnd ? raw : { ...raw, end: undefined };
+
     setCurrentNodeId(id);
     setPoster(seg.poster);
+    setCueIndex(0); // reset cues de ese video
 
     if (baseUrl && seg.url === baseUrl) {
       setSegment(seg);
@@ -193,29 +249,18 @@ export default function VideoOverlay({
         const v = videoRef.current;
         if (v) {
           v.currentTime = seg.start ?? 0;
-          // reset progreso
-          setSegCurrent(0);
-          setSegDuration(
-            Math.max(
-              0,
-              (seg.end ?? (Number.isFinite(v.duration) ? v.duration : 0)) -
-                (seg.start ?? 0)
-            )
-          );
           v.play().catch(() => {});
         }
       });
     } else {
       setSegment(seg);
       setBaseUrl(seg.url);
-      setSegCurrent(0);
-      setSegDuration(0); // se recalcula onLoaded
     }
     setMenuId(null);
     setQuizId(null);
   }
 
-  // selección en menú
+  // ----------------- SELECCIÓN EN MENÚ -----------------
   function onSelectOption(targetId: string) {
     if (!list) return;
     const t = node(list, targetId);
@@ -241,99 +286,41 @@ export default function VideoOverlay({
         goToVideoNode(dest, d);
         return;
       }
+      if (isType(d, T.QUIZ)) {
+        setQuizId(dest);
+        return;
+      }
     }
+
+    // fallback: BFS hasta el primer VIDEO alcanzable
     const q = [targetId];
     const seen = new Set<string>();
     while (q.length) {
-      const id = q.shift()!;
-      if (seen.has(id)) continue;
-      seen.add(id);
-      const n = node(list, id);
+      const nid = q.shift()!;
+      if (seen.has(nid)) continue;
+      seen.add(nid);
+      const n = node(list, nid);
       if (!n) continue;
       if (isType(n, T.VIDEO)) {
-        goToVideoNode(id, n);
+        goToVideoNode(nid, n);
         return;
       }
       for (const k of children(n)) q.push(k);
     }
   }
 
-  // UI de menú
+  // ----------------- UI: MENÚ & QUIZ -----------------
   const menu = useMemo(
     () => (list && menuId ? getMenuForGroup(list, menuId) : null),
     [list, menuId]
   );
 
-  // UI de quiz mínima
-  function Quiz() {
-    if (!list || !quizId) return null;
-    const q = node(list, quizId);
-    const question = q?.data?.question ?? "Question";
-    const answers: Array<{ value: string; isCorrect?: boolean }> =
-      q?.data?.answers ?? [];
-    const nextId = children(q)[0];
-
-    return (
-      <div style={overlayBox}>
-        <div style={overlayContainer}>
-          <h3 style={overlayTitle}>{question}</h3>
-          <div style={{ display: "grid", gap: 10 }}>
-            {answers.map((a, i) => (
-              <button
-                key={i}
-                style={btn}
-                onClick={() => {
-                  if (nextId) {
-                    const n = node(list, nextId);
-                    if (isType(n, T.VIDEO)) goToVideoNode(nextId, n);
-                    else if (isType(n, T.CHOICE_GROUP)) setMenuId(nextId);
-                    else setQuizId(null);
-                  } else {
-                    setQuizId(null);
-                  }
-                }}
-              >
-                <PlayCircleIcon style={{ width: 20, height: 20 }} /> {a.value}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function fmt(t: number) {
-    if (!Number.isFinite(t)) return "0:00";
-    const s = Math.max(0, Math.floor(t));
-    const m = Math.floor(s / 60);
-    const r = s % 60;
-    return `${m}:${r.toString().padStart(2, "0")}`;
-  }
-
-  function updateBufferedRelative(v: HTMLVideoElement, start: number) {
-    try {
-      const b = v.buffered;
-      let end = 0;
-      for (let i = 0; i < b.length; i++) {
-        const to = b.end(i);
-        if (to >= v.currentTime) {
-          end = Math.max(end, to);
-        }
-      }
-      const rel = Math.max(0, end - start);
-      setBufferedEnd(rel);
-    } catch {
-      setBufferedEnd(0);
-    }
-  }
-
-  if (loading) return overlayRoot(<Loader />, onClose);
-  if (error)
-    return overlayRoot(<div style={{ color: "salmon" }}>{error}</div>, onClose);
+  if (loading) return overlayRoot(<div style={{ color: "#aaa" }}>Loading...</div>, onClose);
+  if (error) return overlayRoot(<div style={{ color: "salmon" }}>{error}</div>, onClose);
 
   return overlayRoot(
     <>
-      {/* VIDEO */}
+      {/* CONTENEDOR DEL VIDEO + PROGRESS (relative para ubicar la barra) */}
       {baseUrl && (
         <div
           style={{
@@ -376,7 +363,7 @@ export default function VideoOverlay({
               aria-valuemax={segDuration || 0}
               aria-valuenow={Math.min(segCurrent, segDuration)}
               aria-label="Video progress"
-              tabIndex={-1} // sin foco, sin interacción
+              tabIndex={-1}
               style={trackReadOnly}
             >
               {/* buffer */}
@@ -416,16 +403,9 @@ export default function VideoOverlay({
           <div style={overlayContainer}>
             <h3 style={overlayTitle}>{menu.title}</h3>
             <div style={{ display: "grid", gap: 10, maxWidth: 560 }}>
-              {menu.options.map((opt) => (
-                <button
-                  key={opt.targetId}
-                  style={btn}
-                  onClick={() => onSelectOption(opt.targetId)}
-                >
-                  <CircleStackIcon style={{ width: 20, height: 20 }} />
-                  <span
-                    style={{ overflow: "hidden", textOverflow: "ellipsis" }}
-                  >
+              {menu.options.map((opt: { targetId: string; label: string }) => (
+                <button key={opt.targetId} style={btn} onClick={() => onSelectOption(opt.targetId)}>
+                  <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>
                     {opt.label}
                   </span>
                 </button>
@@ -436,13 +416,60 @@ export default function VideoOverlay({
       )}
 
       {/* QUIZ */}
-      <Quiz />
+      {quizId && list && (
+        <Quiz
+          list={list}
+          quizId={quizId}
+          goToVideoNode={goToVideoNode}
+          setMenuId={setMenuId}
+          setQuizId={setQuizId}
+        />
+      )}
     </>,
     onClose
   );
 }
 
-/* ----- UI helpers ----- */
+/** ---------- Helpers de lógica ---------- */
+
+function hasInteractiveAfter(list: any, videoNodeId: string) {
+  if (findChoiceGroupAfter(list, videoNodeId)) return true;
+  const kids = children(node(list, videoNodeId));
+  if (!kids?.length) return false;
+  const next = node(list, kids[0]);
+  return isType(next, T.QUIZ) || isType(next, T.CHOICE_GROUP) || isType(next, T.JUMP);
+}
+
+function updateBufferedRelative(
+  v: HTMLVideoElement,
+  start: number,
+  setBufferedEnd: (n: number) => void
+) {
+  try {
+    const b = v.buffered;
+    let end = 0;
+    for (let i = 0; i < b.length; i++) {
+      const to = b.end(i);
+      if (to >= v.currentTime) {
+        end = Math.max(end, to);
+      }
+    }
+    const rel = Math.max(0, end - start);
+    setBufferedEnd(rel);
+  } catch {
+    setBufferedEnd(0);
+  }
+}
+
+function fmt(t: number) {
+  if (!Number.isFinite(t)) return "0:00";
+  const s = Math.max(0, Math.floor(t));
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${m}:${r.toString().padStart(2, "0")}`;
+}
+
+/** ---------- UI Helpers ---------- */
 function overlayRoot(children: any, onClose: () => void) {
   return (
     <div style={root} role="dialog" aria-modal="true">
@@ -456,6 +483,55 @@ function overlayRoot(children: any, onClose: () => void) {
   );
 }
 
+function Quiz({
+  list,
+  quizId,
+  goToVideoNode,
+  setMenuId,
+  setQuizId,
+}: {
+  list: any;
+  quizId: string;
+  goToVideoNode: (id: string, videoNode: any) => void;
+  setMenuId: (id: string | null) => void;
+  setQuizId: (id: string | null) => void;
+}) {
+  const q = node(list, quizId);
+  const question = q?.data?.question ?? "Question";
+  const answers: Array<{ value: string; isCorrect?: boolean }> = q?.data?.answers ?? [];
+  const nextId = children(q)[0];
+
+  return (
+    <div style={overlayBox}>
+      <div style={overlayContainer}>
+        <h3 style={overlayTitle}>{question}</h3>
+        <div style={{ display: "grid", gap: 10 }}>
+          {answers.map((a, i) => (
+            <button
+              key={i}
+              style={btn}
+              onClick={() => {
+                // si querés validar isCorrect antes de avanzar, hacelo acá
+                if (nextId) {
+                  const n = node(list, nextId);
+                  if (isType(n, T.VIDEO)) goToVideoNode(nextId, n);
+                  else if (isType(n, T.CHOICE_GROUP)) setMenuId(nextId);
+                  else setQuizId(null);
+                } else {
+                  setQuizId(null);
+                }
+              }}
+            >
+              {a.value}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** ---- Estilos inline ---- */
 const root: React.CSSProperties = {
   position: "fixed",
   inset: 0,
@@ -507,7 +583,7 @@ const btn: React.CSSProperties = {
   alignItems: "center",
   gap: 12,
   background: "rgba(0,0,0,.45)",
-  backdropFilter: "blur(5px)",
+  backdropFilter: "blur(4px)",
   border: "1px solid rgba(255,255,255,.08)",
   borderRadius: 16,
   padding: "12px 16px",
@@ -522,6 +598,8 @@ const progressWrap: React.CSSProperties = {
   position: "absolute",
   bottom: 30,
   width: "80%",
+  left: "50%",
+  transform: "translateX(-50%)",
 };
 const timeLabel: React.CSSProperties = {
   display: "flex",
