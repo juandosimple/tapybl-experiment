@@ -1,4 +1,3 @@
-// src/features/auth/pages/LoginPage.tsx
 import { FormEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../useAuth";
@@ -33,7 +32,6 @@ export default function LoginPage() {
     }
   }
 
-  // Playlist (rutas de tus videos cortos en /public o /assets)
   const bgVideos = [
     "/videos/bg1.mp4",
     "/videos/bg2.mp4",

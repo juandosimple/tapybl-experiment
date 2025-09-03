@@ -1,4 +1,3 @@
-// Tipos mínimos
 export type NodeData = {
   ivNodeType?: number;
   title?: string | null;
@@ -8,7 +7,7 @@ export type NodeData = {
   startInSeconds?: number | null;
   endInSeconds?: number | null;
   durationInSeconds?: number | null;
-  jumpToNodeId?: string | null; // para ivNodeType 24
+  jumpToNodeId?: string | null;
 };
 
 export type GraphNode = {
@@ -81,7 +80,6 @@ export function toClip(n: GraphNode) {
   };
 }
 
-// siguiente “contenido” desde un nodo TEXT (opción): puede ser VIDEO o JUMP
 export function resolveFromText(list: any, textId: string): string | null {
   const n = node(list, textId);
   const first = children(n)[0];
@@ -93,7 +91,6 @@ export function resolveFromText(list: any, textId: string): string | null {
   return null;
 }
 
-// buscar grupo de opciones (2->3) a partir de un nodo (típicamente VIDEO)
 export function findChoiceGroupAfter(list: any, fromId: string): string | null {
   const a = children(node(list, fromId));
   for (const id of a) {
@@ -107,7 +104,6 @@ export function findChoiceGroupAfter(list: any, fromId: string): string | null {
   return null;
 }
 
-// sacar título del grupo y opciones {label, targetId}
 export function getMenuForGroup(list: any, groupId: string) {
   const g = node(list, groupId);
   const title = g?.data?.title ?? "Choose your path:";
@@ -123,7 +119,6 @@ export function getMenuForGroup(list: any, groupId: string) {
   return { title, options: opts as Array<{ label: string; targetId: string }> };
 }
 
-// convertir VIDEO node a segmento
 export function toSegment(v: any) {
   const d = v?.data ?? {};
   return {
@@ -150,7 +145,6 @@ export function getOptionsForGroup(
     const n = list.items[id];
     if (!isType(n, T.TEXT)) continue;
     const label = n?.data?.text ?? "Option";
-    // destino: hijo del texto
     const kids = n?.childIds ?? [];
     if (!kids?.length) continue;
     const dest = list.items[kids[0]];

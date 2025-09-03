@@ -1,7 +1,6 @@
-// src/app/routes/ProtectedRoute.tsx
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../../features/auth/authStore";
-import { ReactNode } from "react";   // 👈 importar acá
+import { ReactNode } from "react";
 import Loader from "../../components/loaders";
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -9,5 +8,5 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
 
   if (initializing) return <Loader />;
   if (!hasSession) return <Navigate to="/login" replace />;
-  return <>{children}</>;   // 👈 envolver en fragment
+  return <>{children}</>;
 }

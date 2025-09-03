@@ -7,7 +7,6 @@ export async function fetchMicrolessons(organizationId: string, page: number, pa
   return http.post<MicrolessonListResponse>(`/microlessons/${orgId}/list`, body);
 }
 
-// 🔹 PREVIEW: devuelve los nodos / media del contenido
 export async function fetchLessonPreview(organizationId: string, lessonId: string) {
   const orgId = encodeURIComponent(organizationId);
   const mid = encodeURIComponent(lessonId);

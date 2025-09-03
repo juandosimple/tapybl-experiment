@@ -1,10 +1,10 @@
 import { FC } from "react";
 import Lottie from "lottie-react";
-import animationData from "../../assets/images/loading.json"; // tu animación Lottie
+import animationData from "../../assets/images/loading.json";
 
 type LoaderProps = {
-  size?: number;     // tamaño del loader
-  loop?: boolean;    // si debe repetirse
+  size?: number;
+  loop?: boolean;
 };
 
 const Loader: FC<LoaderProps> = ({ size = "100%", loop = true }) => {

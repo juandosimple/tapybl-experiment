@@ -1,4 +1,3 @@
-// src/features/auth/authStore.ts
 import { create } from "zustand";
 import { apiLogin, apiRefresh, apiMyOrganization, type AuthResponse } from "./api";
 
@@ -9,7 +8,7 @@ type AuthState = {
   user: User;
   org: Org;
   initializing: boolean;
-  hasSession: boolean; // 👈 derivada, pero útil para http.ts
+  hasSession: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   refreshToken: () => Promise<boolean>;
   logout: () => Promise<void>;
@@ -55,18 +54,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   async refreshToken() {
     try {
-      const user = await apiRefresh(); // skipRefresh: true
+      const user = await apiRefresh();
       set({ user, hasSession: true });
       localStorage.setItem(LS_USER, JSON.stringify(user));
 
-      // traer org siempre después de refresh OK
       const orgRes = await apiMyOrganization();
       const org = { id: orgRes.organization.id, name: orgRes.organization.name, avatar: orgRes.organization.avatar ?? null };
       set({ org });
       localStorage.setItem(LS_ORG, JSON.stringify(org));
       return true;
     } catch {
-      // refresh falló → limpiar sesión
       set({ user: null, org: null, hasSession: false });
       localStorage.removeItem(LS_USER);
       localStorage.removeItem(LS_ORG);

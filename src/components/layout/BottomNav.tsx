@@ -7,7 +7,7 @@ export default function BottomNav() {
   const tabs = [
     { to: "/", icon: HomeIcon, label: "Home" },
     { to: "/notifications", icon: BellIcon, label: "Notificaciones" },
-    { to: "/profile", icon: UserCircleIcon, label: "Perfil" }, // 👈 tu nueva ruta
+    { to: "/profile", icon: UserCircleIcon, label: "Perfil" },
   ];
 
   return (

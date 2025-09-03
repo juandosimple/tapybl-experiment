@@ -1,28 +1,29 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "../../auth/useAuth";
-import { fetchMicrolessons } from "../api";
-import type { Microlesson } from "../types";
+import { fetchMicrolessons } from "@/services/microlessons/api";
+import type { Microlesson } from "@/services/microlessons/types";
 import MicroLessonCard from "../components/MicroLessonCard";
-import { useInfiniteScroll } from "../../../hooks/useInfiniteScroll";
-import VideoOverlay from "../components/VideoOverlay";
-import Loader from "../../../components/loaders";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import Loader from "@/components/loaders";
+
+import InteractiveVideoPlayer from "@/components/player/core/InteractiveVideoPlayer";
+import { useLessonGraphLoader } from "@/components/player/adapters/useLessonGraphLoader";
 
 export default function FeedPage() {
   const { organizationId } = useAuth();
 
   const [items, setItems] = useState<Microlesson[]>([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [pagesCount, setPagesCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string>("");
   const [openLessonId, setOpenLessonId] = useState<string | null>(null);
 
-  // Set de ids ya vistos para evitar duplicados
   const seenIds = useRef<Set<string>>(new Set());
-  // Flag anti-concurrencia (carreras entre primer load y sentinel)
   const inFlight = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
+  const requestIdRef = useRef(0);
 
-  // Reset cuando cambia la organización
   useEffect(() => {
     setItems([]);
     setPage(1);
@@ -30,6 +31,8 @@ export default function FeedPage() {
     setErr("");
     seenIds.current = new Set();
     inFlight.current = false;
+    abortRef.current?.abort();
+    abortRef.current = null;
   }, [organizationId]);
 
   const hasMore = useMemo(() => {
@@ -39,13 +42,23 @@ export default function FeedPage() {
 
   const loadNext = useCallback(async () => {
     if (!organizationId || loading || !hasMore) return;
-    if (inFlight.current) return; // evita doble fetch simultáneo
+    if (inFlight.current) return;
+
     inFlight.current = true;
     setLoading(true);
+    setErr("");
+
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    const myRequestId = ++requestIdRef.current;
+
     try {
       const res = await fetchMicrolessons(organizationId, page, 12);
 
-      // Desduplicar por id
+      if (myRequestId !== requestIdRef.current) return;
+
       const fresh = res.data.filter((it) => {
         if (seenIds.current.has(it.id)) return false;
         seenIds.current.add(it.id);
@@ -56,30 +69,31 @@ export default function FeedPage() {
       setPagesCount(res.pagesCount ?? null);
       setPage((p) => p + 1);
     } catch (e: any) {
-      setErr(e?.message || "Error cargando microlessons");
+      if (e?.name === "AbortError") return;
+      setErr(e?.message || "Error loading microlessons");
     } finally {
-      setLoading(false);
-      inFlight.current = false;
+      if (myRequestId === requestIdRef.current) {
+        setLoading(false);
+        inFlight.current = false;
+      }
     }
   }, [organizationId, page, loading, hasMore]);
 
-  // Primer page al montar/when organizationId becomes available
   useEffect(() => {
     if (organizationId && items.length === 0) {
-      // llamamos una vez; inFlight evita que se duplique con el sentinel
       loadNext();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [organizationId]);
 
   const { sentinelRef } = useInfiniteScroll({
-    enabled: !!organizationId && hasMore && !loading,
+    enabled: !!organizationId && hasMore && !loading && !err,
     onIntersect: loadNext,
     rootMargin: "400px",
   });
 
   if (!organizationId) {
-    return <div style={{ padding: 16 }}>Cargando organización…</div>;
+    return <div style={{ padding: 16 }}>Loading Organization…</div>;
   }
 
   if (err) {
@@ -92,7 +106,7 @@ export default function FeedPage() {
           disabled={loading}
           style={{ marginTop: 12 }}
         >
-          Reintentar
+          Retry
         </button>
       </div>
     );
@@ -109,23 +123,48 @@ export default function FeedPage() {
       ))}
 
       <div ref={sentinelRef} style={{ height: 1 }} />
+
       {loading && <Loader />}
+
       {!hasMore && items.length > 0 && (
         <div style={{ padding: 16, color: "#777", textAlign: "center" }}>
           Fin del feed
         </div>
       )}
+
       {!loading && items.length === 0 && (
-        <div style={{ padding: 16 }}>No microlesons found</div>
+        <div style={{ padding: 16 }}>No microlessons found</div>
       )}
 
       {openLessonId && organizationId && (
-        <VideoOverlay
+        <FeedLessonOverlay
           organizationId={organizationId}
-          lessonId={openLessonId} // 👈 usamos id aquí
+          lessonId={openLessonId}
           onClose={() => setOpenLessonId(null)}
         />
       )}
     </div>
   );
+}
+
+function FeedLessonOverlay({
+  organizationId,
+  lessonId,
+  onClose,
+}: {
+  organizationId: string;
+  lessonId: string;
+  onClose: () => void;
+}) {
+  const { graph, loading, error } = useLessonGraphLoader({
+    organizationId,
+    lessonId,
+  });
+
+  if (loading)
+    return <div style={{ padding: 16, color: "#aaa" }}>Cargando…</div>;
+  if (error) return <div style={{ padding: 16, color: "salmon" }}>{error}</div>;
+  if (!graph) return null;
+
+  return <InteractiveVideoPlayer graph={graph} onClose={onClose} />;
 }
