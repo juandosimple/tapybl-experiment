@@ -11,6 +11,7 @@ import {
   toSegment,
   resolveFromText,
 } from "../graphHelpers";
+import Loader from "../../../components/loaders";
 
 type Props = { organizationId: string; lessonId: string; onClose: () => void };
 
@@ -359,7 +360,7 @@ export default function VideoOverlay({
 
   if (loading)
     return overlayRoot(
-      <div style={{ color: "#aaa" }}>Loading...</div>,
+      <Loader />,
       onClose
     );
   if (error)

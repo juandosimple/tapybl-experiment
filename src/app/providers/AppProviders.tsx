@@ -1,7 +1,7 @@
 // src/app/providers/AppProviders.tsx (o similar)
 import { useEffect } from "react";
 import { useAuthStore } from "../../features/auth/authStore";
-import Loader from "../../components/Loaders";
+import Loader from "../../components/loaders";
 
 export default function AppProviders({ children }: { children: React.ReactNode }) {
   const initializing = useAuthStore(s => s.initializing);

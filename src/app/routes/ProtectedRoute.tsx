@@ -2,7 +2,7 @@
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../../features/auth/authStore";
 import { ReactNode } from "react";   // 👈 importar acá
-import Loader from "../../components/Loaders";
+import Loader from "../../components/loaders";
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const { initializing, hasSession } = useAuthStore();

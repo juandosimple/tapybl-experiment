@@ -5,7 +5,7 @@ import type { Microlesson } from "../types";
 import MicroLessonCard from "../components/MicroLessonCard";
 import { useInfiniteScroll } from "../../../hooks/useInfiniteScroll";
 import VideoOverlay from "../components/VideoOverlay";
-import Loader from "../../../components/Loaders";
+import Loader from "../../../components/loaders";
 
 export default function FeedPage() {
   const { organizationId } = useAuth();
