@@ -8,6 +8,7 @@ import Loader from "@/components/loaders";
 
 import InteractiveVideoPlayer from "@/components/player/core/InteractiveVideoPlayer";
 import { useLessonGraphLoader } from "@/components/player/adapters/useLessonGraphLoader";
+import VideoSwiper from "@/components/player/core/videoSwiper";
 
 export default function FeedPage() {
   const { organizationId } = useAuth();
@@ -18,7 +19,6 @@ export default function FeedPage() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string>("");
   const [openLessonId, setOpenLessonId] = useState<string | null>(null);
-
   const seenIds = useRef<Set<string>>(new Set());
   const inFlight = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
@@ -136,13 +136,16 @@ export default function FeedPage() {
         <div style={{ padding: 16 }}>No Micro Reels found</div>
       )}
 
-      {openLessonId && organizationId && (
-        <FeedLessonOverlay
-          organizationId={organizationId}
-          lessonId={openLessonId}
-          onClose={() => setOpenLessonId(null)}
-        />
-      )}
+      {openLessonId &&
+        organizationId &&
+        items.some((i) => i.id === openLessonId) && (
+          <VideoSwiper
+            lessons={items}
+            initialLessonId={openLessonId}
+            organizationId={organizationId}
+            onClose={() => setOpenLessonId(null)}
+          />
+        )}
     </div>
   );
 }
