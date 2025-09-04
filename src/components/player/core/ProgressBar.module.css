@@ -1,0 +1,62 @@
+.progress-bar {
+  user-select: none;
+  padding-top: 10px;
+  position: absolute;
+  bottom: 30px;
+  width: 80%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.progress-bar__time-label {
+  display: flex;
+  justify-content: space-between;
+  color: #cbd5e1;
+  font-size: 12px;
+  margin-bottom: 6px;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto;
+}
+
+.progress-bar__track {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+.progress-bar__buffer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+}
+
+.progress-bar__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #60840ab3, #b7ef36ff);
+  pointer-events: none;
+}
+
+@media screen and (orientation: landscape) {
+  .progress-bar {
+    bottom: auto;
+    top: -35px;
+  }
+  .progress-bar__time-label {
+    display: none;
+  }
+
+  .progress-bar__progress,
+  .progress-bar__buffer,
+  .progress-bar__track {
+    height: 5px;
+  }
+}

@@ -3,7 +3,6 @@ import MobileShell from "@/app/layout/MobileShell";
 import ProtectedRoute from "./ProtectedRoute";
 
 import LoginPage from "@/features/auth/pages/LoginPage";
-import RegisterPage from "@/features/auth/pages/RegisterPage";
 
 import FeedPage from "@/features/feed/pages/FeedPage";
 import NotificationsPage from "@/features/notifications/pages/NotificationsPage";
@@ -13,8 +12,6 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
 
       <Route
         path="/*"
@@ -24,6 +21,7 @@ export default function AppRoutes() {
               <Routes>
                 <Route path="/" element={<FeedPage />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </MobileShell>

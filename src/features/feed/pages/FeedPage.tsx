@@ -13,7 +13,7 @@ export default function FeedPage() {
   const { organizationId } = useAuth();
 
   const [items, setItems] = useState<Microlesson[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [pagesCount, setPagesCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string>("");
@@ -26,7 +26,7 @@ export default function FeedPage() {
 
   useEffect(() => {
     setItems([]);
-    setPage(1);
+    setPage(0);
     setPagesCount(null);
     setErr("");
     seenIds.current = new Set();
@@ -128,12 +128,12 @@ export default function FeedPage() {
 
       {!hasMore && items.length > 0 && (
         <div style={{ padding: 16, color: "#777", textAlign: "center" }}>
-          Fin del feed
+          No more Micro Reels available
         </div>
       )}
 
       {!loading && items.length === 0 && (
-        <div style={{ padding: 16 }}>No microlessons found</div>
+        <div style={{ padding: 16 }}>No Micro Reels found</div>
       )}
 
       {openLessonId && organizationId && (
@@ -161,8 +161,7 @@ function FeedLessonOverlay({
     lessonId,
   });
 
-  if (loading)
-    return <div style={{ padding: 16, color: "#aaa" }}>Cargando…</div>;
+  if (loading) return <Loader />;
   if (error) return <div style={{ padding: 16, color: "salmon" }}>{error}</div>;
   if (!graph) return null;
 

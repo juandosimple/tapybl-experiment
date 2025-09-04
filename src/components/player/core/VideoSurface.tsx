@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./VideoSurface.module.css";
 
 export default function VideoSurface({
   src,
@@ -17,13 +18,7 @@ export default function VideoSurface({
       controls={false}
       autoPlay
       playsInline
-      style={{
-        width: "100%",
-        height: "auto",
-        background: "#000",
-        borderRadius: 12,
-        display: "block",
-      }}
+      className={styles["video-player__source"]}
     />
   );
 }
