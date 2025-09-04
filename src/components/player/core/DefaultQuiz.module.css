@@ -1,0 +1,46 @@
+.quiz-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.quiz-overlay__container {
+  background-color: rgba(36, 51, 77, 0.9);
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  backdrop-filter: blur(5px);
+}
+
+.quiz-overlay__title {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.quiz-overlay__button-container {
+  display: grid;
+  gap: 10px;
+}
+
+.quiz-overlay__button {
+  background-color: #b8ef36;
+  color: #24334d;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.quiz-overlay__button:hover {
+  background-color: #a7d331;
+}

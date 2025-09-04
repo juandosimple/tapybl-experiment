@@ -1,0 +1,81 @@
+:root {
+  --maxw: 480px;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: #fff;
+  color: #000;
+  font-family: 'Montserrat';
+}
+
+.app {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #222;
+}
+.content {
+  flex: 1;
+  overflow: auto;
+}
+.bottomnav {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  position: sticky;
+  bottom: 20px;
+  background: rgba(184, 239, 54, 0.7);
+  width: 90%;
+  border-radius: 50px;
+  margin: 0 auto;
+  backdrop-filter: blur(5px);
+  z-index: 99;
+}
+.tab {
+  background: none;
+  border: 0;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+.section {
+  padding: 16px;
+}
+.title {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+.muted {
+  color: #aaa;
+}
+
+/* ICONS */
+.icon {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+  /* color: #24334D; */
+}
+/* ICONS */
+
+/* VIDEO */
+video::-webkit-media-controls-timeline {
+  background: rgba(255, 255, 255, 0.08);
+}
+/* VIDEO */

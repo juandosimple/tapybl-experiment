@@ -1,0 +1,12 @@
+.video-player__source {
+  width: 100%;
+  height: auto;
+  background: #000;
+  border-radius: 12px;
+  display: block;
+}
+@media screen and (orientation: landscape) {
+  .video-player__source {
+    height: calc(100vh - 50px);
+  }
+}

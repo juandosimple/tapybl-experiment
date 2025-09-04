@@ -1,0 +1,78 @@
+.micro-lesson-card {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.micro-lesson-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8;
+  padding: 8px 12px;
+  position: absolute;
+  z-index: 1;
+  border-radius: 30px;
+  background: rgba(36, 51, 77, 0.6);
+  top: 10px;
+  left: 10px;
+  backdrop-filter: blur(5px);
+}
+
+.micro-lesson-card__title {
+  font-weight: 400;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 0.9rem;
+  color: #fff;
+}
+.micro-lesson-card__button {
+  all: unset;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.micro-lesson-card__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.micro-lesson-card__play-icon {
+  position: absolute;
+  z-index: 9;
+  fill: rgba(36, 51, 77, 1);
+  color: rgba(36, 51, 77, 1);
+  width: 32px;
+  stroke-width: 1;
+  background: rgba(184, 239, 54, 0.6);
+  border-radius: 50%;
+  outline: 15px solid rgba(184, 239, 54, 0.6);
+}
+
+.micro-lesson-card__poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 10;
+}
+
+.micro-lesson-card__no-poster {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #555;
+  font-size: 14;
+  border: 1px solid #ccc;
+  background: rgba(36, 51, 77, 0.2);
+  border-radius: 20px;
+}
+
+.micro-lesson-card__no-poster-text {
+  font-size: 1.5rem;
+  color: rgba(0, 0, 0, 0.2);
+}

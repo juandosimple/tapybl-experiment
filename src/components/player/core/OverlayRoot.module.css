@@ -1,0 +1,47 @@
+.overlay-root {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.98);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.overlay-root__topbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.overlay-root__close-button {
+  background: none;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+.overlay-root__close-button:hover {
+  opacity: 0.8;
+}
+
+.overlay-root__body {
+  flex: 1;
+  display: grid;
+  align-content: center;
+  padding: 12px;
+  position: relative;
+}
+
+.overlay-root__close-icon {
+  width: 28px;
+  height: 28px;
+}
+
+@media screen and (orientation: landscape) {
+  .overlay-root__topbar {
+    padding: 0 10px;
+  }
+  .overlay-root__body {
+    padding: 5px;
+  }
+}
