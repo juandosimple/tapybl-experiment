@@ -105,7 +105,7 @@ function LessonSlide({
     lessonId,
   });
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader color="white" />;
   if (error) return <div style={{ padding: 16, color: "salmon" }}>{error}</div>;
   if (!graph) return null;
 

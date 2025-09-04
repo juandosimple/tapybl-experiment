@@ -17,7 +17,7 @@ export default function BottomNav() {
         const active = pathname === t.to;
         return (
           <Link key={t.to} to={t.to} className={`tab ${active ? "active" : ""}`}>
-            <Icon className="icon" />
+            <Icon className="nav_icon" />
           </Link>
         );
       })}

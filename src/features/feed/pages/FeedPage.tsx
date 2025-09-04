@@ -8,7 +8,7 @@ import Loader from "@/components/loaders";
 
 import InteractiveVideoPlayer from "@/components/player/core/InteractiveVideoPlayer";
 import { useLessonGraphLoader } from "@/components/player/adapters/useLessonGraphLoader";
-import VideoSwiper from "@/components/player/core/videoSwiper";
+import VideoSwiper from "@/components/player/core/VideoSwiper";
 
 export default function FeedPage() {
   const { organizationId } = useAuth();

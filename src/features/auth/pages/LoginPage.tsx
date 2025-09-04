@@ -5,6 +5,7 @@ import styles from "./Login.module.css";
 import VideoBg from "../components/VideoBg";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import logo from "@/assets/images/white_font_logo.svg";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -45,7 +46,11 @@ export default function LoginPage() {
       <VideoBg videos={bgVideos} crossfadeMs={700} />
 
       <div className={styles.login__container}>
-        <h1 className={styles.login__title}>Tapybl Micro Reels</h1>
+        <img
+          src={logo}
+          alt="Tapybl Micro Reels"
+          className={styles.login__logo}
+        />
         <Form onSubmit={onSubmit} className={styles.login__form}>
           <Form.Group className={styles.login__group}>
             <Form.Label id="email" className={styles.login__label}>
@@ -81,11 +86,7 @@ export default function LoginPage() {
             {loading ? "Signing in..." : "Login"}
           </Button>
 
-          {err && (
-            <div className={`${styles.login__error}`}>
-              {err}
-            </div>
-          )}
+          {err && <div className={`${styles.login__error}`}>{err}</div>}
         </Form>
       </div>
     </div>

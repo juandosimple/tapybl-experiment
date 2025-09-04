@@ -72,6 +72,12 @@ body {
   stroke-width: 2;
   /* color: #24334D; */
 }
+.nav_icon {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+  color: #24334D;
+}
 /* ICONS */
 
 /* VIDEO */

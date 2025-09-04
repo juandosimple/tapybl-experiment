@@ -1,6 +1,7 @@
 import type { Microlesson } from "@/services/microlessons/types";
 import { PlayIcon } from "@heroicons/react/24/outline";
 import styles from "./MicroLessonCard.module.css";
+import OrganizationAvatar from "@/components/avatar/OrganizationAvatar";
 
 export default function MicroLessonCard({
   item,
@@ -13,6 +14,11 @@ export default function MicroLessonCard({
   return (
     <article className={styles["micro-lesson-card"]}>
       <header className={styles["micro-lesson-card__header"]}>
+        <OrganizationAvatar
+          size={28}
+          showName={false}
+          className={styles["micro-lesson-card__org"]}
+        />
         <div className={styles["micro-lesson-card__title"]}>
           {item.title || "(No title)"}
           {/* Not used for now
