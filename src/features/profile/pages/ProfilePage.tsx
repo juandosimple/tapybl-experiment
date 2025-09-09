@@ -1,6 +1,8 @@
 import { useAuth } from "../../auth/useAuth";
 import { useNavigate } from "react-router-dom";
 import styles from "./ProfilePage.module.css";
+import OrganizationAvatar from "@/components/avatar/OrganizationAvatar";
+import profilethumb from "@/assets/images/mock/profile.jpg"; // o .jpg
 
 export default function ProfilePage() {
   const { user, logout } = useAuth();
@@ -13,13 +15,34 @@ export default function ProfilePage() {
 
   return (
     <div className={styles["profile-page"]}>
-      <h1 className={styles["profile-page__title"]}>Profile</h1>
+      <div style={{ padding: 16 }}>
+        <div style={{ marginBottom: 24, color: "#000" }}>
+          <img src={profilethumb} alt=""  className={styles["profile-image"]}/>
+          <span
+            style={{
+              fontWeight: "bold",
+              fontSize: 18,
+              textAlign: "center",
+              display: "block",
+            }}
+          >
+            Learner 1
+          </span>
+        </div>
+        <div className={styles["profile_desc_grid"]}>
+          <p>
+            2 <span>Courses completed</span>
+          </p>
+          <p>
+            11 <span>Lessons completed</span>
+          </p>
+          <p>
+            43 <span>Challenges completed</span>
+          </p>
+        </div>
+      </div>
       {user ? (
         <div className={styles["profile-page__debug"]}>
-          <p className={styles["profile-page__info"]}>DEBUG</p>
-          <p className={styles["profile-page__info"]}>
-            ID: {user.userIdentityId}
-          </p>
           <button
             onClick={handleLogout}
             className={styles["profile-page__logout-button"]}

@@ -12,6 +12,6 @@ export default function AppProviders({ children }: { children: React.ReactNode }
     s.refreshToken().finally(() => setState({ initializing: false }));
   }, []);
 
-  if (initializing) return <Loader color="white" backgroundColor="#24334D"/>;
+  if (initializing) return <Loader color="white" backgroundColor="#00313C"/>;
   return <>{children}</>;
 }

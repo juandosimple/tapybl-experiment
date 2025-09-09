@@ -9,8 +9,23 @@
 
 .overlay-root__topbar {
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
   padding: 10px;
+  align-items: center;
+}
+
+.overlay-root__meta{
+  position: absolute;
+  bottom:10%;
+  left:11%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-root__meta p{
+  font-size: .8rem;
+  margin: 0;
 }
 
 .overlay-root__close-button {
@@ -18,6 +33,7 @@
   border: 0;
   color: #fff;
   cursor: pointer;
+  margin-right: auto;
 }
 
 .overlay-root__close-button:hover {

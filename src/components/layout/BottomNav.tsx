@@ -1,13 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
-import { HomeIcon, BellIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import {
+  HomeIcon,
+  BellIcon,
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 
 export default function BottomNav() {
   const { pathname } = useLocation();
 
   const tabs = [
     { to: "/", icon: HomeIcon, label: "Home" },
-    { to: "/notifications", icon: BellIcon, label: "Notificaciones" },
-    { to: "/profile", icon: UserCircleIcon, label: "Perfil" },
+    { to: "/explore", icon: MagnifyingGlassIcon, label: "Explore" },
+    { to: "/notifications", icon: BellIcon, label: "Notifications" },
+    { to: "/profile", icon: UserCircleIcon, label: "Profile" },
   ];
 
   return (
@@ -16,7 +22,11 @@ export default function BottomNav() {
         const Icon = t.icon;
         const active = pathname === t.to;
         return (
-          <Link key={t.to} to={t.to} className={`tab ${active ? "active" : ""}`}>
+          <Link
+            key={t.to}
+            to={t.to}
+            className={`tab ${active ? "active" : ""}`}
+          >
             <Icon className="nav_icon" />
           </Link>
         );

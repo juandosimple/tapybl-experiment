@@ -1,6 +1,7 @@
 import React from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import styles from "./OverlayRoot.module.css";
+import OrganizationAvatar from "@/components/avatar/OrganizationAvatar";
 
 export default function OverlayRoot({
   children,
@@ -17,10 +18,19 @@ export default function OverlayRoot({
           title="Close"
           className={styles["overlay-root__close-button"]}
         >
-          <XMarkIcon className={styles["overlay-root__close-icon"]} />
+          <ArrowLeftIcon className={styles["overlay-root__close-icon"]} />
         </button>
       </div>
-      <div className={styles["overlay-root__body"]}>{children}</div>
+      <div className={styles["overlay-root__body"]}>
+        <div className={styles["overlay-root__meta"]}>
+          <OrganizationAvatar showName={false} />
+          <p>
+            <strong>iamproperty</strong> <br /> Distressed clients
+          </p>
+        </div>
+
+        {children}
+      </div>
     </div>
   );
 }

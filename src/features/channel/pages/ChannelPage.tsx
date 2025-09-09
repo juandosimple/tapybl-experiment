@@ -4,10 +4,25 @@ import OrganizationAvatar from "@/components/avatar/OrganizationAvatar";
 import styles from "./ChannelPage.module.css";
 import { Tabs, Tab } from "react-bootstrap";
 import { useState } from "react";
+import img1 from "@/assets/images/mock/img-1.png"; // o .jpg
+import img2 from "@/assets/images/mock/img-2.png"; // o .jpg
+import img3 from "@/assets/images/mock/img-3.png"; // o .jpg
+import img4 from "@/assets/images/mock/img-4.png"; // o .jpg
+import img5 from "@/assets/images/mock/img-5.jpg"; // o .jpg
+import img6 from "@/assets/images/mock/img-6.png"; // o .jpg
+
+import {
+  VideoCameraIcon,
+  PaperAirplaneIcon,
+  Squares2X2Icon,
+  BookmarkIcon,
+  AcademicCapIcon,
+} from "@heroicons/react/24/outline";
+import { url } from "inspector";
 
 export default function ChannelPage() {
   const { organization_id } = useParams<{ organization_id: string }>();
-  const [key, setKey] = useState<string>("popular");
+  const [key, setKey] = useState<string>("gallery");
 
   function EmptyState({ title, text }: { title: string; text: string }) {
     return (
@@ -19,15 +34,127 @@ export default function ChannelPage() {
       </div>
     );
   }
+  function Gallery() {
+    return (
+      <div
+        style={{
+          color: "#bbb",
+          textAlign: "center",
+          display: "flex",
+          gap: 10,
+          flexWrap: "wrap",
+        }}
+      >
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img5})` }}
+        >
+        </div>
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img4})` }}
+        >
+        </div>
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img6})` }}
+        >
+        </div>
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img3})` }}
+        >
+        </div>
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img3})` }}
+        >
+        </div>
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img3})` }}
+        >
+        </div>
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img3})` }}
+        >
+        </div>
+      </div>
+    );
+  }
+  function Progress() {
+    return (
+      <div
+        style={{
+          color: "#bbb",
+          textAlign: "center",
+          display: "flex",
+          gap: 10,
+          flexWrap: "wrap",
+        }}
+      >
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img1})` }}
+        >
+          <span className={styles["profile_gallery_image_span"]}>43% done</span>
+        </div>
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img2})` }}
+        >
+          <span className={styles["profile_gallery_image_span"]}>
+            Completed!
+          </span>
+        </div>
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img3})` }}
+        >
+          <span className={styles["profile_gallery_image_span"]}>10% done</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: 16 }}>
       <div style={{ marginBottom: 24, color: "#000" }}>
         <OrganizationAvatar
-          size={48}
-          showName
-          className={styles["profile_avatar"]}
+          size={100}
+          showName={false}
+          className={styles["profile_avatar_2"]}
         />
+        <span
+          style={{
+            fontWeight: "bold",
+            fontSize: 18,
+            textAlign: "center",
+            display: "block",
+          }}
+        >
+          iamproperty
+        </span>
+        <p style={{ fontWeight: "500", textAlign: "center" }}>
+          Transforming Estate Agency with Next Gen Solutions
+        </p>
+        <p style={{ fontWeight: "500", textAlign: "center" }}>
+          <a href="#" style={{ color: "#000" }}>
+            https://iamproperty.com/
+          </a>
+        </p>
+      </div>
+      <div className={styles["profile_desc_grid"]}>
+        <p>
+          2K <span>Learners</span>
+        </p>
+        <p>
+          120 <span>Lessons</span>
+        </p>
+        <p>
+          43 <span>Challenges</span>
+        </p>
       </div>
       <div className={styles.tabsWrap}>
         <Tabs
@@ -41,35 +168,49 @@ export default function ChannelPage() {
           unmountOnExit
         >
           <Tab
-            eventKey="popular"
-            title="Most popular"
+            eventKey="gallery"
+            title={
+              <>
+                <Squares2X2Icon />
+              </>
+            }
             tabClassName={styles.tab}
           >
             <section className={styles.panel}>
               {/* TODO: reemplazar con tu grid/lista real */}
-              <EmptyState
-                title="Most popular"
-                text="The most viewed lessons will appear here."
-              />
+              <Gallery />
             </section>
           </Tab>
 
-          <Tab eventKey="recent" title="Recent" tabClassName={styles.tab}>
+          <Tab
+            eventKey="progress"
+            title={
+              <>
+                <AcademicCapIcon />
+              </>
+            }
+            tabClassName={styles.tab}
+          >
             <section className={styles.panel}>
               {/* TODO: renderiza tus recientes */}
-              <EmptyState
-                title="Recent"
-                text="Your most recent micro-lessons will appear here."
-              />
+              <Progress />
             </section>
           </Tab>
 
-          <Tab eventKey="featured" title="Featured" tabClassName={styles.tab}>
+          <Tab
+            eventKey="bookmarked"
+            title={
+              <>
+                <BookmarkIcon />
+              </>
+            }
+            tabClassName={styles.tab}
+          >
             <section className={styles.panel}>
               {/* TODO: renderiza destacadas */}
               <EmptyState
-                title="Featured"
-                text="Featured micro-lessons from the team will appear here."
+                title="bookmarked"
+                text="You can bookmark videos to quickly find and continue them later."
               />
             </section>
           </Tab>

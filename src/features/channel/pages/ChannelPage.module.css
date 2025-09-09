@@ -23,7 +23,7 @@
 }
 
 .tabsWrap {
-  position: sticky; 
+  position: sticky;
   top: 0;
   z-index: 3;
   background: transparent;
@@ -43,13 +43,77 @@
   border-radius: 5rem;
 }
 
+.tabsWrap .tabs :global(.nav-link) svg {
+  width: 28px;
+}
+
 .tabsWrap .tabs :global(.nav-link.active) {
   color: #303030;
-  background-color: rgb(184 239 54);
+  /* background-color: rgb(184 239 54); */
+  background-color: #05fe86;
 }
 
 .panel {
   padding: 8px 0 0;
+}
+.profile_avatar_2 img {
+  margin: 0 auto !important;
+}
+.profile_desc_grid {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.profile_desc_grid p {
+  display: flex;
+  flex-direction: column;
+  color: #000;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.profile_desc_grid span {
+  font-size: 0.9rem;
+  color: #000;
+}
+
+.profile_gallery_image_container::after {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 20px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.65) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.profile_gallery_image_container {
+  width: 170px;
+  height: 250px;
+  border-radius: 20px;
+  background-size: cover;
+  background-repeat: repeat;
+  background-position: center;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.profile_gallery_image_span {
+  position: absolute;
+  z-index: 2;
+  color: #fff;
+  font-weight: bold;
+  bottom: 10px;
 }
 
 @media (min-width: 768px) {

@@ -15,14 +15,15 @@
 }
 
 .profile-page__logout-button {
-  background-color: #dc3545;
-  color: #fff;
+  background-color: #05fe86;
+  color: #000;
   border: 1px solid transparent;
   padding: 0.375rem 0.75rem;
-  border-radius: 0.25rem;
+  border-radius:5rem;
   margin-top: 1rem;
   cursor: pointer;
   transition: background-color 0.15s ease-in-out;
+  width: 100%;
 }
 
 .profile-page__logout-button:hover {
@@ -31,4 +32,30 @@
 
 .profile-page__message {
   /* Estilos para el mensaje de no logueado */
+}
+
+.profile_desc_grid {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.profile_desc_grid p {
+  display: flex;
+  flex-direction: column;
+  color: #000;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.profile_desc_grid span {
+  font-size: 0.9rem;
+  color: #000;
+}
+
+.profile-image{
+  width: 70px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: block;
 }

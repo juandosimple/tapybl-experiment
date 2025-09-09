@@ -13,3 +13,25 @@
   position: relative;
   height: calc(100vh - 50px);
 }
+
+.interactive-video-player__sidebar {
+  position: absolute;
+  right: 0;
+  background: hsla(191, 100%, 12%, 0.9);
+  width: 40px;
+  z-index: 999999;
+  border-radius: 20px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 10%;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media screen and (orientation: landscape) {
+  .interactive-video-player__sidebar {
+    bottom: 0;
+  }
+}

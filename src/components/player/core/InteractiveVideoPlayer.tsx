@@ -7,6 +7,7 @@ import { useInteractiveVideoCore } from "./useInteractiveVideoCore";
 import type { Graph } from "../utils/types";
 import styles from "./InteractiveVideoPlayer.module.css";
 import Loader from "@/components/loaders";
+import { ArrowUpOnSquareIcon, HeartIcon } from "@heroicons/react/24/outline";
 
 export default function InteractiveVideoPlayer({
   graph,
@@ -47,6 +48,10 @@ export default function InteractiveVideoPlayer({
   return (
     <OverlayRoot onClose={onClose}>
       <div className={styles["interactive-video-player__content"]}>
+        <div className={styles["interactive-video-player__sidebar"]}>
+         <HeartIcon  />
+         <ArrowUpOnSquareIcon />
+        </div>
         <VideoSurface
           src={video.baseUrl}
           poster={video.poster}

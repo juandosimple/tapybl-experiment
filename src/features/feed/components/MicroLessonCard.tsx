@@ -15,12 +15,15 @@ export default function MicroLessonCard({
     <article className={styles["micro-lesson-card"]}>
       <header className={styles["micro-lesson-card__header"]}>
         <OrganizationAvatar
-          size={28}
+          size={38}
           showName={false}
           className={styles["micro-lesson-card__org"]}
         />
         <div className={styles["micro-lesson-card__title"]}>
           {item.title || "(No title)"}
+          <div style={{ fontSize: 12, color: "#fff" }}>
+            iamproperty
+          </div>
           {/* Not used for now
           <div style={{ fontSize: 12, color: "#fff" }}>
            {item.statusString} · {created.toLocaleString()}
