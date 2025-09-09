@@ -1,5 +1,5 @@
 import type { Microlesson } from "@/services/microlessons/types";
-import { PlayIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon, HeartIcon, PlayIcon } from "@heroicons/react/24/outline";
 import styles from "./MicroLessonCard.module.css";
 import OrganizationAvatar from "@/components/avatar/OrganizationAvatar";
 
@@ -58,11 +58,19 @@ export default function MicroLessonCard({
       <footer
         style={{
           position: "absolute",
-          bottom: 10,
+          width:"94%",
+          display: "flex",
+          justifyContent: "space-between",
+          bottom: 20,
           left: 10,
+          zIndex:9
         }}
       >
-        <p>{item.subtitle || "(No title)"}</p>
+        <p style={{ margin: 0 }}>{item.subtitle || "(No title)"}</p>
+        <div style={{display:"flex",gap:10}}>
+          <HeartIcon width={22} height={22} />
+          <BookmarkIcon width={22} height={22} />
+        </div>
       </footer>
       {/* Not used for now
       {item.description && (

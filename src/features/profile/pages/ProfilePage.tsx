@@ -26,7 +26,7 @@ export default function ProfilePage() {
               display: "block",
             }}
           >
-            Learner 1
+            Mike jones
           </span>
         </div>
         <div className={styles["profile_desc_grid"]}>
