@@ -1,25 +1,23 @@
-// src/components/player/core/VideoSwiper.tsx
 import { useRef, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import SwiperCore from "swiper";
 import type { Microlesson } from "@/services/microlessons/types";
-// Ya no usamos el graph loader ni el player interactivo en esta versión local
-// import { useLessonGraphLoader } from "@/components/player/adapters/useLessonGraphLoader";
-// import InteractiveVideoPlayer from "@/components/player/core/InteractiveVideoPlayer";
 import Loader from "@/components/loaders";
 
 SwiperCore.use([]);
 
 type LocalLesson = Microlesson & {
-  /** Opcional: si viene, se usa; si no, se arma con `/videos/${id}` */
+  /** si viene, se usa; si no, se arma con `/videos/${id}` */
   src?: string;
+  authorName?: string;
+  authorAvatar?: string;
 };
 
 type Props = {
   lessons: LocalLesson[];
   initialLessonId: string;
-  organizationId: string; // se mantiene por compat, no se usa en local
+  organizationId: string; // lo dejamos por compat (no se usa aquí)
   onClose: () => void;
 };
 
@@ -29,21 +27,17 @@ export default function VideoSwiper({
   organizationId, // eslint-disable-line @typescript-eslint/no-unused-vars
   onClose,
 }: Props) {
-  const initialIndex = lessons.findIndex((l) => l.id === initialLessonId);
+  const initialIndex = Math.max(0, lessons.findIndex((l) => l.id === initialLessonId));
   const swiperRef = useRef<any>(null);
-  const safeIndex = initialIndex >= 0 ? initialIndex : 0;
-  const [activeIndex, setActiveIndex] = useState(safeIndex);
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
 
-  // reproducir el video del slide activo (y pausar el resto)
+  /** Reproduce solo el video del slide activo (autoplay on swipe) */
   const playOnlyActiveSlide = (index: number) => {
-    // pausa y resetea todos
-    document.querySelectorAll("video").forEach((videoEl) => {
+    // pausa todos por las dudas
+    document.querySelectorAll("video").forEach((v) => {
       try {
-        videoEl.pause();
-        videoEl.currentTime = 0;
-        // para permitir autoplay en iOS, dejar muted por defecto;
-        // luego desmuteamos el activo cuando el usuario ya interactuó
-        videoEl.muted = true;
+        (v as HTMLVideoElement).pause();
+        (v as HTMLVideoElement).currentTime = 0;
       } catch {}
     });
 
@@ -51,24 +45,19 @@ export default function VideoSwiper({
     const activeVideo = swiperRef.current?.slides?.[index]?.querySelector("video") as
       | HTMLVideoElement
       | undefined;
-
-    if (activeVideo) {
-      try {
-        activeVideo.muted = false; // si querés dejarlo siempre muted, poné true
-        activeVideo.currentTime = 0;
-        activeVideo.play().catch(() => {
-          // algunos navegadores bloquean autoplay no silenciado;
-          // si falla, lo dejamos muted y reintenta
-          activeVideo.muted = true;
-          activeVideo.play().catch(() => {});
-        });
-      } catch {}
-    }
+    if (!activeVideo) return;
+    // intentar sin mute; si el navegador bloquea, reintenta muteado
+    activeVideo.muted = false;
+    activeVideo.currentTime = 0;
+    activeVideo.play().catch(() => {
+      activeVideo.muted = true;
+      activeVideo.play().catch(() => {});
+    });
   };
 
+  // autoplay inicial
   useEffect(() => {
-    // al montar, intentamos reproducir el inicial
-    const t = setTimeout(() => playOnlyActiveSlide(safeIndex), 0);
+    const t = setTimeout(() => playOnlyActiveSlide(initialIndex), 0);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -82,106 +71,261 @@ export default function VideoSwiper({
         zIndex: 1000,
       }}
     >
-      <Swiper
-        key={initialLessonId}
-        direction="vertical"
-        slidesPerView={1}
-        initialSlide={safeIndex}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
-        }}
-        onSlideChange={(swiper) => {
-          const newIndex = swiper.activeIndex;
-          setActiveIndex(newIndex);
-          playOnlyActiveSlide(newIndex);
-        }}
-        style={{ height: "100vh", overflow: "hidden" }}
-      >
-        {lessons.map((lesson, index) => (
-          <SwiperSlide
-            key={lesson.id}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {/* Sólo monta el slide activo para no cargar videos innecesarios */}
-            {index === activeIndex ? (
-              <LessonSlideLocal key={lesson.id} lesson={lesson} />
-            ) : (
-              // placeholder liviano mientras no está activo
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "#000",
-                }}
-              >
-                <Loader color="white" />
-              </div>
-            )}
-          </SwiperSlide>
-        ))}
-      </Swiper>
-
-      {/* Botón cerrar opcional */}
+      {/* back */}
       <button
         onClick={() => {
-          // pausa cualquier video antes de cerrar
           document.querySelectorAll("video").forEach((v) => {
-            try {
-              v.pause();
-            } catch {}
+            try { (v as HTMLVideoElement).pause(); } catch {}
           });
           onClose();
         }}
         style={{
           position: "absolute",
           top: 12,
-          right: 12,
+          left: 12,
           zIndex: 1010,
-          background: "rgba(255,255,255,0.9)",
+          background: "transparent",
+          color: "#fff",
           border: 0,
-          padding: "8px 12px",
-          borderRadius: 8,
+          fontSize: 22,
           cursor: "pointer",
-          fontWeight: 600,
         }}
+        aria-label="Back"
       >
-        Close
+        ←
       </button>
+
+      <Swiper
+        key={initialLessonId}
+        direction="vertical"
+        slidesPerView={1}
+        initialSlide={initialIndex}
+        onSwiper={(s) => (swiperRef.current = s)}
+        onSlideChange={(s) => {
+          setActiveIndex(s.activeIndex);
+          playOnlyActiveSlide(s.activeIndex);
+        }}
+        style={{ height: "100vh", overflow: "hidden" }}
+      >
+        {lessons.map((lesson, idx) => (
+          <SwiperSlide
+            key={lesson.id}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "24px 0 12px",
+              boxSizing: "border-box",
+            }}
+          >
+            {/* Montamos solo el slide activo (mejor perf) */}
+            {idx === activeIndex ? (
+              <LessonSlideLocal key={lesson.id} lesson={lesson} />
+            ) : (
+              <div style={{ width: "100%", height: "100%" }}>
+                <div
+                  style={{
+                    width: "92vw",
+                    maxWidth: 520,
+                    height: 380,
+                    margin: "0 auto",
+                    borderRadius: 18,
+                    background: "#000",
+                  }}
+                />
+              </div>
+            )}
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 }
 
+/** Slide con UI tipo Reels: card, info, subtítulo, acciones y progress bar */
 function LessonSlideLocal({ lesson }: { lesson: LocalLesson }) {
-  // arma el src local a partir del id si no vino predefinido
   const src = lesson.src ?? `/videos/${lesson.id}`;
+  const [current, setCurrent] = useState(0);
+  const [dur, setDur] = useState(0);
+  const [copied, setCopied] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const fmt = (s: number) => {
+    const m = Math.floor(s / 60);
+    const r = Math.floor(s % 60);
+    return `${m}:${r.toString().padStart(2, "0")}`;
+  };
+  const progress = dur > 0 ? Math.min(1, current / dur) : 0;
+
+  const handleShare = async () => {
+    const shareData = {
+      title: lesson.title,
+      text: lesson.subtitle || lesson.description || lesson.title,
+      url: window.location.href,
+    };
+    if (navigator.share) {
+      try { await navigator.share(shareData); } catch {}
+    } else {
+      try { await navigator.clipboard.writeText(shareData.url); setCopied(true); setTimeout(() => setCopied(false), 1200); } catch {}
+    }
+  };
 
   return (
-    <video
-      key={lesson.id}
-      src={src}
-      poster={lesson.poster}
-      // si querés sin controles, poné controls={false} y armamos una barra custom
-      controls
-      playsInline
-      preload="metadata"
+    <div
       style={{
-        maxHeight: "92vh",
-        maxWidth: "100%",
-        width: "auto",
-        height: "auto",
-        background: "#000",
+        width: "100%",
+        height: "100%",
+        display: "grid",
+        gridTemplateRows: "1fr auto",
       }}
-      onError={(e) => {
-        // pequeño fallback para debug
-        console.warn("No se pudo cargar el video:", src, e);
-      }}
-    />
+    >
+      {/* STAGE: quito 56.25vw/380 y uso viewport height */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "0 16px",
+        }}
+      >
+        <div
+          style={{
+            width: "92vw",
+            maxWidth: 720,          // si querés más grande, subí este valor
+            height: "82vh",         // << ocupa alto
+            maxHeight: "82vh",
+            borderRadius: 18,
+            overflow: "hidden",
+            background: "#000",
+            boxShadow: "0 6px 26px rgba(0,0,0,.45)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <video
+            ref={videoRef}
+            src={src}
+            poster={lesson.poster}
+            playsInline
+            controls={false}
+            // ⚠️ ayuda al autoplay en móviles:
+            // arranca muteado; el código de autoplay lo desmutea si puede
+            muted
+            autoPlay
+            onTimeUpdate={(e) => setCurrent((e.target as HTMLVideoElement).currentTime)}
+            onLoadedMetadata={(e) => setDur((e.target as HTMLVideoElement).duration || 0)}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain", // llena alto o ancho según relación
+              display: "block",
+              background: "#000",
+            }}
+            onError={(e) => console.warn("Video error:", src, e)}
+          />
+        </div>
+      </div>
+
+      {/* HUD inferior (igual que antes) */}
+      <div
+        style={{
+          position: "relative",
+          padding: "16px 20px 20px",
+          color: "#fff",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            right: 20,
+            bottom: 64,
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+          }}
+        >
+          <button aria-label="Like" style={pillBtnStyle}>♡</button>
+          <button aria-label="Share" style={pillBtnStyle} onClick={handleShare}>⤴︎</button>
+          {copied && (
+            <div
+              style={{
+                position: "absolute",
+                right: 64,
+                top: 6,
+                padding: "6px 10px",
+                borderRadius: 8,
+                background: "rgba(0,0,0,.7)",
+                fontSize: 12,
+                whiteSpace: "nowrap",
+              }}
+            >
+              Copied!
+            </div>
+          )}
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
+          <img
+            src={lesson.authorAvatar ?? "/logo192.png"}
+            alt={lesson.authorName ?? "author"}
+            width={28} height={28}
+            style={{ borderRadius: "50%", objectFit: "cover" }}
+          />
+          <div style={{ lineHeight: 1.1 }}>
+            <div style={{ fontWeight: 700 }}>{lesson.authorName ?? "iamproperty"}</div>
+            <div style={{ opacity: 0.9 }}>{lesson.title}</div>
+            {lesson.subtitle ? (
+              <div style={{ opacity: 0.7, fontSize: 12, marginTop: 2 }}>{lesson.subtitle}</div>
+            ) : null}
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            fontSize: 12,
+            color: "#b9c3c8",
+            marginBottom: 6,
+          }}
+        >
+          <span>{fmt(current)}</span>
+          <div
+            style={{
+              flex: 1,
+              height: 8,
+              borderRadius: 8,
+              background: "rgba(255,255,255,.25)",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: `${progress * 100}%`,
+                height: "100%",
+                background: "#9BE22D",
+                transition: "width .15s linear",
+              }}
+            />
+          </div>
+          <span>{fmt(dur)}</span>
+        </div>
+      </div>
+    </div>
   );
 }
+
+const pillBtnStyle: React.CSSProperties = {
+  width: 56,
+  height: 56,
+  borderRadius: 18,
+  background: "rgba(5, 42, 52, 0.9)",
+  color: "#E7FAFF",
+  border: "1px solid rgba(255,255,255,.08)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+};
