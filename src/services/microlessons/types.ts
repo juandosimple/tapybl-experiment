@@ -4,6 +4,8 @@ export type Microlesson = {
   subtitle: string;
   description: string | null;
   poster: string | null;
+  authorAvatar: string | null;
+  authorName: string | null;
   statusString: string;
   dateCreated: string;
   dateUpdated: string;

@@ -4,12 +4,17 @@ import OrganizationAvatar from "@/components/avatar/OrganizationAvatar";
 import styles from "./ChannelPage.module.css";
 import { Tabs, Tab } from "react-bootstrap";
 import { useState } from "react";
-import img1 from "@/assets/images/mock/img-1.png"; // o .jpg
-import img2 from "@/assets/images/mock/img-2.png"; // o .jpg
-import img3 from "@/assets/images/mock/img-3.png"; // o .jpg
+import img1 from "@/assets/images/mock/image-01.png"; // o .jpg
+import img2 from "@/assets/images/mock/image-02.png"; // o .jpg
+import img3 from "@/assets/images/mock/image-03.png"; // o .jpg
+import img11 from "@/assets/images/mock/image-04.png"; // o .jpg
 import img4 from "@/assets/images/mock/img-4.png"; // o .jpg
 import img5 from "@/assets/images/mock/img-5.jpg"; // o .jpg
 import img6 from "@/assets/images/mock/img-6.png"; // o .jpg
+import img7 from "@/assets/images/mock/img-7.jpg"; // o .jpg
+import img8 from "@/assets/images/mock/img-8.jpg"; // o .jpg
+import img9 from "@/assets/images/mock/img-9.jpg"; // o .jpg
+import img10 from "@/assets/images/mock/img-10.jpg"; // o .jpg
 
 import {
   VideoCameraIcon,
@@ -26,11 +31,20 @@ export default function ChannelPage() {
 
   function EmptyState({ title, text }: { title: string; text: string }) {
     return (
-      <div style={{ padding: 16, color: "#bbb", textAlign: "center" }}>
-        <div style={{ fontWeight: 600, color: "#fff", marginBottom: 6 }}>
-          {title}
+      <div
+        style={{
+          color: "#bbb",
+          textAlign: "center",
+          display: "flex",
+          gap: 10,
+          flexWrap: "wrap",
+        }}
+      >
+        <div
+          className={styles["profile_gallery_image_container"]}
+          style={{ backgroundImage: `url(${img11})` }}
+        >
         </div>
-        <div style={{ fontSize: 14 }}>{text}</div>
       </div>
     );
   }
@@ -62,22 +76,22 @@ export default function ChannelPage() {
         </div>
         <div
           className={styles["profile_gallery_image_container"]}
-          style={{ backgroundImage: `url(${img3})` }}
+          style={{ backgroundImage: `url(${img7})` }}
         >
         </div>
         <div
           className={styles["profile_gallery_image_container"]}
-          style={{ backgroundImage: `url(${img3})` }}
+          style={{ backgroundImage: `url(${img8})` }}
         >
         </div>
         <div
           className={styles["profile_gallery_image_container"]}
-          style={{ backgroundImage: `url(${img3})` }}
+          style={{ backgroundImage: `url(${img9})` }}
         >
         </div>
         <div
           className={styles["profile_gallery_image_container"]}
-          style={{ backgroundImage: `url(${img3})` }}
+          style={{ backgroundImage: `url(${img10})` }}
         >
         </div>
       </div>

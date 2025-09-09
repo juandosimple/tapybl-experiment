@@ -32,6 +32,8 @@ function normalize(raw: any): LocalMicrolesson {
     subtitle: raw?.subtitle ?? raw?.description ?? "",
     description: raw?.description ?? "",
     poster: raw?.poster ?? "",
+    authorAvatar: raw?.authorAvatar ?? "",
+    authorName: raw?.authorName ?? "",
     duration: Number(raw?.duration ?? 0),
 
     // obligatorios que tu tipo suele exigir
