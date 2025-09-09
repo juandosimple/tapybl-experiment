@@ -3,8 +3,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import SwiperCore from "swiper";
 import type { Microlesson } from "@/services/microlessons/types";
-import { ArrowUpOnSquareIcon, BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowUpOnSquareIcon,
+  BookmarkIcon,
+  HeartIcon,
+} from "@heroicons/react/24/outline";
 import logo from "@/assets/images/mock/imaproperty-logo.jpg"; // o .jpg
+
+
 
 SwiperCore.use([]);
 
@@ -106,6 +112,8 @@ const QUIZZES: Record<
   },
 };
 
+
+
 type Props = {
   lessons: LocalLesson[];
   initialLessonId: string;
@@ -128,7 +136,78 @@ export default function VideoSwiper({
   const [resetToken, setResetToken] = useState(0); // 👈 nuevo
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null); // 👈 nuevo
 
-  console.log(lessons);
+  // --- Swipe horizontal a la derecha -> ir al channel
+// --- Swipe horizontal a la izquierda -> ir al channel
+const CHANNEL_URL =
+  "http://localhost:5173/channel/074ebc4f-a6f1-41b8-ffc1-08ddea1db2c1";
+
+const SWIPE_X_THRESHOLD = 60;  // umbral en px
+const SWIPE_X_MAX = 160;       // distancia para completar animación visual
+const SWIPE_Y_TOLERANCE = 40;  // tolerancia vertical
+
+const touchStartX = useRef<number | null>(null);
+const touchStartY = useRef<number | null>(null);
+const touchDX = useRef<number>(0);
+const touchDY = useRef<number>(0);
+
+const [hSwipeProgress, setHSwipeProgress] = useState(0);   // 0..1
+const [showHSIndicator, setShowHSIndicator] = useState(false);
+const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+
+const onTouchStartRoot = (e: React.TouchEvent<HTMLDivElement>) => {
+  if (e.touches.length !== 1) return;
+  const t = e.touches[0];
+  touchStartX.current = t.clientX;
+  touchStartY.current = t.clientY;
+  touchDX.current = 0;
+  touchDY.current = 0;
+  setIsAnimatingOut(false);
+};
+
+const onTouchMoveRoot = (e: React.TouchEvent<HTMLDivElement>) => {
+  if (touchStartX.current == null || touchStartY.current == null) return;
+  const t = e.touches[0];
+  touchDX.current = t.clientX - touchStartX.current;
+  touchDY.current = t.clientY - touchStartY.current;
+
+  const dx = touchDX.current;        // < 0 cuando arrastro a la izquierda
+  const dy = Math.abs(touchDY.current);
+
+  // Mostrar overlay si el gesto es horizontal dominante y hacia la IZQUIERDA
+  if (dx < 0 && dy < SWIPE_Y_TOLERANCE && Math.abs(dx) > dy * 1.2) {
+    setShowHSIndicator(true);
+    // progreso de 0..1 usando -dx (positivo)
+    const p = Math.min(Math.max((-dx) / SWIPE_X_MAX, 0), 1);
+    setHSwipeProgress(p);
+  } else {
+    setHSwipeProgress(0);
+    setShowHSIndicator(false);
+  }
+};
+
+const onTouchEndRoot = () => {
+  const dx = touchDX.current;
+  const dy = Math.abs(touchDY.current);
+  touchStartX.current = touchStartY.current = null;
+
+  // swipe a la IZQUIERDA supera umbral
+  if (-dx > SWIPE_X_THRESHOLD && dy < SWIPE_Y_TOLERANCE) {
+    setIsAnimatingOut(true);
+    setHSwipeProgress(1);
+    setTimeout(() => {
+      document.querySelectorAll("video").forEach((v) => {
+        try { (v as HTMLVideoElement).pause(); } catch {}
+      });
+      window.location.href = CHANNEL_URL; // o navigate("/channel/...")
+    }, 120);
+  } else {
+    setIsAnimatingOut(false);
+    setHSwipeProgress(0);
+    setShowHSIndicator(false);
+  }
+};
+
+// EXPERIMENTAL
 
   const clearTimer = () => {
     if (timerRef.current) {
@@ -184,7 +263,70 @@ export default function VideoSwiper({
         backgroundColor: "#000",
         zIndex: 1000,
       }}
+      onTouchStart={onTouchStartRoot}
+      onTouchMove={onTouchMoveRoot}
+      onTouchEnd={onTouchEndRoot}
     >
+
+{/* EXPERIMENTAL */}
+{showHSIndicator || hSwipeProgress > 0 ? (
+  <div
+    style={{
+      pointerEvents: "none",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 1005,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",   // 👉 anclado a la derecha
+      paddingLeft: 16,
+      paddingRight: 16,
+    }}
+  >
+    {/* chip que “entra” desde la derecha hacia el centro */}
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        transform: `translateX(${-Math.round(hSwipeProgress * 40)}px)`, // 👉 mueve hacia la IZQ
+        opacity: 0.2 + hSwipeProgress * 0.8,
+        transition: isAnimatingOut
+          ? "transform 120ms ease, opacity 120ms ease"
+          : "transform 180ms ease, opacity 180ms ease",
+        background: "rgba(5,42,52,0.88)",
+        border: "1px solid rgba(255,255,255,0.12)",
+        color: "#E7FAFF",
+        borderRadius: 18,
+        padding: "10px 14px",
+        boxShadow: "0 8px 24px rgba(0,0,0,.4)",
+      }}
+    >
+      {/* Flecha hacia la IZQUIERDA */}
+      <span style={{ fontSize: 20, lineHeight: "20px" }}>↞</span>
+      <div style={{ fontWeight: 700, fontSize: 14 }}>Go to channel</div>
+    </div>
+
+    {/* velito a la derecha */}
+    <div
+      style={{
+        width: 12,
+        height: 80,
+        marginLeft: 12,
+        borderRadius: 12,
+        background:
+          "linear-gradient(270deg, rgba(5,42,52,0.0) 0%, rgba(5,42,52,0.25) 60%, rgba(5,42,52,0.45) 100%)",
+        opacity: hSwipeProgress * 0.8,
+        transition: "opacity 180ms ease",
+      }}
+    />
+  </div>
+) : null}
+{/* EXPERIMENTAL */}
+
       <button
         onClick={() => {
           document.querySelectorAll("video").forEach((v) => {
@@ -385,7 +527,7 @@ function LessonSlideLocal({
                 color: "#fff",
                 boxShadow: "0 8px 28px rgba(0,0,0,.45)",
                 backdropFilter: "blur(2px)",
-                zIndex:'999999'
+                zIndex: "999999",
               }}
             >
               <div
