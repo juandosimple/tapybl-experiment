@@ -1,24 +1,91 @@
+// src/features/.../pages/FeedPage.tsx
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "../../auth/useAuth";
-import { fetchMicrolessons } from "@/services/microlessons/api";
 import type { Microlesson } from "@/services/microlessons/types";
 import MicroLessonCard from "../components/MicroLessonCard";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import Loader from "@/components/loaders";
 
-import InteractiveVideoPlayer from "@/components/player/core/InteractiveVideoPlayer";
-import { useLessonGraphLoader } from "@/components/player/adapters/useLessonGraphLoader";
-import VideoSwiper from "@/components/player/core/VideoSwiper";
+// ⛔️ Ya no usamos el player con API/graph para esta versión local
+// import InteractiveVideoPlayer from "@/components/player/core/InteractiveVideoPlayer";
+// import { useLessonGraphLoader } from "@/components/player/adapters/useLessonGraphLoader";
+// import VideoSwiper from "@/components/player/core/VideoSwiper";
+import VideoSwiperLocal from "@/components/player/core/VideoSwiperLocal";
+
+// ✅ Mock local
+import RAW from "@/mocks/feed.json";
+
+// Microlesson extendido para incluir el src local
+type LocalMicrolesson = Microlesson & { src: string };
+
+// Normaliza y agrega el `src` local basado en el id (nombre del archivo)
+function normalize(raw: any): LocalMicrolesson {
+  const safeId =
+    raw?.id ??
+    (typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `mock-${Math.random().toString(36).slice(2)}`);
+
+  const base: Microlesson = {
+    id: safeId,
+    title: raw?.title ?? "",
+    subtitle: raw?.subtitle ?? raw?.description ?? "",
+    description: raw?.description ?? "",
+    poster: raw?.poster ?? "",
+    duration: Number(raw?.duration ?? 0),
+
+    // obligatorios que tu tipo suele exigir
+    lessonContentId: raw?.lessonContentId ?? `mock-${safeId}`,
+    statusString: raw?.statusString ?? "ACTIVE",
+    dateCreated: raw?.dateCreated ?? new Date().toISOString(),
+    dateUpdated: raw?.dateUpdated ?? raw?.dateCreated ?? new Date().toISOString(),
+
+    status: typeof raw?.status === "number" ? raw.status : 0,
+    inProgress: Boolean(raw?.inProgress),
+    isGradable: Boolean(raw?.isGradable),
+    passingScore: Number(raw?.passingScore ?? 0),
+
+    organizationId: raw?.organizationId ?? "",
+    organization: raw?.organization ?? null,
+
+    libraryMediaFiles: raw?.libraryMediaFiles ?? null,
+    totalAiCreditsUsed: raw?.totalAiCreditsUsed ?? 0,
+    questionAiCreditsUsed: raw?.questionAiCreditsUsed ?? null,
+    lessonGenerationAiCreditsUsed: raw?.lessonGenerationAiCreditsUsed ?? 0,
+    promptToSlideAiCreditsUsed: raw?.promptToSlideAiCreditsUsed ?? null,
+    videoGenerationAiCreditsUsed: raw?.videoGenerationAiCreditsUsed ?? null,
+    imageGenerationAiCreditsUsed: raw?.imageGenerationAiCreditsUsed ?? null,
+  };
+
+  // ➕ acá mapeamos id -> src local
+  const src = `/videos/${safeId}`; // ej: "dc1-vertical.mp4" => "/videos/dc1-vertical.mp4"
+
+  return { ...base, src };
+}
+
+// Fuente en memoria
+const ALL_RAW: any[] = Array.isArray((RAW as any)?.data) ? (RAW as any).data : [];
+const ALL_NORMALIZED: LocalMicrolesson[] = ALL_RAW.map(normalize);
+
+// Mock con paginado local
+function fetchMicrolessonsMock(page: number, limit: number) {
+  const lastPageIndex = Math.max(0, Math.ceil(ALL_NORMALIZED.length / limit) - 1);
+  const start = page * limit;
+  const end = start + limit;
+  const data = ALL_NORMALIZED.slice(start, end);
+  return { data, pagesCount: lastPageIndex };
+}
 
 export default function FeedPage() {
   const { organizationId } = useAuth();
 
-  const [items, setItems] = useState<Microlesson[]>([]);
+  const [items, setItems] = useState<LocalMicrolesson[]>([]);
   const [page, setPage] = useState(0);
   const [pagesCount, setPagesCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string>("");
   const [openLessonId, setOpenLessonId] = useState<string | null>(null);
+
   const seenIds = useRef<Set<string>>(new Set());
   const inFlight = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
@@ -55,8 +122,7 @@ export default function FeedPage() {
     const myRequestId = ++requestIdRef.current;
 
     try {
-      const res = await fetchMicrolessons(organizationId, page, 12);
-
+      const res = fetchMicrolessonsMock(page, 12);
       if (myRequestId !== requestIdRef.current) return;
 
       const fresh = res.data.filter((it) => {
@@ -70,7 +136,7 @@ export default function FeedPage() {
       setPage((p) => p + 1);
     } catch (e: any) {
       if (e?.name === "AbortError") return;
-      setErr(e?.message || "Error loading microlessons");
+      setErr(e?.message || "Error loading microlessons (mock)");
     } finally {
       if (myRequestId === requestIdRef.current) {
         setLoading(false);
@@ -139,34 +205,12 @@ export default function FeedPage() {
       {openLessonId &&
         organizationId &&
         items.some((i) => i.id === openLessonId) && (
-          <VideoSwiper
+          <VideoSwiperLocal
             lessons={items}
             initialLessonId={openLessonId}
-            organizationId={organizationId}
             onClose={() => setOpenLessonId(null)}
           />
         )}
     </div>
   );
-}
-
-function FeedLessonOverlay({
-  organizationId,
-  lessonId,
-  onClose,
-}: {
-  organizationId: string;
-  lessonId: string;
-  onClose: () => void;
-}) {
-  const { graph, loading, error } = useLessonGraphLoader({
-    organizationId,
-    lessonId,
-  });
-
-  if (loading) return <Loader />;
-  if (error) return <div style={{ padding: 16, color: "salmon" }}>{error}</div>;
-  if (!graph) return null;
-
-  return <InteractiveVideoPlayer graph={graph} onClose={onClose} />;
 }

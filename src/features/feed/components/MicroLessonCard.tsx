@@ -21,9 +21,7 @@ export default function MicroLessonCard({
         />
         <div className={styles["micro-lesson-card__title"]}>
           {item.title || "(No title)"}
-          <div style={{ fontSize: 12, color: "#fff" }}>
-            iamproperty
-          </div>
+          <div style={{ fontSize: 12, color: "#fff" }}>iamproperty</div>
           {/* Not used for now
           <div style={{ fontSize: 12, color: "#fff" }}>
            {item.statusString} · {created.toLocaleString()}
@@ -57,7 +55,15 @@ export default function MicroLessonCard({
           )}
         </div>
       </button>
-
+      <footer
+        style={{
+          position: "absolute",
+          bottom: 10,
+          left: 10,
+        }}
+      >
+        <p>{item.subtitle || "(No title)"}</p>
+      </footer>
       {/* Not used for now
       {item.description && (
         <div style={{ padding: "8px 12px", fontSize: 14, color: "#ddd" }}>
