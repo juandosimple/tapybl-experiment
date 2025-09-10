@@ -448,7 +448,7 @@ function LessonSlideLocal({
   useEffect(() => {
     if (!dur) return;
     const remain = dur - current;
-    if (!showQuiz && quiz && remain <= 2 && remain >= 0) {
+    if (!showQuiz && quiz && remain <= 1 && remain >= 0) {
       setShowQuiz(true);
       // si querés pausar cuando aparece el modal:
       // videoRef.current?.pause();
